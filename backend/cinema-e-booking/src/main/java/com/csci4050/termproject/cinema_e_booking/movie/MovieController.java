@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,12 +28,12 @@ public class MovieController {
     }
 
     @GetMapping("/movies/title/{title}")
-    public ResponseEntity<List<Movie>> findMoviesByTitle(String title) {
-        return ResponseEntity.ok().body(movieRepo.findByTitlesContaining(title));
+    public ResponseEntity<List<Movie>> findMoviesByTitle(@PathVariable String title) {
+        return ResponseEntity.ok().body(movieRepo.findByTitleContaining(title));
     }
 
     @GetMapping("/movies/{id}")
-    public ResponseEntity<Movie> getMovieById(String id){
+    public ResponseEntity<Movie> getMovieById(@PathVariable String id){
         Movie movie = movieRepo.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("Movie not found for id :: " + id));
         return ResponseEntity.ok().body(movie);
@@ -44,7 +45,7 @@ public class MovieController {
     }
 
     @PutMapping("/movies/{id}")
-    public ResponseEntity<Movie> updateMovie(String id, @RequestBody Movie movieDetails) throws ResourceNotFoundException {
+    public ResponseEntity<Movie> updateMovie(@PathVariable String id, @RequestBody Movie movieDetails) throws ResourceNotFoundException {
         Movie movie = movieRepo.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("Movie not found for id :: " + id));
         
@@ -63,7 +64,7 @@ public class MovieController {
     } 
 
     @DeleteMapping("/movies/{id}")
-    public Map<String, Boolean> deleteMovie(String id) throws ResourceNotFoundException {
+    public Map<String, Boolean> deleteMovie(@PathVariable String id) throws ResourceNotFoundException {
         Movie movie = movieRepo.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("Movie not found for id :: " + id));
 
