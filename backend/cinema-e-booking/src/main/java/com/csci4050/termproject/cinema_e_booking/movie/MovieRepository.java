@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface MovieRepository extends MongoRepository<Movie, String> {
 
-    public List<Movie> findByTitleContaining(String title);
+    public List<Movie> findByTitlesContaining(String title);
 
 }

@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
 @RequestMapping("/api")
@@ -25,6 +24,11 @@ public class MovieController {
     @GetMapping("/movies")
     public ResponseEntity<List<Movie>> FindAllMovies() {
         return ResponseEntity.ok().body(movieRepo.findAll());
+    }
+
+    @GetMapping("/movies/title/{title}")
+    public ResponseEntity<List<Movie>> findMoviesByTitle(String title) {
+        return ResponseEntity.ok().body(movieRepo.findByTitlesContaining(title));
     }
 
     @GetMapping("/movies/{id}")
