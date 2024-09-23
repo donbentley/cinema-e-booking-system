@@ -29,7 +29,8 @@ public class MovieController {
 
     @GetMapping("/movies/title/{title}")
     public ResponseEntity<List<Movie>> findMoviesByTitle(@PathVariable String title) {
-        return ResponseEntity.ok().body(movieRepo.findByTitleContaining(title));
+        List<Movie> movie = movieRepo.findMovieByTitleContaining(title);
+        return ResponseEntity.ok().body(movie);
     }
 
     @GetMapping("/movies/{id}")
@@ -50,6 +51,7 @@ public class MovieController {
             .orElseThrow(() -> new ResourceNotFoundException("Movie not found for id :: " + id));
         
         movie.setId(movieDetails.getId());
+        movie.setTitle(movieDetails.getTitle());
         movie.setCategory(movieDetails.getCategory());
         movie.setCast(movieDetails.getCast());
         movie.setDirector(movieDetails.getDirector());
