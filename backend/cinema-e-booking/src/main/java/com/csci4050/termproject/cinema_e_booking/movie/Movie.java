@@ -1,4 +1,4 @@
-package com.csci4050.termproject.cinema_e_booking.model;
+package com.csci4050.termproject.cinema_e_booking.movie;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;

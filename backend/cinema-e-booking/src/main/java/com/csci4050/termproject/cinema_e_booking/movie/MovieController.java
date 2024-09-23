@@ -1,9 +1,4 @@
-package com.csci4050.termproject.cinema_e_booking.controller;
-
-import com.csci4050.termproject.cinema_e_booking.model.Movie;
-import com.csci4050.termproject.cinema_e_booking.repository.MovieRepository;
-
-import ja.validation.Valid;
+package com.csci4050.termproject.cinema_e_booking.movie;
 
 import java.util.HashMap;
 import java.util.List;
@@ -11,11 +6,11 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import net.guides.springboot.crud.exception.ResourceNotFoundException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,20 +28,19 @@ public class MovieController {
     }
 
     @GetMapping("/movies/{id}")
-    public ResponseEntity<Movie> getMovieById(@PathVariable long id) throws ResourceNotFoundException {
+    public ResponseEntity<Movie> getMovieById(String id){
         Movie movie = movieRepo.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("Movie not found for id :: " + id));
-        
         return ResponseEntity.ok().body(movie);
     }
 
     @PostMapping("/movies")
-    public ResponseEntity<Movie> createMovie(@Valid @RequestBody Movie movie) {
+    public ResponseEntity<Movie> createMovie(@RequestBody Movie movie) {
         return ResponseEntity.ok().body(movieRepo.save(movie));
     }
 
     @PutMapping("/movies/{id}")
-    public ResponseEntity<Movie> updateMovie(@PathVariable long id, @Valid @RequestBody Movie movieDetails) throws ResourceNotFoundException {
+    public ResponseEntity<Movie> updateMovie(String id, @RequestBody Movie movieDetails) throws ResourceNotFoundException {
         Movie movie = movieRepo.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("Movie not found for id :: " + id));
         
@@ -59,13 +53,13 @@ public class MovieController {
         movie.setReviewLink(movieDetails.getReviewLink());
         movie.setPictureLink(movieDetails.getPictureLink());
         movie.setTrailerLink(movieDetails.getTrailerLink());
-        movie.getMpaaRating(movieDetails.getMpaaRating());
+        movie.setMpaaRating(movieDetails.getMpaaRating());
 
         return ResponseEntity.ok().body(movieRepo.save(movie));
     } 
 
     @DeleteMapping("/movies/{id}")
-    public Map<String, Boolean> deleteMovie(@PathVariable long id) throws ResourceNotFoundException {
+    public Map<String, Boolean> deleteMovie(String id) throws ResourceNotFoundException {
         Movie movie = movieRepo.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("Movie not found for id :: " + id));
 
