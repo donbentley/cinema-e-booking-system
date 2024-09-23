@@ -1,13 +1,13 @@
-package com.cinemaebooking.cinema_e_booking_api_mongodb;
+package com.csci4050.termproject.cinema_e_booking;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class CinemaEBookingApiMongodbApplication {
+public class CinemaEBookingApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(CinemaEBookingApiMongodbApplication.class, args);
+		SpringApplication.run(CinemaEBookingApplication.class, args);
 	}
 
 }

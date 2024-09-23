@@ -8,11 +8,11 @@
 		<version>3.3.4</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.cinemaebooking</groupId>
-	<artifactId>cinema-e-booking-api-mongodb</artifactId>
+	<groupId>com.csci4050.termproject</groupId>
+	<artifactId>cinema-e-booking</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>cinema-e-booking-api-mongodb</name>
-	<description>API to connect Cinema E-Booking Frontend to Backend</description>
+	<name>cinema-e-booking</name>
+	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>
 		<license/>

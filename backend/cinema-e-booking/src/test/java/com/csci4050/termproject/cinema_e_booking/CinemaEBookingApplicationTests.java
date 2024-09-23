@@ -1,10 +1,10 @@
-package com.cinemaebooking.cinema_e_booking_api_mongodb;
+package com.csci4050.termproject.cinema_e_booking;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class CinemaEBookingApiMongodbApplicationTests {
+class CinemaEBookingApplicationTests {
 
 	@Test
 	void contextLoads() {
