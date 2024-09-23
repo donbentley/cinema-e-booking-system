@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Movies</title>
+    <link rel="stylesheet" href="../styles/styles.css">
+</head>
+<body>
+    <header>
+        <h1>Manage Movies</h1>
+    </header>
+
+    <div class="movie-container">
+        <h2>Current Movies</h2>
+        <div class="movie-card">
+            <img src="../images/movie-placeholder.jpg" alt="Movie Title" class="movie-image">
+            <h3>Movie Title</h3>
+            <p>Release Date: YYYY-MM-DD</p>
+            <p>Genre: Action</p>
+            <button class="edit-button">Edit</button>
+            <button class="delete-button">Delete</button>
+        </div>
+        <!-- Repeat movie-card divs for more movies -->
+    </div>
+
+    <div class="add-movie-form" style="display: none;">
+        <h2>Add Movie</h2>
+        <form id="movie-form">
+            <label for="movie-title">Movie Title:</label>
+            <input type="text" id="movie-title" required>
+
+            <label for="release-date">Release Date:</label>
+            <input type="date" id="release-date" required>
+
+            <label for="genre">Genre:</label>
+            <input type="text" id="genre" required>
+
+            <label for="movie-image">Upload Image:</label>
+            <input type="file" id="movie-image" accept="image/*">
+
+            <button type="submit">Add Movie</button>
+        </form>
+    </div>
+
+    <button class="add-movie-button" onclick="toggleForm()">Add Movie</button>
+
+    <script>
+        function toggleForm() {
+            const form = document.querySelector('.add-movie-form');
+            form.style.display = form.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // You can add JavaScript to handle form submission and displaying movies here
+    </script>
+</body>
+</html>

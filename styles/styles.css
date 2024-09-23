@@ -1,0 +1,221 @@
+/* styles/styles.css */
+
+body {
+    background-color: black; /* Set background to black */
+    color: white;            /* Set text color to white */
+    font-family: Arial, sans-serif; /* Optional: set a font for better readability */
+    margin: 0;              /* Remove default margin */
+    padding: 20px;          /* Add some padding */
+}
+
+header, footer {
+    background-color: rgba(0, 0, 0, 0.8); /* Optional: slightly transparent background for header/footer */
+    padding: 10px;         /* Add padding */
+    text-align: center;    /* Center the text */
+}
+
+nav ul {
+    list-style-type: none; /* Remove bullet points from list */
+    padding: 0;            /* Remove padding */
+}
+
+nav a {
+    color: white;          /* Ensure links are white */
+    text-decoration: none; /* Remove underline from links */
+    margin: 0 15px;       /* Add some margin between links */
+}
+
+nav a:hover {
+    text-decoration: underline; /* Underline links on hover */
+}
+
+h1, h2 {
+    color: white;          /* Ensure headers are white */
+}
+
+
+
+/*Registration.html*/
+label {
+    display: block; /* Makes the label take up the full width */
+    margin-bottom: 5px; /* Adds space below the label */
+}
+
+input, select, textarea {
+    margin-bottom: 15px; /* Adds space below each input field */
+    width: 100%; /* Makes input fields full width, optional */
+}
+
+form {
+    max-width: 500px; /* Limits the width of the form */
+    margin: 20px auto; /* Centers the form */
+    padding: 20px; /* Adds padding inside the form */
+    border-radius: 5px; /* Rounds the corners of the form */
+    background-color: rgba(50, 50, 50, 0.8); /* Semi-transparent background */
+}
+
+input, select {
+    width: calc(100% - 20px); /* Makes input fields a bit smaller to fit padding */
+    padding: 10px; /* Adds padding inside input fields */
+    margin-bottom: 15px; /* Adds space between fields */
+    border-radius: 5px; /* Rounds the corners of input fields */
+    border: 1px solid #444; /* Adds a border */
+    background-color: #222; /* Dark background for input fields */
+    color: white; /* Text color in input fields */
+}
+
+input::placeholder {
+    color: #aaa; /* Placeholder text color */
+}
+
+button {
+    padding: 10px 15px; /* Adds padding to the button */
+    background-color: #444; /* Button background color */
+    color: white; /* Button text color */
+    border: none; /* Removes border */
+    border-radius: 10px; /* Rounds the corners of the button */
+    cursor: pointer; /* Changes cursor to pointer on hover */
+}
+
+button:hover {
+    background-color: #666; /* Changes button color on hover */
+}
+
+
+.verification-inputs {
+    display: flex;
+    justify-content: center;
+    margin: 20px;
+}
+
+.code-input {
+    width: 50px;  /* Width of each box */
+    height: 50px; /* Height of each box */
+    font-size: 24px; /* Font size */
+    text-align: center; /* Center text */
+    margin: 5px; /* Space between boxes */
+    border: 2px solid #ccc; /* Border style */
+    border-radius: 8px; /* Rounded corners */
+}
+
+/* Add styles for headings and paragraphs if needed */
+.verification-message {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.verification-code {
+    display: flex;
+    justify-content: center; /* Centers the inputs horizontally */
+    margin: 20px 0; /* Add vertical spacing */
+}
+
+
+.verify-button {
+    display: block;
+    margin: 20px auto; /* This centers the button horizontally */
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center; /* Ensures the text inside the button is centered */
+}
+
+.text-button {
+    font-weight: bold; /* Makes it bold */
+    color: white; /* Color of the text */
+    background: none; /* Removes button background */
+    border: none; /* Removes border */
+    cursor: pointer; /* Changes cursor to pointer on hover */
+    text-decoration: underline; /* Optional, to make it look clickable */
+    text-decoration: none;
+}
+
+/*EditProfile.html*/
+
+.profile-container {
+    text-align: center;
+    max-width: 500px; /* Limits the width of the form */
+    margin: 20px auto; /* Centers the form */
+    padding: 20px; /* Adds padding inside the form */
+    border-radius: 5px; /* Rounds the corners of the form */
+    background-color: rgba(50, 50, 50, 0.8); /* Semi-transparent background */
+
+}
+
+.circular-image {
+    width: 100px; /* Adjust size as needed */
+    height: 100px; /* Adjust size as needed */
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.user-info {
+    margin-top: 20px;
+    text-align: left;
+
+}
+
+
+/*Admin View */
+.admin-buttons {
+    display: flex;
+    flex-direction: column; /* Stack buttons vertically */
+    align-items: center; /* Center buttons horizontally */
+}
+
+.admin-buttons button {
+    width: 300px; /* Width of each button */
+    height: 80px; /* Height of each button */
+    margin: 10px 0; /* Space between buttons (top and bottom) */
+    font-size: 20px; /* Font size */
+    cursor: pointer; /* Pointer cursor on hover */
+    background-color: #444; /* Button background color */
+    color: white; /* Button text color */
+    border: none; /* Remove border */
+    border-radius: 10px; /* Rounded corners */
+}
+
+.admin-buttons button:hover {
+    background-color: #666; /* Button hover color */
+}
+
+/*ManagePromotions.html*/
+.promotion-container {
+    display: flex; /* Use flexbox */
+    flex-wrap: wrap; /* Allow items to wrap to the next line */
+    justify-content: space-between; /* Distribute space between items */
+    max-width: 1200px; /* Optional: set a max width for the container */
+    margin: 0 auto; /* Center the container */
+}
+
+.promotion-card {
+    background-color: rgba(50, 50, 50, 0.8); /* Semi-transparent background */
+    border-radius: 5px; /* Round corners */
+    padding: 20px; /* Add padding inside the card */
+    margin: 10px; /* Space between cards */
+    flex: 0 1 calc(45% - 20px); /* Responsive width */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5); /* Optional: shadow effect */
+}
+
+
+.promotion-image {
+    width: 100%; /* Full width of the card */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 5px;
+}
+
+.add-promotion-button {
+    display: block;
+    margin: 20px auto; /* Center the button */
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #444;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.add-promotion-button:hover {
+    background-color: #666;
+}
