@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Details</title>
+    <link rel="stylesheet" href="styles/cinema_styles.css">
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <h1>Movie Details</h1>
+    </header>
+
+    <!-- Back Button -->
+    <div class="back-button-container">
+        <button id="backToHomepage" class="back-button">Back to Homepage</button>
+    </div>
+
+    <!-- Movie Information -->
+    <div class="movie-details-container">
+        <img src="movie-poster.jpg" alt="Movie Poster" class="movie-poster">
+
+        <div class="movie-info">
+            <h2>Movie Title</h2>
+            <p>Genre: Action, Adventure</p>
+            <p>Duration: 2h 15min</p>
+            <p>Release Date: September 25, 2023</p>
+            <p>Director: John Doe</p>
+            <p>Cast: Jane Doe, John Smith</p>
+
+            <h3>Synopsis</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean et fermentum nisl. Integer id est malesuada, auctor velit ut, porta velit.</p>
+
+            <!-- Trailer Embed -->
+            <div class="trailer-container">
+                <h3>Watch Trailer</h3>
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/trailer-id" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Script to handle back button and book movie button -->
+    <script>
+        // Back to Homepage
+        document.getElementById('backToHomepage').addEventListener('click', function() {
+            window.location.href = 'homepage.html';  // Replace 'homepage.html' with the actual homepage URL
+        });
+
+        // Book Movie Button
+        document.getElementById('bookMovie').addEventListener('click', function() {
+            window.location.href = 'book-movie.html';  // Replace 'book-movie.html' with the actual book movie URL
+        });
+    </script>
+
+</body>
+</html>

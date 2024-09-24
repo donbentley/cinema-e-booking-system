@@ -327,6 +327,21 @@ footer {
     margin-bottom: 15px;
 }
 
+/* Style for Back to Homepage button */
+.back-button {
+    padding: 10px 20px;
+    background-color: #444;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.back-button:hover {
+    background-color: #666;
+}
+
 /* BOOK MOVIE STYLES */
 
 .booking-container {
