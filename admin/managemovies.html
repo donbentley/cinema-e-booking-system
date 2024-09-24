@@ -11,19 +11,33 @@
         <h1>Manage Movies</h1>
     </header>
 
-    <div class="movie-container">
-        <h2>Current Movies</h2>
-        <div class="movie-card">
-            <img src="../images/movie-placeholder.jpg" alt="Movie Title" class="movie-image">
-            <h3>Movie Title</h3>
-            <p>Release Date: YYYY-MM-DD</p>
-            <p>Genre: Action</p>
+
+
+    <div class="promotion-container">
+        <div class="promotion-card">
+            <img src="../images/icarealot.jpg" alt="Movie Title" class="promotion-image">
+            <h3>I Care A Lot</h3>
+            <p>Release Date: 2024-08-19</p>
+            <p>Genre: Comedy</p>
+            <p>Email Frequency: Biweekly</p>
             <button class="edit-button">Edit</button>
             <button class="delete-button">Delete</button>
         </div>
-        <!-- Repeat movie-card divs for more movies -->
+        <div class="promotion-card">
+            <img src="../images/insideout2-movie-poster.jpg" alt="Movie Title" class="promotion-image">
+            <h3>Inside Out</h3>
+            <p>Release Date: 2021-06-13</p>
+            <p>Genre: Action</p>
+            <p>Email Frequency: Weekly</p>
+            <button class="edit-button">Edit</button>
+            <button class="delete-button">Delete</button>
+        </div>
+    </div>
+        
     </div>
 
+    
+    <!-- Form to add a new movie -->
     <div class="add-movie-form" style="display: none;">
         <h2>Add Movie</h2>
         <form id="movie-form">
@@ -43,15 +57,71 @@
         </form>
     </div>
 
+    <!-- Button to toggle form visibility -->
     <button class="add-movie-button" onclick="toggleForm()">Add Movie</button>
 
     <script>
+        // Function to toggle the form visibility
         function toggleForm() {
             const form = document.querySelector('.add-movie-form');
             form.style.display = form.style.display === 'none' ? 'block' : 'none';
         }
 
-        // You can add JavaScript to handle form submission and displaying movies here
+        // Handling form submission and dynamically adding movie to the page
+        document.getElementById('movie-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent form submission
+
+            // Get form values
+            const title = document.getElementById('movie-title').value;
+            const releaseDate = document.getElementById('release-date').value;
+            const genre = document.getElementById('genre').value;
+
+            // Create a new movie card
+            const newMovieCard = document.createElement('div');
+            newMovieCard.classList.add('movie-card');
+           
+            // Add movie image placeholder (no real image handling in this example)
+            const movieImage = document.createElement('img');
+            movieImage.src = '../images/movie-placeholder.jpg'; // Default image placeholder
+            movieImage.alt = title;
+            movieImage.classList.add('movie-image');
+           
+            // Add title, release date, and genre
+            const movieTitle = document.createElement('h3');
+            movieTitle.textContent = title;
+
+            const movieReleaseDate = document.createElement('p');
+            movieReleaseDate.textContent = 'Release Date: ' + releaseDate;
+
+            const movieGenre = document.createElement('p');
+            movieGenre.textContent = 'Genre: ' + genre;
+
+            // Add edit and delete buttons
+            const editButton = document.createElement('button');
+            editButton.textContent = 'Edit';
+            editButton.classList.add('edit-button');
+
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = 'Delete';
+            deleteButton.classList.add('delete-button');
+
+            // Append all elements to the new movie card
+            newMovieCard.appendChild(movieImage);
+            newMovieCard.appendChild(movieTitle);
+            newMovieCard.appendChild(movieReleaseDate);
+            newMovieCard.appendChild(movieGenre);
+            newMovieCard.appendChild(editButton);
+            newMovieCard.appendChild(deleteButton);
+
+            // Append the new movie card to the movie container
+            document.querySelector('.movie-container').appendChild(newMovieCard);
+
+            // Hide the form after adding the movie
+            toggleForm();
+
+            // Reset form fields
+            document.getElementById('movie-form').reset();
+        });
     </script>
 </body>
 </html>

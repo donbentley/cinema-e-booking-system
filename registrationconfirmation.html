@@ -23,7 +23,7 @@
     
 
     <div class="verify-button">
-    <button type="submit">Verify</button>
+    <button type="button" id="verifyButton">Verify</button>
     </div>
 
     <div class="verification-message">
@@ -55,6 +55,22 @@
             console.log('Resend code button clicked!');
             alert('A new verification email has been sent!');
         }
+
+        document.getElementById('verifyButton').addEventListener('click', function() {
+        let code = '';
+        for (let i = 1; i <= 6; i++) {
+            const digit = document.getElementById('digit' + i).value;
+            // Check if the input is a digit
+            if (!/^\d$/.test(digit)) {
+                alert('Please enter a valid 6-digit code!');
+                return;
+            }
+            code += digit;
+        }
+        // All inputs are valid digits
+        alert('Account created! Redirecting you to the login page.'); 
+        window.location.href = 'login.html'; // Redirect to login page
+    });
 
     </script>
 
