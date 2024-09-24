@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Confirmation - Cinema E-Booking</title>
+    <link rel="stylesheet" href="styles/cinema_styles.css">
+    <script src="js/orderconfirmation.js" defer></script> <!-- Link to orderconfirmation.js -->
+</head>
+<body>
+
+    <header>
+        <h1>Booking Confirmation</h1>
+    </header>
+
+    <div class="confirmation-container">
+        <h2>Thank you for your order!</h2>
+        <p>Your booking number is: <span id="bookingNumber"></span></p>
+        
+        <h3>Order Details</h3>
+        <div id="orderDetails"></div>
+        
+        <h3>Total Price: <span id="orderTotal"></span></h3>
+
+        <button class="homepage-btn" onclick="goToHomePage()">Back to Home</button>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Cinema E-Booking. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>
