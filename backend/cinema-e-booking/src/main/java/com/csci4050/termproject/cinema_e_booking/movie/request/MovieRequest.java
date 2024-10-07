@@ -1,22 +1,12 @@
-package com.csci4050.termproject.cinema_e_booking.movie;
-
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
-import lombok.Getter;
-import lombok.Setter;
+package com.csci4050.termproject.cinema_e_booking.movie.request;
 
 import java.util.List;
 
-@Getter
-@Setter
+import lombok.Data;
 
-@Document
-public class Movie {
-
-    @Id
-    private String id;
-
+@Data
+public class MovieRequest {
+    private Integer id;
     private String title;
     private String category;
     private List<String> cast;
@@ -27,5 +17,4 @@ public class Movie {
     private String pictureLink;
     private String trailerLink;
     private String mpaaRating;
-
 }

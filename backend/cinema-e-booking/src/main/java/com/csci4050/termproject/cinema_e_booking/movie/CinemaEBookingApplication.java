@@ -1,4 +1,4 @@
-package com.csci4050.termproject.cinema_e_booking;
+package com.csci4050.termproject.cinema_e_booking.movie;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
