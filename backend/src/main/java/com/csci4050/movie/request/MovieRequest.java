@@ -1,4 +1,4 @@
-package com.csci4050.termproject.cinema_e_booking.movie.request;
+package com.csci4050.movie.request;
 
 import java.util.List;
 

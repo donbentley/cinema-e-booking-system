@@ -1,4 +1,5 @@
-package com.csci4050.termproject.cinema_e_booking.movie.controllers;
+package com.csci4050.movie.controllers;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -7,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.csci4050.termproject.cinema_e_booking.movie.request.*;
-import com.csci4050.termproject.cinema_e_booking.movie.services.MovieService;
+import com.csci4050.movie.request.*;
+import com.csci4050.movie.services.MovieService;
 
 @RestController
 @RequestMapping("/movie")

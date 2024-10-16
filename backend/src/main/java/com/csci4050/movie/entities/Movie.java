@@ -1,4 +1,4 @@
-package com.csci4050.termproject.cinema_e_booking.movie.entities;
+package com.csci4050.movie.entities;
 
 import jakarta.persistence.*;
 import java.util.ArrayList;

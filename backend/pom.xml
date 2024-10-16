@@ -9,14 +9,28 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.3.4</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/> <!-- lookup parent froconst axios = require('axios');
+
+document.addEventListener("DOMContentLoaded", function () {
+    axios.get('http://localhost:8080/api/users')
+        .then(response => {
+            let userList = document.getElementById("user-list");
+            response.data.forEach(user => {
+                let li = document.createElement("li");
+                li.textContent = `${user.name} (${user.email})`;
+                userList.appendChild(li);
+            });
+        })
+        .catch(error => {
+            console.error("There was an error fetching users!", error);
+        });m repository -->
     </parent>
     
-    <groupId>com.csci4050.termproject</groupId>
+    <groupId>com.csci4050.movie</groupId>
     <artifactId>cinema-e-booking</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>cinema-e-booking</name>
-    <description>Demo project for Spring Boot</description>
+    <description>cinema-e-booking system</description>
     
     <properties>
         <java.version>17</java.version>

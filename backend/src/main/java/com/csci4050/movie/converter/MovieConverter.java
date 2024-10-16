@@ -1,7 +1,7 @@
-package com.csci4050.termproject.cinema_e_booking.movie.converter;
+package com.csci4050.movie.converter;
 
-import com.csci4050.termproject.cinema_e_booking.movie.request.MovieRequest;
-import com.csci4050.termproject.cinema_e_booking.movie.entities.*;
+import com.csci4050.movie.request.MovieRequest;
+import com.csci4050.movie.entities.*;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -10,7 +10,7 @@ import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.csci4050.termproject.cinema_e_booking.movie.entities.Movie;
+import com.csci4050.movie.entities.Movie;
 
 public class MovieConverter {
 

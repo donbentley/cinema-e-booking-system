@@ -1,13 +1,13 @@
-package com.csci4050.termproject.cinema_e_booking.movie.services;
+package com.csci4050.movie.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.csci4050.termproject.cinema_e_booking.movie.converter.MovieConverter;
-import com.csci4050.termproject.cinema_e_booking.movie.repositories.MovieRepository;
-import com.csci4050.termproject.cinema_e_booking.movie.request.MovieRequest;
-import com.csci4050.termproject.cinema_e_booking.movie.entities.Movie;
-import com.csci4050.termproject.cinema_e_booking.movie.exceptions.MovieAlreadyExists;
+import com.csci4050.movie.converter.MovieConverter;
+import com.csci4050.movie.repositories.MovieRepository;
+import com.csci4050.movie.request.MovieRequest;
+import com.csci4050.movie.entities.Movie;
+import com.csci4050.movie.exceptions.MovieAlreadyExists;
 
 @Service
 public class MovieService {
