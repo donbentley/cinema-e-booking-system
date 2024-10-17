@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Manage Movies</title>
+		<link rel="stylesheet" href="../styles/styles.css" />
+	</head>
+	<body>
+		<header>
+			<h1>Manage Movies</h1>
+			<div id="movie-list">
+				<!-- Movies will be dynamically inserted here -->
+			</div>
+		</header>
+
+		<!-- Include Axios CDN for simplicity -->
+		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+		<script>
+			// Using Axios to get all movies from the Spring Boot API
+			axios
+				.get("http://localhost:8080/movie/getAll")
+				.then(function (response) {
+					let movieList = document.getElementById("movie-list");
+					let movies = response.data;
+
+					movies.forEach((movie) => {
+						let movieItem = document.createElement("div");
+						movieItem.innerHTML = `
+                        <h3>${movie.title}</h3>
+                    `;
+						movieList.appendChild(movieItem);
+					});
+				})
+				.catch(function (error) {
+					console.error("Error fetching movies:", error);
+				});
+		</script>
+	</body>
+</html>

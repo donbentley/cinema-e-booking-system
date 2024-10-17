@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Promotions</title>
+    <link rel="stylesheet" href="../styles/styles.css">
+</head>
+<body>
+    <header>
+        <h1>Manage Promotions</h1>
+    </header>
+
+    <div class="promotion-container">
+        <div class="promotion-card">
+            <img src="../images/icarealot.jpg" alt="I care a lot movie Image" class="promotion-image">
+            <h2>I Care A Lot Now Discounted !!</h2>
+            <p>Price: $9.99</p>
+            <p>Promotion Length: June 1 - June 30</p>
+            <label for="email-frequency-1">Email Frequency:</label>
+            <select id="email-frequency-1" class="email-frequency">
+                <option value="none">Select Frequency</option>
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="monthly">Monthly</option>
+            </select>
+        </div>
+        <div class="promotion-card">
+            <img src="../images/multiplemovieposter.jpg" alt="Multiple Movies" class="promotion-image">
+            <h2>All Movies Discount</h2>
+            <p>Price: $14.99</p>
+            <p>Promotion Length: July 1 - July 31</p>
+            <label for="email-frequency-2">Email Frequency:</label>
+            <select id="email-frequency-2" class="email-frequency">
+                <option value="none">Select Frequency</option>
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="monthly">Monthly</option>
+            </select>
+        </div>
+    </div>
+    
+
+    <div class="add-promotion-form" style="display: none;">
+        <h2>Add Promotion</h2>
+        <form id="promotion-form">
+            <label for="promotion-name">Promotion Name:</label>
+            <input type="text" id="promotion-name" required>
+    
+            <label for="promotion-price">Price:</label>
+            <input type="number" id="promotion-price" step="0.01" required>
+    
+            <label for="promotion-length">Promotion Length:</label>
+            <input type="text" id="promotion-length" required>
+    
+            <label for="email-frequency">Email Frequency:</label>
+            <select id="email-frequency">
+                <option value="none">Select Frequency</option>
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="monthly">Monthly</option>
+            </select>
+    
+            <label for="promotion-image">Upload Image:</label>
+            <input type="file" id="promotion-image" accept="image/*">
+    
+            <button type="submit">Add Promotion</button>
+        </form>
+    </div>
+    
+    <button class="add-promotion-button" onclick="toggleForm()">Add Promotion</button>
+    
+    <script>
+        let promtions =[] //Array to store promtions
+
+        function toggleForm(){
+            const form = document.querySelector('.add-promotion-form');
+            form.style.display = form.style.display === 'none' ? 'block' : 'none';
+
+        }
+
+        document.getElementById('promotion-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent page refresh
+
+            // Get form values
+            const name = document.getElementById('promotion-name').value;
+            const price = document.getElementById('promotion-price').value;
+            const length = document.getElementById('promotion-length').value;
+            const frequency = document.getElementById('email-frequency').value;
+            const imageInput = document.getElementById('promotion-image');
+
+            // Handle image upload
+            let imageSrc = '';
+            if (imageInput.files.length > 0) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    imageSrc = e.target.result;
+                    addPromotion(name, price, length, frequency, imageSrc);
+                };
+                reader.readAsDataURL(imageInput.files[0]);
+            } else {
+                addPromotion(name, price, length, frequency, 'default-image-path.jpg'); // Replace with a default image path if needed
+            }
+        });
+
+        function addPromotion(name, price, length, frequency, imageSrc) {
+            promotions.push({ name, price, length, frequency, imageSrc });
+
+            displayPromotions();
+            document.getElementById('promotion-form').reset(); // Reset the form
+            toggleForm(); // Hide the form after submission
+        }
+
+        function displayPromotions() {
+            const container = document.querySelector('.promotion-container');
+            container.innerHTML = ''; // Clear existing promotions
+
+            promotions.forEach(promo => {
+                const card = document.createElement('div');
+                card.className = 'promotion-card';
+                card.innerHTML = `
+                    <img src="${promo.imageSrc}" alt="${promo.name} Image" class="promotion-image">
+                    <h2>${promo.name}</h2>
+                    <p>Price: $${promo.price}</p>
+                    <p>Promotion Length: ${promo.length}</p>
+                    <label>Email Frequency:</label>
+                    <p>${promo.frequency}</p>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book a Movie - Cinema E-Booking</title>
+    <link rel="stylesheet" href="../styles/cinema_styles.css">
+    <script src="../js/book-movie.js"" defer></script>
+</head>
+<body>
+
+    <header>
+        <h1>Book a Movie</h1>
+    </header>
+
+    <!-- Booking steps container -->
+    <div class="booking-container">
+        <form id="bookingForm">
+            <!-- Display the selected movie -->
+            <div id="selectedMovieContainer">
+                <h2 id="selectedMovieTitle"></h2>
+            </div>
+
+            <!-- Step 1: Select Day -->
+            <div id="step1" class="booking-step active">
+                <h2>Select a Day</h2>
+                <label for="showdate">Choose a day:</label>
+                <input type="date" id="showdate" name="showdate" required>
+            </div>
+
+            <!-- Step 2: Select Show Time -->
+            <div id="step2" class="booking-step">
+                <h2>Select Show Time</h2>
+                <p id="displaySelectedDate"></p> <!-- Display selected date -->
+                <label for="showtime">Choose a show time:</label>
+                <select id="showtime" name="showtime" required>
+                    <option value="">-- Select Show Time --</option>
+                    <option value="10:00 AM">10:00 AM</option>
+                    <option value="12:30 PM">12:30 PM</option>
+                    <option value="3:00 PM">3:00 PM</option>
+                    <option value="6:00 PM">6:00 PM</option>
+                    <option value="8:30 PM">8:30 PM</option>
+                </select>
+                <button type="button" onclick="previousStep(1)">Back</button> <!-- Back to selecting a day -->
+            </div>
+
+            <!-- Step 3: Select Seats -->
+            <div id="step3" class="booking-step">
+                <h2>Select Seats</h2>
+                <p id="displayDateTimeSeats"></p> <!-- Display selected date and time -->
+                <label for="seats">Choose your seats:</label>
+                <div id="seatsContainer">
+                    <!-- Simplified seat layout for example -->
+                    <div class="seat-row">
+                        <button type="button" class="seat" data-seat="A1">A1</button>
+                        <button type="button" class="seat" data-seat="A2">A2</button>
+                        <button type="button" class="seat" data-seat="A3">A3</button>
+                    </div>
+                    <div class="seat-row">
+                        <button type="button" class="seat" data-seat="B1">B1</button>
+                        <button type="button" class="seat" data-seat="B2">B2</button>
+                        <button type="button" class="seat" data-seat="B3">B3</button>
+                    </div>
+                </div>
+                <button type="button" onclick="previousStep(2)">Back</button> <!-- Back to selecting a time -->
+                <button type="button" onclick="updateAgeSelection(); nextStep(4);">Next: Select Age</button> <!-- Updated -->
+            </div>
+
+            <!-- Step 4: Select Age for Each Seat -->
+            <div id="step4" class="booking-step">
+                <h2>Specify Age for Each Seat</h2>
+                <p id="displayDateTimeAge"></p> <!-- Display selected date and time -->
+                <div id="ageContainer"></div>
+                <button type="button" onclick="previousStep(3)">Back</button>
+                <button type="submit">Submit Booking</button>
+            </div>
+        </form>
+
+        <!-- Back to Home Button -->
+        <a href="#" id="backToHome" class="homepage-link">Back to Home</a>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Cinema E-Booking. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Handle the back to home warning
+        document.getElementById('backToHome').addEventListener('click', function(event) {
+            event.preventDefault();
+            if (confirm('Are you sure you want to go back to the homepage? You will lose your progress.')) {
+                window.location.href = 'homepage.html';
+            }
+        });
+    </script>
+
+</body>
+</html>
