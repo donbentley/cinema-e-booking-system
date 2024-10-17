@@ -1,3 +1,4 @@
+
 window.onload = function() {
     // Generate a mock booking number
     const bookingNumber = 'CIN-' + Math.floor(Math.random() * 1000000).toString().padStart(6, '0');

@@ -1,84 +1,80 @@
 // Movie Search
 function searchMovie() {
-	let input = document.getElementById("movieSearch").value.toLowerCase();
-	let movieCards = document.querySelectorAll(".movie-card");
-	movieCards.forEach((card) => {
-		let movieTitle = card.querySelector("h3").innerText.toLowerCase();
-		if (movieTitle.includes(input)) {
-			card.style.display = "block";
-		} else {
-			card.style.display = "none";
-		}
-	});
-}
-
-// Search on Enter key
-document
-	.getElementById("movieSearch")
-	.addEventListener("keypress", function (event) {
-		if (event.key === "Enter") {
-			event.preventDefault();
-			searchMovie();
-		}
-	});
-
-// Fetch movies and display on the homepage
-document.addEventListener('DOMContentLoaded', function() {
-    // Fetch movies from the API
-    fetch('/api/movies') // Adjust the API endpoint as needed
-        .then(response => response.json())
-        .then(movies => {
-            // Limit to first 5 movies for both sections
-            const selectedMovies = movies.slice(0, 5);
-
-            // Display the same movies in both Currently Running and Coming Soon sections
-            displayMovies(selectedMovies, 'currentlyRunningMovies');
-            displayMovies(selectedMovies, 'comingSoonMovies');
-        })
-        .catch(error => console.error('Error fetching movies:', error));
-});
-
-// Function to display movies on the page
-function displayMovies(movies, containerId) {
-    const container = document.getElementById(containerId);
-    container.innerHTML = ''; // Clear previous movie cards
-
-    movies.forEach(movie => {
-        // Create movie card
-        const movieCard = document.createElement('div');
-        movieCard.classList.add('movie-card');
-        
-        // Movie Poster
-        const poster = document.createElement('img');
-        poster.src = movie.pictureLink; // Image URL from the database
-        poster.alt = movie.title + " Poster";
-        movieCard.appendChild(poster);
-        
-        // Movie Title
-        const title = document.createElement('h3');
-        title.innerText = movie.title;
-        movieCard.appendChild(title);
-        
-        // Movie Synopsis
-        const synopsis = document.createElement('p');
-        synopsis.innerText = movie.synopsis;
-        movieCard.appendChild(synopsis);
-
-        // Movie Trailer
-        const trailer = document.createElement('iframe');
-        trailer.src = movie.trailerLink;
-        trailer.allowFullscreen = true;
-        movieCard.appendChild(trailer);
-        
-        // Book Movie Link
-        const bookLink = document.createElement('a');
-        bookLink.href = `book-movie.html?movie=${encodeURIComponent(movie.title)}`;
-        bookLink.classList.add('book-movie-btn');
-        bookLink.innerText = 'Book Movie';
-        movieCard.appendChild(bookLink);
-
-        // Append the movie card to the movie container
-        container.appendChild(movieCard);
+    let input = document.getElementById('movieSearch').value.toLowerCase();
+    let movieCards = document.querySelectorAll('.movie-card');
+    movieCards.forEach(card => {
+        let movieTitle = card.querySelector('h3').innerText.toLowerCase();
+        if (movieTitle.includes(input)) {
+            card.style.display = 'block';
+        } else {
+            card.style.display = 'none';
+        }
     });
 }
 
+// Search on Enter key
+document.getElementById('movieSearch').addEventListener('keypress', function(event) {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        searchMovie();
+    }
+});
+
+// Toggle between Currently Running and Coming Soon
+function showSection(sectionId) {
+    const currentlyRunning = document.getElementById('currentlyRunning');
+    const comingSoon = document.getElementById('comingSoon');
+    const currentlyRunningBtn = document.getElementById('currentlyRunningBtn');
+    const comingSoonBtn = document.getElementById('comingSoonBtn');
+
+    // Hide both sections
+    currentlyRunning.classList.remove('active');
+    comingSoon.classList.remove('active');
+
+    // Deactivate both buttons
+    currentlyRunningBtn.classList.remove('active');
+    comingSoonBtn.classList.remove('active');
+
+    // Show the selected section and activate the button
+    if (sectionId === 'currentlyRunning') {
+        currentlyRunning.classList.add('active');
+        currentlyRunningBtn.classList.add('active');
+    } else if (sectionId === 'comingSoon') {
+        comingSoon.classList.add('active');
+        comingSoonBtn.classList.add('active');
+    }
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    const currentlyRunningSection = document.querySelector("#currentlyRunning .movie-grid");
+    const comingSoonSection = document.querySelector("#comingSoon .movie-grid");
+
+    // Fetch movies from the Spring Boot backend
+    axios.get('http://localhost:8080/movie/getAll')
+        .then(response => {
+            const movies = response.data;
+            movies.forEach(movie => {
+                // Create movie card HTML
+                const movieCard = `
+                    <div class="movie-card">
+                        <a href="movie-details.html?movie=${encodeURIComponent(movie.title)}">
+                            <img src="${movie.posterUrl}" alt="${movie.title} Poster">
+                            <h3>${movie.title}</h3>
+                        </a>
+                        <iframe src="https://www.youtube.com/embed/${movie.trailerUrl}" allowfullscreen></iframe>
+                        <a href="book-movie.html?movie=${encodeURIComponent(movie.title)}" class="book-movie-btn">Book Movie</a>
+                    </div>
+                `;
+
+                // Check movie status and append to the correct section
+                if (movie.status === "Currently Running") {
+                    currentlyRunningSection.innerHTML += movieCard;
+                } else if (movie.status === "Coming Soon") {
+                    comingSoonSection.innerHTML += movieCard;
+                }
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching movies:', error);
+        });
+});

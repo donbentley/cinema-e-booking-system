@@ -10,7 +10,7 @@ import com.csci4050.movie.services.MovieService;
 import com.csci4050.movie.entities.Movie;
 
 import java.util.List;
-
+@CrossOrigin(origins = "http://localhost:3000") 
 @RestController
 @RequestMapping("/movie")
 public class MovieController {
@@ -53,7 +53,7 @@ public class MovieController {
             return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
         }
     }
-
+    @CrossOrigin(origins = "http://localhost:3000")
     @PutMapping("/update/{id}")
     public ResponseEntity<String> updateMovie(@PathVariable Integer id, @RequestBody MovieRequest movieRequest) {
         String result = movieService.updateMovie(id, movieRequest);
