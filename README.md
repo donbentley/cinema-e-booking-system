@@ -30,7 +30,7 @@ Before setting up the project, ensure that you have the following installed:
 ### Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/cinema-e-booking.git
+git clone https://github.com/donbentley/cinema-e-booking-system.git
 cd cinema-e-booking
 ```
 
@@ -60,10 +60,12 @@ cd frontend
 node server.js
 ```
 
- hosted on https://localhost:3000
+hosted on https://localhost:3000
 
- ---
+---
+
 ### routes
+
 ```
 add: http://localhost:8080/movie/addNew
 getAll: http://localhost:8080/movie/getAll
@@ -71,7 +73,9 @@ getById: http://localhost:8080/movie/get/:id
 update: http://localhost:8080/movie/update/:id
 delete: http://localhost:8080/movie/delete/:id
 ```
+
 ### raw movie data
+
 ```
 [
   {
