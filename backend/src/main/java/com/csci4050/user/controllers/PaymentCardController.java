@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 
 import com.csci4050.user.requests.PaymentCardRequest;
 import com.csci4050.user.services.PaymentCardService;
-import com.csci4050.PaymentCard.request.PaymentCardRequest;
 import com.csci4050.user.entities.PaymentCard;
 
 import java.util.List;
