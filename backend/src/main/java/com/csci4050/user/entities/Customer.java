@@ -1,5 +1,4 @@
-package com.csci4050.movie.entities;
-
+package com.csci4050.user.entities;
 
 import jakarta.persistence.*;
 import java.util.ArrayList;
@@ -22,6 +21,9 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL)
+    private User user;
+
     private String first;
     private String last;
     private String email;
@@ -32,6 +34,6 @@ public class Customer {
     @Enumerated(EnumType.STRING)
     public UserStatus status;
 
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<String> paymentCards = new ArrayList<>();
 }

@@ -1,4 +1,4 @@
-package com.csci4050.movie.entities;
+package com.csci4050.user.entities;
 
 import jakarta.persistence.*;
 import java.util.ArrayList;

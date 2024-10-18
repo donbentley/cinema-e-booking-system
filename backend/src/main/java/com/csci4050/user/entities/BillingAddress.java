@@ -1,4 +1,4 @@
-package com.csci4050.movie.entities;
+package com.csci4050.user.entities;
 
 
 import jakarta.persistence.*;
@@ -10,20 +10,23 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Entity
-@Table(name = "Customers")
+@Table(name = "BillingAddresses")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PaymentCard {
+public class BillingAddress {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer cardId;
+    private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "customer_id")
+    @OneToOne
+    @MapsId
     private Customer customer;
 
-    
-
+    private String line1;
+    private String line2;
+    private String city;
+    private String state;
+    private int zip;
 }
