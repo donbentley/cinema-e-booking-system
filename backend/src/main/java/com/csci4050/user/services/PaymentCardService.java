@@ -22,7 +22,7 @@ public class PaymentCardService {
     public String addCard(PaymentCardRequest paymentCardRequest) {
 
         List<PaymentCard> findByCustomer = paymentCardRepository.findByCustomer(paymentCardRequest.getCustomer());
-        if (findByCustomer != null) { throw new TooManyCards(); }
+        if (findByCustomer.size() >= 3) { throw new TooManyCards(); }
 
         PaymentCard findByCardNumber = paymentCardRepository.findByCardNumber(paymentCardRequest.getCardNumber());
         if (findByCardNumber != null) { throw new CardAlreadyExists(); }

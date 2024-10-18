@@ -1,4 +1,4 @@
-package com.csci4050.movie;
+package com.csci4050;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

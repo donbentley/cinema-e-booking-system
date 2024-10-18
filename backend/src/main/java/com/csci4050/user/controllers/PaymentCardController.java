@@ -2,15 +2,12 @@ package com.csci4050.user.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.csci4050.user.requests.PaymentCardRequest;
 import com.csci4050.user.services.PaymentCardService;
 import com.csci4050.user.entities.PaymentCard;
-
-import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:3000") 
 @RestController

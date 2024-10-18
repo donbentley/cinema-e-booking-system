@@ -21,7 +21,8 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
     private String first;
@@ -35,5 +36,5 @@ public class Customer {
     public UserStatus status;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<String> paymentCards = new ArrayList<>();
+    private List<PaymentCard> paymentCards = new ArrayList<>();
 }

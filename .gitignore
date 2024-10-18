@@ -35,5 +35,8 @@ build/
 ### env properties ###
 env.properties
 
+### application.properties ###
+application.properties
+
 ##
 /frontend/node_modules
