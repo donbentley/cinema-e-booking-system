@@ -29,12 +29,13 @@ public class Customer {
     private String last;
     private String email;
 
-    @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
     private BillingAddress billingAddress;
 
     @Enumerated(EnumType.STRING)
     public UserStatus status;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PaymentCard> paymentCards = new ArrayList<>();
 }

@@ -17,8 +17,7 @@ public class BillingAddress {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @OneToOne
-    @MapsId
+    @OneToOne (mappedBy = "billing_address")
     private Customer customer;
 
     private String line1;
