@@ -9,7 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Entity
-@Table(name = "Customers")
+@Table(name = "customers")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -27,10 +27,9 @@ public class Customer {
 
     private String first;
     private String last;
-    private String email;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "address_id", referencedColumnName = "id")
+    @OneToOne(cascade = CascadeType.ALL, optional = true)
+    @JoinColumn(name = "billing_address_id", referencedColumnName = "id")
     private BillingAddress billingAddress;
 
     @Enumerated(EnumType.STRING)

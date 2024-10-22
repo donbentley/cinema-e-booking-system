@@ -9,7 +9,7 @@ import lombok.Builder;
 import lombok.Data;
 
 @Entity
-@Table(name = "PaymentCards")
+@Table(name = "payment_cards")
 @Data
 @Builder
 @NoArgsConstructor
@@ -26,7 +26,6 @@ public class PaymentCard {
     @Column(name = "exp_date")
     private String expDate;
 
-    @Column(name = "cvv")
     private String cvv;
 
     @ManyToOne
