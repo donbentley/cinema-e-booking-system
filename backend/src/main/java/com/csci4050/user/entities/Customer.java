@@ -28,9 +28,8 @@ public class Customer {
     private String first;
     private String last;
 
-    @OneToOne(cascade = CascadeType.ALL, optional = true)
-    @JoinColumn(name = "billing_address_id", referencedColumnName = "id")
-    private BillingAddress billingAddress;
+    @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL)
+    private Address billingAddress;
 
     @Enumerated(EnumType.STRING)
     public UserStatus status;

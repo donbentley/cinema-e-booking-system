@@ -7,17 +7,18 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Entity
-@Table(name = "billing_addresses")
+@Table(name = "addresses")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class BillingAddress {
+public class Address {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @OneToOne (mappedBy = "billing_address")
+    @OneToOne 
+    @JoinColumn(name = "customer_id")
     private Customer customer;
 
     private String line1;
