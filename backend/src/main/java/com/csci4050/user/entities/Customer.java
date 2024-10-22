@@ -37,4 +37,7 @@ public class Customer {
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PaymentCard> paymentCards = new ArrayList<>();
+
+    @Column(name = "verification_code", length = 64)
+    private String verificationCode;
 }

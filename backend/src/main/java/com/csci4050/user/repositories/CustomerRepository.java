@@ -6,5 +6,5 @@ import com.csci4050.user.entities.Customer;
 
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, Integer> {
-    
+    public Customer findByVerificationCode(String code);
 }

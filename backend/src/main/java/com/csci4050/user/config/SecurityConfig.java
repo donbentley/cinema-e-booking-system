@@ -2,6 +2,7 @@ package com.csci4050.user.config;
 
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -22,6 +23,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableMethodSecurity
 public class SecurityConfig {
 
+    @Autowired
     private UserDetailsService userDetailsService;
 
     public SecurityConfig(UserDetailsService userDetailsService){
