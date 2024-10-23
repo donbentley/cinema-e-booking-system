@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verification Page</title>
+    <link rel="stylesheet" href="../styles/styles.css"> 
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <div class="verification-message">
+        <h2>Thank You for Registering!</h2>
+        <p>Your email verification is in progress.</p>
+    </div>
+
+    <div class="verify-button">
+        <button type="button" id="verifyButton">Verify</button>
+    </div>
+
+    <div class="verification-message">
+        <p>Can't find email? <span id="resend-code" class="text-button" onclick="resendCode()">Click to resend</span></p>
+        <p><a href="index.html" id="back-home" class="text-button">Back to homepage</a></p>
+    </div>
+
+    <script>
+        function resendCode() {
+            console.log('Resend code button clicked!');
+            alert('A new verification email has been sent!');
+            // Implement the resend code functionality here
+        }
+
+        // Get the full URL and extract the verification code from it
+        const currentUrl = window.location.href;
+        const urlParts = currentUrl.split("/");
+        const verificationCode = urlParts[urlParts.length - 1]; // Get the last part of the URL
+
+        document.getElementById('verifyButton').addEventListener('click', function() {
+            if (!verificationCode) {
+                alert('No verification code found in the URL!');
+                return;
+            }
+
+            // Send the verification code to the backend
+            axios.get(`http://localhost:8080/auth/verify/${verificationCode}`)
+                .then((response) => {
+                    alert('Verification successful! Redirecting you to the login page.');
+                    window.location.href = 'login.html'; // Redirect to login page
+                })
+                .catch((error) => {
+                    if (error.response) {
+                        alert('Verification failed: ' + error.response.data);
+                    } else {
+                        alert('An error occurred. Please try again.');
+                    }
+                });
+        });
+    </script>
+</body>
+</html>

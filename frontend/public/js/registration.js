@@ -24,9 +24,8 @@ document
 			.then((response) => {
 				console.log(response); // Check the success response
 				// Assuming the response is a success message
-				alert("Registration successful! Please check your email to verify your account.");
 				// Redirect to login or another page if needed
-				window.location.href = "login.html";
+				window.location.href = "verify.html";
 			})
 			.catch((error) => {
 				if (error.response) {
@@ -35,14 +34,18 @@ document
 
 					// Check if the server provided a specific error message
 					if (error.response.data) {
-						alert("Error: " + (error.response.data.message || "An error occurred."));
+						alert(
+							"Error: " + (error.response.data.message || "An error occurred.")
+						);
 					} else {
 						alert("Error: Something went wrong. Please try again.");
 					}
 				} else if (error.request) {
 					// No response received from the server
 					console.log(error.request);
-					alert("No response received from the server. Please try again later.");
+					alert(
+						"No response received from the server. Please try again later."
+					);
 				} else {
 					// Something else went wrong in setting up the request
 					console.log("Error", error.message);

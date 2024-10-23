@@ -96,7 +96,7 @@ public class AuthController {
         customer.setStatus(UserStatus.INACTIVE);
         customer.setVerificationCode(RandomStringUtils.randomAlphanumeric(64));
         customerRepository.save(customer);
-        sendVerificationEmail(customer, "http://localhost:3000");
+        sendVerificationEmail(customer, "http://localhost:8080");
         return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
     }
 
@@ -121,7 +121,7 @@ public class AuthController {
         helper.setSubject(subject);
      
         content = content.replace("[[name]]", customer.getFirst() + " " + customer.getLast());
-        String verifyURL = siteURL + "/verify/" + customer.getVerificationCode();
+        String verifyURL = siteURL + "/auth/verify/" + customer.getVerificationCode();
      
         content = content.replace("[[URL]]", verifyURL);
      

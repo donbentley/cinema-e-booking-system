@@ -1,54 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width", initial-scale="1.0">
-    <title>Login - Cinema E-Booking</title>
-    <link rel="stylesheet" href="../styles/cinema_styles.css">
-    <script src="../js/login.js" defer></script>
-</head>
-<body>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" , initial-scale="1.0" />
+		<title>Login - Cinema E-Booking</title>
+		<link rel="stylesheet" href="../styles/cinema_styles.css" />
+		<script src="../js/login.js" defer></script>
+	</head>
+	<body>
+		<header>
+			<h1>Login to Cinema E-Booking</h1>
+		</header>
 
-    <header>
-        <h1>Login to Cinema E-Booking</h1>
-    </header>
+		<div class="login-container">
+			<form id="loginForm">
+				<h2>login</h2>
+				<label for="username">username or email</label>
+				<input
+					type="text"
+					id="username"
+					name="username"
+					placeholder="username or email"
+					required
+				/>
 
-    <div class="login-container">
-        <form id="loginForm">
-            <h2>Login</h2>
-            <label for="username">Username</label>
-            <input type="text" id="username" name="username" placeholder="Enter your username" required>
+				<label for="password">password</label>
+				<input
+					type="password"
+					id="password"
+					name="password"
+					placeholder="Enter your password"
+					required
+				/>
 
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+				<button type="submit">login</button>
+			</form>
+			<p>Don't have an account? <a href="#">Sign up!</a></p>
 
-            <button type="submit">Login</button>
-        </form>
-        <p>Don't have an account? <a href="#">Sign up!</a></p>
+			<a href="homepage.html" class="homepage-link">Back to Home</a>
+		</div>
 
-        <a href="homepage.html" class="homepage-link">Back to Home</a>
-    </div>
+		<footer>
+			<p>&copy; 2024 Cinema E-Booking. All rights reserved.</p>
+		</footer>
 
-    <footer>
-        <p>&copy; 2024 Cinema E-Booking. All rights reserved.</p>
-    </footer>
+		<script>
+			document
+				.getElementById("loginForm")
+				.addEventListener("submit", function (event) {
+					event.preventDefault(); // Prevent the form from submitting normally
 
-    <script>
-        document.getElementById('loginForm').addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent the form from submitting normally
+					// Example: Perform a simple client-side check for demo purposes
+					const username = document.getElementById("username").value;
+					const password = document.getElementById("password").value;
 
-            // Example: Perform a simple client-side check for demo purposes
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-
-            if (username === 'user' && password === 'password') {
-                alert('Login successful!');
-                window.location.href = 'index.html'; // Redirect to the homepage upon success
-            } else {
-                alert('Invalid username or password');
-            }
-        });
-    </script>
-
-</body>
+					if (username === "user" && password === "password") {
+						alert("Login successful!");
+						window.location.href = "index.html"; // Redirect to the homepage upon success
+					} else {
+						alert("Invalid username or password");
+					}
+				});
+		</script>
+	</body>
 </html>
