@@ -1,7 +1,7 @@
-package com.csci4050.user.converters;
+package com.csci4050.address.converters;
 
-import com.csci4050.user.entities.Address;
-import com.csci4050.user.requests.AddressRequest;
+import com.csci4050.address.entities.Address;
+import com.csci4050.address.requests.AddressRequest;
 
 public class AddressConverter {
     

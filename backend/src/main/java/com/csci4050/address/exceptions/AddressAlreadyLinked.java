@@ -1,4 +1,4 @@
-package com.csci4050.user.exceptions;
+package com.csci4050.address.exceptions;
 
 public class AddressAlreadyLinked extends RuntimeException {
     public AddressAlreadyLinked() {

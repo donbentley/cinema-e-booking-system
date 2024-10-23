@@ -1,7 +1,7 @@
-package com.csci4050.user.converters;
+package com.csci4050.paymentcard.converters;
 
-import com.csci4050.user.entities.PaymentCard;
-import com.csci4050.user.requests.PaymentCardRequest;
+import com.csci4050.paymentcard.entities.PaymentCard;
+import com.csci4050.paymentcard.requests.PaymentCardRequest;
 
 public class PaymentCardConverter {
     

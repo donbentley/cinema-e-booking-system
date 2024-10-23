@@ -1,5 +1,7 @@
-package com.csci4050.user.entities;
+package com.csci4050.paymentcard.entities;
 
+
+import com.csci4050.user.entities.Customer;
 
 import jakarta.persistence.*;
 

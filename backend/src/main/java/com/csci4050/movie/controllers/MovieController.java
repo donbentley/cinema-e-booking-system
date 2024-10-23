@@ -5,9 +5,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.csci4050.movie.request.MovieRequest;
 import com.csci4050.movie.services.MovieService;
 import com.csci4050.movie.entities.Movie;
+import com.csci4050.movie.requests.MovieRequest;
 
 import java.util.List;
 @CrossOrigin(origins = "http://localhost:3000") 

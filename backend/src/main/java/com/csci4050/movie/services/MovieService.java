@@ -7,7 +7,7 @@ import java.util.Optional;
 
 import com.csci4050.movie.converter.MovieConverter;
 import com.csci4050.movie.repositories.MovieRepository;
-import com.csci4050.movie.request.MovieRequest;
+import com.csci4050.movie.requests.MovieRequest;
 import com.csci4050.movie.entities.Movie;
 import com.csci4050.movie.exceptions.MovieAlreadyExists;
 

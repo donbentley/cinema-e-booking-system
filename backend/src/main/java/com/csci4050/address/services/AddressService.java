@@ -1,15 +1,15 @@
-package com.csci4050.user.services;
+package com.csci4050.address.services;
 
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.csci4050.user.converters.AddressConverter;
-import com.csci4050.user.entities.Address;
-import com.csci4050.user.exceptions.AddressAlreadyLinked;
-import com.csci4050.user.repositories.AddressRepository;
-import com.csci4050.user.requests.AddressRequest;
+import com.csci4050.address.converters.AddressConverter;
+import com.csci4050.address.entities.Address;
+import com.csci4050.address.exceptions.AddressAlreadyLinked;
+import com.csci4050.address.repositories.AddressRepository;
+import com.csci4050.address.requests.AddressRequest;
 
 @Service
 public class AddressService {

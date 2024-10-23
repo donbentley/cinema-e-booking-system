@@ -1,4 +1,4 @@
-package com.csci4050.movie.request;
+package com.csci4050.movie.requests;
 
 import java.util.List;
 

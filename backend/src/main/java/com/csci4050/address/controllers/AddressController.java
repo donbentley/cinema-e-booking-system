@@ -1,4 +1,4 @@
-package com.csci4050.user.controllers;
+package com.csci4050.address.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.csci4050.user.entities.Address;
-import com.csci4050.user.requests.AddressRequest;
-import com.csci4050.user.services.AddressService;
+import com.csci4050.address.entities.Address;
+import com.csci4050.address.requests.AddressRequest;
+import com.csci4050.address.services.AddressService;
 
 @CrossOrigin(origins = "http://localhost:3000") 
 @RestController

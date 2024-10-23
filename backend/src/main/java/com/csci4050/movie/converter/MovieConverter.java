@@ -1,6 +1,5 @@
 package com.csci4050.movie.converter;
 
-import com.csci4050.movie.request.MovieRequest;
 import com.csci4050.movie.entities.*;
 
 import jakarta.persistence.CascadeType;
@@ -11,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.csci4050.movie.entities.Movie;
+import com.csci4050.movie.requests.MovieRequest;
 
 public class MovieConverter {
 

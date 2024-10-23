@@ -5,12 +5,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-import com.csci4050.user.repositories.PaymentCardRepository;
-import com.csci4050.user.requests.PaymentCardRequest;
-import com.csci4050.user.exceptions.CardAlreadyExists;
-import com.csci4050.user.exceptions.TooManyCards;
-import com.csci4050.user.converters.PaymentCardConverter;
-import com.csci4050.user.entities.PaymentCard;
+import com.csci4050.paymentcard.converters.PaymentCardConverter;
+import com.csci4050.paymentcard.entities.PaymentCard;
+import com.csci4050.paymentcard.exceptions.CardAlreadyExists;
+import com.csci4050.paymentcard.exceptions.TooManyCards;
+import com.csci4050.paymentcard.repositories.PaymentCardRepository;
+import com.csci4050.paymentcard.requests.PaymentCardRequest;
 
 
 @Service

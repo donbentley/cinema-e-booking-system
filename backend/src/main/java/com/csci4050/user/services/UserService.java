@@ -12,12 +12,12 @@ import com.csci4050.user.repositories.CustomerRepository;
 import com.csci4050.user.repositories.UserRepository;
 import com.csci4050.user.requests.CustomerRequest;
 import com.csci4050.user.requests.PasswordChangeRequest;
-import com.csci4050.user.requests.PaymentCardRequest;
-import com.csci4050.user.exceptions.CardAlreadyExists;
-import com.csci4050.user.exceptions.TooManyCards;
-import com.csci4050.user.converters.PaymentCardConverter;
+import com.csci4050.paymentcard.converters.PaymentCardConverter;
+import com.csci4050.paymentcard.entities.PaymentCard;
+import com.csci4050.paymentcard.exceptions.CardAlreadyExists;
+import com.csci4050.paymentcard.exceptions.TooManyCards;
+import com.csci4050.paymentcard.requests.PaymentCardRequest;
 import com.csci4050.user.entities.Customer;
-import com.csci4050.user.entities.PaymentCard;
 import com.csci4050.user.entities.User;
 
 @Service

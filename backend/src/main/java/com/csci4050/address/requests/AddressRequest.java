@@ -1,4 +1,4 @@
-package com.csci4050.user.requests;
+package com.csci4050.address.requests;
 
 import com.csci4050.user.entities.Customer;
 

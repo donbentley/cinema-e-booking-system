@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.csci4050.address.entities.Address;
+import com.csci4050.paymentcard.entities.PaymentCard;
+
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import lombok.Data;

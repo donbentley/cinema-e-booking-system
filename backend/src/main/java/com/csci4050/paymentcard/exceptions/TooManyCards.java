@@ -1,4 +1,4 @@
-package com.csci4050.user.exceptions;
+package com.csci4050.paymentcard.exceptions;
 
 public class TooManyCards extends RuntimeException {
     public TooManyCards() {
