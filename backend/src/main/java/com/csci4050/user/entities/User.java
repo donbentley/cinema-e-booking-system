@@ -2,6 +2,8 @@ package com.csci4050.user.entities;
 
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 
 import lombok.NoArgsConstructor;
@@ -22,6 +24,8 @@ public class User {
     private Integer id;
     private String email;
     private String username;
+
+    @JsonIgnore
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)

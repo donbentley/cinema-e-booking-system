@@ -2,6 +2,7 @@ package com.csci4050.paymentcard.entities;
 
 
 import com.csci4050.user.entities.Customer;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.*;
 
@@ -32,6 +33,7 @@ public class PaymentCard {
 
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="customer_id")
+    @JsonIgnoreProperties("paymentCards")
     private Customer customer;
 
 }

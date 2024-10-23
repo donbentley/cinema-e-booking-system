@@ -28,7 +28,9 @@ public class AddressService {
 
     public Address getAddressById(Integer id) {
         Optional<Address> address = addressRepository.findById(id);
-        return address.orElse(null);
+        if (address.isPresent()) {
+            return address.get();
+        } else { return null; }
     }
 
     public String deleteAddress(Integer id) {

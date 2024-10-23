@@ -36,7 +36,7 @@ public class AddressController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Address> getaddress(@PathVariable Integer id) {
+    public ResponseEntity<Address> getAddress(@PathVariable Integer id) {
         Address address = addressService.getAddressById(id);
         if (address != null) {
             return new ResponseEntity<>(address, HttpStatus.OK);

@@ -7,15 +7,15 @@ import org.springframework.web.bind.annotation.*;
 
 import com.csci4050.user.requests.CustomerRequest;
 import com.csci4050.user.requests.PasswordChangeRequest;
-import com.csci4050.user.services.UserService;
+import com.csci4050.user.services.CustomerService;
 import com.csci4050.user.entities.Customer;
 
 @CrossOrigin(origins = "http://localhost:3000") 
 @RestController
-@RequestMapping("/user")
-public class UserController {
+@RequestMapping("/customer")
+public class CustomerController {
     @Autowired
-    private UserService userService;
+    private CustomerService userService;
 
     @GetMapping("/{id}")
     public ResponseEntity<Customer> getCustomer(@PathVariable Integer id) {

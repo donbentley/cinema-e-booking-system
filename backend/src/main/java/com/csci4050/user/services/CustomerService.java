@@ -21,7 +21,7 @@ import com.csci4050.user.entities.Customer;
 import com.csci4050.user.entities.User;
 
 @Service
-public class UserService {
+public class CustomerService {
     
     @Autowired
     private UserRepository userRepository;

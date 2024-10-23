@@ -2,6 +2,7 @@ package com.csci4050.address.entities;
 
 
 import com.csci4050.user.entities.Customer;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
@@ -21,8 +22,9 @@ public class Address {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @OneToOne 
+    @OneToOne
     @JoinColumn(name = "customer_id")
+    @JsonIgnoreProperties("billingAddress")
     private Customer customer;
 
     private String line1;

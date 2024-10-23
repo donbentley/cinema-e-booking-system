@@ -1,4 +1,4 @@
-package com.csci4050.user.services;
+package com.csci4050.paymentcard.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.csci4050.address.entities.Address;
 import com.csci4050.paymentcard.entities.PaymentCard;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
@@ -31,13 +32,15 @@ public class Customer {
     private String first;
     private String last;
 
-    @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("customer")
     private Address billingAddress;
 
     @Enumerated(EnumType.STRING)
     public UserStatus status;
 
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties("customer")
     private List<PaymentCard> paymentCards = new ArrayList<>();
 
     @Column(name = "verification_code", length = 64)
