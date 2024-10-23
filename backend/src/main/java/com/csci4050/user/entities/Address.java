@@ -4,11 +4,13 @@ package com.csci4050.user.entities;
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 @Entity
 @Table(name = "addresses")
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Address {

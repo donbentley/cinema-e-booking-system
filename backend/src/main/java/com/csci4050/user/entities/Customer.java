@@ -28,7 +28,7 @@ public class Customer {
     private String first;
     private String last;
 
-    @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private Address billingAddress;
 
     @Enumerated(EnumType.STRING)

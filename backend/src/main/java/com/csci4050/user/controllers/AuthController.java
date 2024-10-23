@@ -56,7 +56,7 @@ public class AuthController {
     @Autowired
     private JavaMailSender mailSender;
 
-    @PostMapping("/signin")
+    @PostMapping("/login")
     public ResponseEntity<String> authenticateUser(@RequestBody LoginRequest loginRequest){
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 loginRequest.getUsernameOrEmail(), loginRequest.getPassword()));

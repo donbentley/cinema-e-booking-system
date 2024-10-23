@@ -27,7 +27,7 @@ public class PaymentCardController {
         }
     }
 
-    @GetMapping("/get/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<PaymentCard> getPaymentCard(@PathVariable Integer id) {
         PaymentCard paymentCard = paymentCardService.getPaymentCardById(id);
         if (paymentCard != null) {
@@ -37,7 +37,7 @@ public class PaymentCardController {
         }
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> deletePaymentCard(@PathVariable Integer id) {
         String result = paymentCardService.deletePaymentCard(id);
         if (result.equals("Card deleted successfully")) {
@@ -47,7 +47,7 @@ public class PaymentCardController {
         }
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<String> updatePaymentCard(@PathVariable Integer id, @RequestBody PaymentCardRequest paymentCardRequest) {
         String result = paymentCardService.updatePaymentCard(id, paymentCardRequest);
         if (result.equals("Card updated successfully")) {
