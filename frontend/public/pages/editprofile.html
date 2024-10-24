@@ -1,81 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Profile</title>
-    <link rel="stylesheet" href="../styles/styles.css"> 
-</head>
-<body>
-    <div class="profile-container">
-        <div class="profile-pic">
-            <img src="images/headshot.png" alt="Profile Picture" class="circular-image">
-            <h3 id="name-text">John Doe</h3>
-            <input type="text" id="name-input" value="John Doe" style="display: none;">
-        </div>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Edit Profile - Cinema E-Booking</title>
+		<link rel="stylesheet" href="../styles/cinema_styles.css" />
+		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+		<script src="../js/editprofile.js" defer></script>
+	</head>
+	<body>
+		<header>
+			<h1>Edit Your Profile</h1>
+		</header>
 
-        <div class="user-info">
-            <p><strong>Email:</strong> <span id="email-text">johndoe@gmail.com</span></p>
-            <input type="email" id="email-input" value="johndoe@gmail.com" style="display: none;">
-            
-            <p><strong>Mobile:</strong> <span id="mobile-text">4706789000</span></p>
-            <input type="text" id="mobile-input" value="4706789000" style="display: none;">
-            
-            <p><strong>Address:</strong> <span id="address-text">1234 Main St, City, Zip</span></p>
-            <input type="text" id="address-input" value="1234 Main St, City, Zip" style="display: none;">
-            <!-- Add more fields as needed -->
-        </div>
+		<div class="edit-profile-container">
+			<form id="editProfileForm">
+				<br />
+				<label for="customerId">userid:</label>
+				<input
+					type="text"
+					id="customerId"
+					name="customerId"
+					placeholder="Customer ID"
+					required
+				/>
+				<br />
+				<label for="username">username:</label>
+				<input
+					type="text"
+					id="username"
+					name="username"
+					placeholder="Username"
+					required
+				/>
+				<br />
+				<label for="first-name">first name:</label>
+				<input
+					type="text"
+					id="first-name"
+					name="first"
+					placeholder="First Name"
+					required
+				/>
+				<br />
+				<label for="last-name">last name:</label>
+				<input
+					type="text"
+					id="last-name"
+					name="last"
+					placeholder="Last Name"
+					required
+				/>
+				<br />
+				<button type="submit">Save Changes</button>
+			</form>
+			<a href="profile.html" class="back-to-profile-link">Back to Profile</a>
+		</div>
 
-        <button class="edit-button" id="edit-button" onclick="enableEditing()">Edit Profile</button>
-        <button class="save-button" id="save-button" onclick="saveChanges()" style="display: none;">Save Changes</button>
-    </div>
-
-    <script>
-        function enableEditing() {
-            // Show input fields and hide text content
-            document.getElementById('name-text').style.display = 'none';
-            document.getElementById('email-text').style.display = 'none';
-            document.getElementById('mobile-text').style.display = 'none';
-            document.getElementById('address-text').style.display = 'none';
-
-            document.getElementById('name-input').style.display = 'block';
-            document.getElementById('email-input').style.display = 'block';
-            document.getElementById('mobile-input').style.display = 'block';
-            document.getElementById('address-input').style.display = 'block';
-
-            // Switch buttons
-            document.getElementById('edit-button').style.display = 'none';
-            document.getElementById('save-button').style.display = 'block';
-        }
-
-        function saveChanges() {
-            // Save the updated input values to the text content
-            const name = document.getElementById('name-input').value;
-            const email = document.getElementById('email-input').value;
-            const mobile = document.getElementById('mobile-input').value;
-            const address = document.getElementById('address-input').value;
-
-            // Update text fields
-            document.getElementById('name-text').textContent = name;
-            document.getElementById('email-text').textContent = email;
-            document.getElementById('mobile-text').textContent = mobile;
-            document.getElementById('address-text').textContent = address;
-
-            // Show updated text and hide input fields
-            document.getElementById('name-text').style.display = 'block';
-            document.getElementById('email-text').style.display = 'block';
-            document.getElementById('mobile-text').style.display = 'block';
-            document.getElementById('address-text').style.display = 'block';
-
-            document.getElementById('name-input').style.display = 'none';
-            document.getElementById('email-input').style.display = 'none';
-            document.getElementById('mobile-input').style.display = 'none';
-            document.getElementById('address-input').style.display = 'none';
-
-            // Switch buttons back
-            document.getElementById('edit-button').style.display = 'block';
-            document.getElementById('save-button').style.display = 'none';
-        }
-    </script>
-</body>
+		<footer>
+			<p>&copy; 2024 Cinema E-Booking. All rights reserved.</p>
+		</footer>
+	</body>
 </html>
