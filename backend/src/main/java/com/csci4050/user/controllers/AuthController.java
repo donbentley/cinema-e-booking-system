@@ -6,6 +6,7 @@ import com.csci4050.user.entities.Customer.UserStatus;
 import com.csci4050.user.entities.Customer;
 import com.csci4050.user.requests.LoginRequest;
 import com.csci4050.user.requests.SignupRequest;
+import com.csci4050.user.security.JWTUtil;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -23,6 +24,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,6 +51,8 @@ public class AuthController {
     private RoleRepository roleRepository;
     @Autowired
     private CustomerRepository customerRepository;
+    @Autowired 
+    private JWTUtil jwtUtil;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -57,12 +61,16 @@ public class AuthController {
     private JavaMailSender mailSender;
 
     @PostMapping("/login")
-    public ResponseEntity<String> authenticateUser(@RequestBody LoginRequest loginRequest){
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+    public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest){
+        try {
+            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 loginRequest.getUsernameOrEmail(), loginRequest.getPassword()));
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        return new ResponseEntity<>("User signed-in successfully", HttpStatus.OK);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+                String token = jwtUtil.generateToken(loginRequest.getUsernameOrEmail());
+                return new ResponseEntity<>(token, HttpStatus.OK);
+        } catch (AuthenticationException authExc){
+            throw new RuntimeException("Invalid Login Credentials");
+        }
     }
 
     @PostMapping("/signup")
@@ -128,7 +136,6 @@ public class AuthController {
         helper.setText(content, true);
      
         mailSender.send(message);
-     
     }
 
     @GetMapping("/verify/{code}")
