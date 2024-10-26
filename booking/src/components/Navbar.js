@@ -35,7 +35,7 @@ const Navbar = () => {
             </div>
 
             <div className="text-white">
-              <h1>Cinema E Booking System</h1>
+              <h1 className="text-2xl font-medium">cinnamon e booking system</h1>
             </div>
 
             {/* Right-aligned section for larger screens */}
