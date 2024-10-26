@@ -11,7 +11,7 @@ import com.csci4050.paymentcard.services.PaymentCardService;
 
 @CrossOrigin(origins = "http://localhost:3000") 
 @RestController
-@RequestMapping("/card")
+@RequestMapping("/payment-card")
 public class PaymentCardController {
 
     @Autowired

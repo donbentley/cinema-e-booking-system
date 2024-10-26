@@ -48,13 +48,15 @@ public class SecurityConfig {
 
         http.csrf((csrf) -> csrf.disable())
             .authorizeHttpRequests((authorize) ->
-                authorize.requestMatchers(HttpMethod.GET, "/movies/**").permitAll()
+                authorize
+                    /* .requestMatchers(HttpMethod.GET, "/movies/**").permitAll()
                     .requestMatchers(HttpMethod.POST, "/movies/**").hasRole("ADMIN")
                     .requestMatchers(HttpMethod.PUT, "/movies/**").hasRole("ADMIN")
                     .requestMatchers(HttpMethod.PUT, "/movies/**").hasRole("ADMIN")
                     .requestMatchers("/customer/**").hasAnyRole("ADMIN", "CUSTOMER")
                     .requestMatchers("/address/**").hasAnyRole("ADMIN", "CUSTOMER")
                     .requestMatchers("/card/**").hasAnyRole("ADMIN", "CUSTOMER")
+                    */
                     .requestMatchers("/auth/**").permitAll()
                     .anyRequest().authenticated()
             );

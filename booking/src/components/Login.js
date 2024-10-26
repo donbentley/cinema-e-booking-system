@@ -1,6 +1,57 @@
-import { Link } from "react-router-dom"; 
+import { Link } from "react-router-dom";
+import { useState, useEffect } from 'react';
+import {useRouter} from 'next/navigation';
 
 const Login = () => {
+	const router = useRouter();
+
+	const [formData, setFormData] = useState({
+		usernameOrEmail: '',
+		password: ''
+	});
+
+	const changeHandler = (e) => {
+        const { name, value } = e.target;
+        setFormData(prevFormData => ({
+            ...prevFormData,
+            [name]: value,
+        }));
+    }
+
+	const submitHandler = async (event) => {
+		event.preventDefault();
+
+		try {
+			const loginResponse = await fetch(
+				'http://localhost:8080/auth/login',
+				{
+					method: 'POST',
+					headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        username: formData.usernameOrEmail,
+                        password: formData.password
+                    })
+				}
+			)
+
+			const responseJson = await loginResponse.json();
+            setUserData({
+            	token: responseJson.token,
+                user: responseJson.user,
+            });
+            console.log('Response JSON:', responseJson);
+
+            localStorage.setItem('token', responseJson.token);
+            router.push('/');
+		} catch (error) {
+			console.error('Login Failed: ', error);
+            alert('Login failed: Ensure that Username and Password are Correct');
+            localStorage.removeItem('token');
+		}
+	}
+
 	return (
 		<>
 			<div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
@@ -16,21 +67,23 @@ const Login = () => {
 				</div>
 
 				<div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-					<form action="#" method="POST" className="space-y-6">
+					<form onSubmit={submitHandler} className="space-y-6">
 						<div>
 							<label
-								htmlFor="email"
+								htmlFor="usernameOremail"
 								className="block text-sm font-medium leading-6 text-gray-900"
 							>
-								Email address
+								Username or Email address
 							</label>
 							<div className="mt-2">
 								<input
-									id="email"
-									name="email"
-									type="email"
+									id="usernameOrEmail"
+									name="usernameOrEmail"
+									type="usernameOrEmail"
+									value={formData.usernameOrEmail}
+									onChange={changeHandler}
 									required
-									autoComplete="email"
+									autoComplete="usernameOrEmail"
 									className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 								/>
 							</div>
@@ -58,6 +111,8 @@ const Login = () => {
 									id="password"
 									name="password"
 									type="password"
+									value={formData.password}
+									onChange={changeHandler}
 									required
 									autoComplete="current-password"
 									className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -69,6 +124,7 @@ const Login = () => {
 							<button
 								type="submit"
 								className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+
 							>
 								Log in
 							</button>

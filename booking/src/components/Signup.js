@@ -1,6 +1,55 @@
 import { Link } from "react-router-dom";
 
 const Signup = () => {
+
+	const router = useRouter();
+
+	onst [formData, setFormData] = useState({
+		first: '',
+		last: '',
+		username: '',
+		email: '',
+		password: ''
+	});
+
+	const changeHandler = (e) => {
+        const { name, value } = e.target;
+        setFormData(prevFormData => ({
+            ...prevFormData,
+            [name]: value,
+        }));
+    }
+
+	const submitHandler = async (event) => {
+		event.preventDefault();
+
+		try {
+			const signupResponse = await fetch(
+				'http://localhost:8080/auth/signup',
+				{
+					method: 'POST',
+					headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+						first: formData.first,
+						last: formData.last,
+                        username: formData.username,
+						email: formData.email,
+                        password: formData.password
+                    })
+				}
+			)
+
+			const responseJson = await loginResponse.json();
+			localStorage.setItem('token', responseJson.token)
+			router.push('/');
+		} catch (error) {
+			alert(error);
+			localStorage.removeItem('token');
+		}
+	}
+
 	return (
 		<>
 			<div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 ring-1">
@@ -16,7 +65,7 @@ const Signup = () => {
 				</div>
 
 				<div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-					<form action="#" method="POST" className="space-y-6">
+					<form onSubmit={submitHandler} className="space-y-6">
 						<div>
 							<label
 								htmlFor="first"
@@ -29,6 +78,8 @@ const Signup = () => {
 									id="first"
 									name="first"
 									type="text"
+									value={formData.first}
+									onChange={changeHandler}
 									required
 									autoComplete="given-name"
 									className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -48,6 +99,8 @@ const Signup = () => {
 									id="last"
 									name="last"
 									type="text"
+									value={formData.last}
+									onChange={changeHandler}
 									required
 									autoComplete="family-name"
 									className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -67,6 +120,8 @@ const Signup = () => {
 									id="username"
 									name="username"
 									type="text"
+									value={formData.username}
+									onChange={changeHandler}
 									required
 									autoComplete="username"
 									className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -86,6 +141,8 @@ const Signup = () => {
 									id="email"
 									name="email"
 									type="email"
+									value={formData.email}
+									onChange={changeHandler}
 									required
 									autoComplete="email"
 									className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -107,6 +164,8 @@ const Signup = () => {
 									id="password"
 									name="password"
 									type="password"
+									value={formData.password}
+									onChange={changeHandler}
 									required
 									autoComplete="current-password"
 									className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
