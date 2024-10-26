@@ -67,7 +67,7 @@ public class AuthController {
                 loginRequest.getUsernameOrEmail(), loginRequest.getPassword()));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
                 String token = jwtUtil.generateToken(loginRequest.getUsernameOrEmail());
-                return new ResponseEntity<>(token, HttpStatus.OK);
+                return new ResponseEntity<>(Collections.singletonMap("token", token), HttpStatus.OK);
         } catch (AuthenticationException authExc){
             throw new RuntimeException("Invalid Login Credentials");
         }
@@ -105,7 +105,9 @@ public class AuthController {
         customer.setVerificationCode(RandomStringUtils.randomAlphanumeric(64));
         customerRepository.save(customer);
         sendVerificationEmail(customer, "http://localhost:8080");
-        return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
+        String token = jwtUtil.generateToken(user.getEmail());
+        return new ResponseEntity<>(Collections.singletonMap("token", token), HttpStatus.OK);
+
     }
 
     private void sendVerificationEmail(Customer customer, String siteURL)

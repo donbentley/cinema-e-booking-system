@@ -17,6 +17,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
+@Component
 public class JWTFilter extends OncePerRequestFilter {
     @Autowired private CustomUserDetailsService userDetailsService;
     @Autowired private JWTUtil jwtUtil;
