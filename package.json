@@ -1,0 +1,8 @@
+{
+    "scripts": {
+        "develop": "concurrently \"cd backend && mvn spring-boot:run\"  \"cd booking && npm start\""
+    },
+    "dependencies": {
+        "concurrently": "^8.2.2"
+    }
+}

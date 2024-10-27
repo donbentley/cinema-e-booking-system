@@ -69,7 +69,7 @@ public class AuthController {
                 String token = jwtUtil.generateToken(loginRequest.getUsernameOrEmail());
                 return new ResponseEntity<>(Collections.singletonMap("token", token), HttpStatus.OK);
         } catch (AuthenticationException authExc){
-            throw new RuntimeException("Invalid Login Credentials");
+            return new ResponseEntity<>(Collections.singletonMap("error", "Invalid Login Credentials"), HttpStatus.FORBIDDEN);
         }
     }
 
@@ -78,12 +78,12 @@ public class AuthController {
 
         // add check for username exists in a DB
         if (userRepository.existsByUsername(signupRequest.getUsername())) {
-            return new ResponseEntity<>("Username is already taken", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(Collections.singletonMap("error", "Username is already taken"), HttpStatus.BAD_REQUEST);
         }
     
         // add check for email exists in DB
         if (userRepository.existsByEmail(signupRequest.getEmail())) {
-            return new ResponseEntity<>("Email is already taken", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(Collections.singletonMap("error", "Email is already taken"), HttpStatus.BAD_REQUEST);
         }
     
         // create user object

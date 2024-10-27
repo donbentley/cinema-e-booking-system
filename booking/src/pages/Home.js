@@ -1,6 +1,8 @@
 import React from "react";
 import { Navbar } from "../components/Navbar";
 import MovieGrid from "../components/MovieGrid";
+import { useState, useEffect } from "react";
+import axios from "axios"
 
 const moviesData = [
 	{
@@ -110,6 +112,19 @@ const moviesData = [
 ];
 
 const Home = () => {
+
+	const [movies, setMovies] = useState(null);
+
+	useEffect(() => {
+		axios.get('http://localhost:8080/movie')
+			.then((response) => {
+				setMovies(response.movies);
+			})
+			.catch((err) => {
+				return (<div>Unable to load movies.</div>)
+			})
+	}, [])
+
 	return (
 		<div>
 			<Navbar />

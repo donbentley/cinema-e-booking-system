@@ -1,9 +1,9 @@
-import { Link } from "react-router-dom";
-import { useState, useEffect } from 'react';
-import {useRouter} from 'next/navigation';
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from 'react';
 
 const Login = () => {
-	const router = useRouter();
+
+	const navigate = useNavigate();
 
 	const [formData, setFormData] = useState({
 		usernameOrEmail: '',
@@ -30,21 +30,18 @@ const Login = () => {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        username: formData.usernameOrEmail,
+                        usernameOrEmail: formData.usernameOrEmail,
                         password: formData.password
                     })
 				}
 			)
 
 			const responseJson = await loginResponse.json();
-            setUserData({
-            	token: responseJson.token,
-                user: responseJson.user,
-            });
-            console.log('Response JSON:', responseJson);
-
+			if (!loginResponse.ok) {
+				throw new Error(responseJson.error);
+			}
             localStorage.setItem('token', responseJson.token);
-            router.push('/');
+            navigate('/');
 		} catch (error) {
 			console.error('Login Failed: ', error);
             alert('Login failed: Ensure that Username and Password are Correct');

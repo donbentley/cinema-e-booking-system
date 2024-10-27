@@ -1,10 +1,11 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 const Signup = () => {
 
-	const router = useRouter();
+	const navigate = useNavigate();
 
-	onst [formData, setFormData] = useState({
+	const [formData, setFormData] = useState({
 		first: '',
 		last: '',
 		username: '',
@@ -41,10 +42,14 @@ const Signup = () => {
 				}
 			)
 
-			const responseJson = await loginResponse.json();
+			const responseJson = await signupResponse.json();
+			if (!signupResponse.ok) {
+				throw new Error(responseJson.error);
+			}
 			localStorage.setItem('token', responseJson.token)
-			router.push('/');
+			navigate('/');
 		} catch (error) {
+			console.log(error);
 			alert(error);
 			localStorage.removeItem('token');
 		}
