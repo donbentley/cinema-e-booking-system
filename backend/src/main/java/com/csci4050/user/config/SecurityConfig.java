@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -16,6 +16,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.csci4050.user.security.JWTFilter;
 
@@ -39,8 +42,8 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationManager authenticationManager(
-                                 AuthenticationConfiguration configuration) throws Exception {
-        return configuration.getAuthenticationManager();
+        AuthenticationConfiguration configuration) throws Exception {
+            return configuration.getAuthenticationManager();
     }
 
     @Bean
@@ -49,18 +52,20 @@ public class SecurityConfig {
         http.csrf((csrf) -> csrf.disable())
             .authorizeHttpRequests((authorize) ->
                 authorize
-                    /* .requestMatchers(HttpMethod.GET, "/movies/**").permitAll()
-                    .requestMatchers(HttpMethod.POST, "/movies/**").hasRole("ADMIN")
-                    .requestMatchers(HttpMethod.PUT, "/movies/**").hasRole("ADMIN")
-                    .requestMatchers(HttpMethod.PUT, "/movies/**").hasRole("ADMIN")
+                    /*
+                    .requestMatchers(HttpMethod.GET, "/movie/**").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/movie/**").hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.PUT, "/movie/**").hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.PUT, "/movie/**").hasRole("ADMIN")
                     .requestMatchers("/customer/**").hasAnyRole("ADMIN", "CUSTOMER")
                     .requestMatchers("/address/**").hasAnyRole("ADMIN", "CUSTOMER")
                     .requestMatchers("/card/**").hasAnyRole("ADMIN", "CUSTOMER")
-                    */
                     .requestMatchers("/auth/**").permitAll()
                     .anyRequest().authenticated()
+                    */
+                    .anyRequest().permitAll()
             );
-            http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
+            // http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 }

@@ -116,12 +116,15 @@ const Home = () => {
 	const [movies, setMovies] = useState(null);
 
 	useEffect(() => {
-		axios.get('http://localhost:8080/movie')
+		axios.get('http://localhost:8080/movie/getAll')
 			.then((response) => {
 				setMovies(response.movies);
+				if (movies == null) {
+					throw new Error();
+				}
 			})
 			.catch((err) => {
-				return (<div>Unable to load movies.</div>)
+				return (err);
 			})
 	}, [])
 
