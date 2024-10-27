@@ -1,10 +1,16 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const Login = () => {
 
 	const navigate = useNavigate();
 
+	useEffect(() => {
+		if (localStorage.getItem('token') !== null) {
+			navigate("/");
+		}
+	}, [navigate])
+	
 	const [formData, setFormData] = useState({
 		usernameOrEmail: '',
 		password: ''

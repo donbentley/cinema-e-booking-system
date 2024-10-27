@@ -1,4 +1,4 @@
-package com.csci4050.movie.config;
+package com.csci4050.user.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

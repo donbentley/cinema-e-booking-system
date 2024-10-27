@@ -60,6 +60,7 @@ const EditProfile = () => {
 									id="email"
 									name="email"
 									type="email"
+									disabled="disabled"
 									autoComplete="email"
 									className="block w-full rounded-md border py-2 px-3 text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
 								/>

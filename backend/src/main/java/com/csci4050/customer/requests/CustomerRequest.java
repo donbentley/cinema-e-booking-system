@@ -1,4 +1,4 @@
-package com.csci4050.user.requests;
+package com.csci4050.customer.requests;
 
 import com.csci4050.user.entities.User;
 
@@ -11,4 +11,5 @@ public class CustomerRequest {
     private String username;
     private String first;
     private String last;
+    private boolean promotionsSubscriber;
 }

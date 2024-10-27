@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.csci4050.address.entities.Address;
-import com.csci4050.user.entities.Customer;
+import com.csci4050.customer.entities.Customer;
 
 @Repository
 public interface AddressRepository extends JpaRepository<Address, Integer> {

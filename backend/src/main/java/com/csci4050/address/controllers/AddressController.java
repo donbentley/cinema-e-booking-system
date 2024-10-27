@@ -56,7 +56,7 @@ public class AddressController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateaddress(@PathVariable Integer id, @RequestBody AddressRequest addressRequest) {
+    public ResponseEntity<String> updateAddress(@PathVariable Integer id, @RequestBody AddressRequest addressRequest) {
         String result = addressService.updateAddress(id, addressRequest);
         if (result.equals("Card updated successfully")) {
             return new ResponseEntity<>(result, HttpStatus.OK);

@@ -1,9 +1,13 @@
 package com.csci4050.paymentcard.converters;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.csci4050.paymentcard.entities.PaymentCard;
 import com.csci4050.paymentcard.requests.PaymentCardRequest;
 
 public class PaymentCardConverter {
+    @Autowired
+    
     
     public static PaymentCard convert(PaymentCardRequest paymentCardRequest) {
         PaymentCard paymentCard = PaymentCard.builder()
