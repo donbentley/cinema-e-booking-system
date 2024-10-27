@@ -5,7 +5,7 @@ import { Navbar } from "../components/Navbar";
 const SignupPage = () => {
 	return (
 		<div>
-            <Navbar />
+			<Navbar />
 			<Signup />
 		</div>
 	);

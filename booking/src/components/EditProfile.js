@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 const EditProfile = () => {
 	return (
-		<div className="mx-auto mt-10 max-w-4xl p-6 md:p-10 bg-white rounded-lg shadow-lg">
+		<div className="mx-auto max-w-4xl p-6 md:p-10 bg-white rounded-lg shadow-lg">
 			<form>
 				<div className="space-y-12">
 					<h2 className="text-base font-semibold leading-7 text-gray-900">
