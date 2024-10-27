@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-const EditProfile = () => {
+const ResetPassword = () => {
 	return (
 		<div className="mx-auto mt-10 max-w-4xl p-6 md:p-10 bg-white rounded-lg shadow-lg">
 			<form>
@@ -120,7 +120,7 @@ const EditProfile = () => {
 
 			<div className="mt-6 flex gap-4 justify-center">
 				<Link
-					to="/ResetPassword"
+					to="/reset-password"
 					className="rounded-md bg-gray-200 px-3 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-300"
 				>
 					Reset Password
@@ -129,17 +129,17 @@ const EditProfile = () => {
 					to="/add-payment-card"
 					className="rounded-md bg-gray-200 px-3 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-300"
 				>
-					Edit Payment Card
+					Add Payment Card
 				</Link>
 				<Link
 					to="/add-payment-card"
 					className="rounded-md bg-gray-200 px-3 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-300"
 				>
-					Edit Billing Address
+					Add Payment Card
 				</Link>
 			</div>
 		</div>
 	);
 };
 
-export { EditProfile };
+export { ResetPassword };

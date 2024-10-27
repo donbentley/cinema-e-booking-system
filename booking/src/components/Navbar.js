@@ -11,17 +11,16 @@ const navigation = [
 	{ name: "Log In", to: "/login", current: false },
 	{ name: "Sign Up", to: "/signup", current: false },
 	{ name: "Home", to: "/", current: false },
-	{ name: "Logout", to: "/", current: false, onclick: logout},
+	{ name: "Logout", to: "/", current: false, onclick: logout },
 ];
 
 function classNames(...classes) {
 	return classes.filter(Boolean).join(" ");
 }
 
-function logout(){
-  return localStorage.removeItem("token");
+function logout() {
+	return localStorage.removeItem("token");
 }
-
 
 const Navbar = () => {
 	return (
