@@ -8,10 +8,10 @@ import { Link } from "react-router-dom"; // Import Link from react-router-dom
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 
 const navigation = [
-	{ name: "Log In", to: "/login", current: false },
-	{ name: "Sign Up", to: "/signup", current: false },
-	{ name: "Home", to: "/", current: false },
-	{ name: "Logout", to: "/", current: false, onclick: logout },
+  { name: "Log In", to: "/login", current: false },
+  { name: "Sign Up", to: "/signup", current: false },
+  { name: "Home", to:"/", current: false },
+  { name: "Logout", to:"/", current: false, onClick: () => localStorage.removeItem('token') }
 ];
 
 function classNames(...classes) {
@@ -19,7 +19,7 @@ function classNames(...classes) {
 }
 
 function logout() {
-	return localStorage.removeItem("token");
+  localStorage.removeItem('token');
 }
 
 const Navbar = () => {
@@ -49,55 +49,57 @@ const Navbar = () => {
 							</h1>
 						</div>
 
-						{/* Right-aligned section for larger screens */}
-						<div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-end">
-							<div className="hidden sm:ml-6 sm:block">
-								<div className="flex space-x-4">
-									{navigation.map((item) => (
-										<Link
-											key={item.name}
-											to={item.to}
-											aria-current={item.current ? "page" : undefined}
-											className={classNames(
-												item.current
-													? "bg-gray-900 text-white"
-													: "text-gray-300 hover:bg-gray-700 hover:text-white",
-												"rounded-md px-3 py-2 text-sm font-medium"
-											)}
-										>
-											{item.name}
-										</Link>
-									))}
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
+            {/* Right-aligned section for larger screens */}
+            <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-end">
+              <div className="hidden sm:ml-6 sm:block">
+                <div className="flex space-x-4">
+                  {navigation.map((item) => (
+                    <Link
+                      key={item.name}
+                      to={item.to}
+                      aria-current={item.current ? "page" : undefined}
+                      className={classNames(
+                        item.current
+                          ? "bg-gray-900 text-white"
+                          : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                        "rounded-md px-3 py-2 text-sm font-medium"
+                      )}
+                      onClick={item.onClick ? item.onClick : null}
+                    >
+                      {item.name}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-				{/* Mobile menu for smaller screens */}
-				<DisclosurePanel className="sm:hidden">
-					<div className="space-y-1 px-2 pb-3 pt-2">
-						{navigation.map((item) => (
-							<DisclosureButton
-								key={item.name}
-								as={Link} // Use Link component for mobile as well
-								to={item.to}
-								aria-current={item.current ? "page" : undefined}
-								className={classNames(
-									item.current
-										? "bg-gray-900 text-white"
-										: "text-gray-300 hover:bg-gray-700 hover:text-white",
-									"block rounded-md px-3 py-2 text-base font-medium"
-								)}
-							>
-								{item.name}
-							</DisclosureButton>
-						))}
-					</div>
-				</DisclosurePanel>
-			</Disclosure>
-		</>
-	);
+        {/* Mobile menu for smaller screens */}
+        <DisclosurePanel className="sm:hidden">
+          <div className="space-y-1 px-2 pb-3 pt-2">
+            {navigation.map((item) => (
+              <DisclosureButton
+                key={item.name}
+                as={Link} // Use Link component for mobile as well
+                to={item.to}
+                aria-current={item.current ? "page" : undefined}
+                className={classNames(
+                  item.current
+                    ? "bg-gray-900 text-white"
+                    : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                  "block rounded-md px-3 py-2 text-base font-medium"
+                )}
+                onClick={item.onClick ? item.onClick : undefined}
+              >
+                {item.name}
+              </DisclosureButton>
+            ))}
+          </div>
+        </DisclosurePanel>
+      </Disclosure>
+    </>
+  );
 };
 
 export { Navbar };
