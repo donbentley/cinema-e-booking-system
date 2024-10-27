@@ -1,4 +1,4 @@
-package com.csci4050.user.entities;
+package com.csci4050.customer.entities;
 
 import jakarta.persistence.*;
 import java.util.ArrayList;
@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.csci4050.address.entities.Address;
 import com.csci4050.paymentcard.entities.PaymentCard;
+import com.csci4050.user.entities.User;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.NoArgsConstructor;
@@ -35,6 +36,8 @@ public class Customer {
     @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL)
     @JsonIgnoreProperties("customer")
     private Address billingAddress;
+
+    private boolean promotionsSubscriber;
 
     @Enumerated(EnumType.STRING)
     public UserStatus status;

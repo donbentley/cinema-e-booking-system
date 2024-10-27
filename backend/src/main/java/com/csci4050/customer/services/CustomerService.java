@@ -1,4 +1,4 @@
-package com.csci4050.user.services;
+package com.csci4050.customer.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -7,11 +7,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
 
-import com.csci4050.user.repositories.CustomerRepository;
 import com.csci4050.user.repositories.UserRepository;
-import com.csci4050.user.requests.CustomerRequest;
 import com.csci4050.user.requests.PasswordChangeRequest;
-import com.csci4050.user.entities.Customer;
+import com.csci4050.customer.entities.Customer;
+import com.csci4050.customer.repositories.CustomerRepository;
+import com.csci4050.customer.requests.CustomerRequest;
 import com.csci4050.user.entities.User;
 
 @Service
@@ -45,6 +45,7 @@ public class CustomerService {
 
         customerToUpdate.setFirst(customerRequest.getFirst());
         customerToUpdate.setLast(customerRequest.getLast());
+        customerToUpdate.setPromotionsSubscriber(customerRequest.isPromotionsSubscriber());
         userToUpdate.setUsername(customerRequest.getUsername());
         customerRepository.save(customerToUpdate);
         userRepository.save(userToUpdate);

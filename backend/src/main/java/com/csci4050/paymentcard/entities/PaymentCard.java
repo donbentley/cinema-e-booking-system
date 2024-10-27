@@ -1,7 +1,7 @@
 package com.csci4050.paymentcard.entities;
 
 
-import com.csci4050.user.entities.Customer;
+import com.csci4050.customer.entities.Customer;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.*;

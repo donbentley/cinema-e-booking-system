@@ -1,6 +1,6 @@
 package com.csci4050.paymentcard.requests;
 
-import com.csci4050.user.entities.Customer;
+import com.csci4050.customer.entities.Customer;
 
 import lombok.Data;
 
