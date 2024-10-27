@@ -2,58 +2,54 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 const Signup = () => {
-
 	const navigate = useNavigate();
 
 	const [formData, setFormData] = useState({
-		first: '',
-		last: '',
-		username: '',
-		email: '',
-		password: ''
+		first: "",
+		last: "",
+		username: "",
+		email: "",
+		password: "",
 	});
 
 	const changeHandler = (e) => {
-        const { name, value } = e.target;
-        setFormData(prevFormData => ({
-            ...prevFormData,
-            [name]: value,
-        }));
-    }
+		const { name, value } = e.target;
+		setFormData((prevFormData) => ({
+			...prevFormData,
+			[name]: value,
+		}));
+	};
 
 	const submitHandler = async (event) => {
 		event.preventDefault();
 
 		try {
-			const signupResponse = await fetch(
-				'http://localhost:8080/auth/signup',
-				{
-					method: 'POST',
-					headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-						first: formData.first,
-						last: formData.last,
-                        username: formData.username,
-						email: formData.email,
-                        password: formData.password
-                    })
-				}
-			)
+			const signupResponse = await fetch("http://localhost:8080/auth/signup", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					first: formData.first,
+					last: formData.last,
+					username: formData.username,
+					email: formData.email,
+					password: formData.password,
+				}),
+			});
 
 			const responseJson = await signupResponse.json();
 			if (!signupResponse.ok) {
 				throw new Error(responseJson.error);
 			}
-			localStorage.setItem('token', responseJson.token)
-			navigate('/');
+			localStorage.setItem("token", responseJson.token);
+			navigate("/");
 		} catch (error) {
 			console.log(error);
 			alert(error);
-			localStorage.removeItem('token');
+			localStorage.removeItem("token");
 		}
-	}
+	};
 
 	return (
 		<>
@@ -177,20 +173,20 @@ const Signup = () => {
 								/>
 							</div>
 						</div>
-						<div class="inline-flex items-center">
+						<div className="inline-flex items-center">
 							<label
-								class="flex items-center cursor-pointer relative"
-								for="checkbox"
+								className="flex items-center cursor-pointer relative"
+								htmlFor="checkbox"
 							>
 								<input
 									type="checkbox"
-									class="peer h-5 w-5 cursor-pointer transition-all appearance-none rounded shadow hover:shadow-md border border-slate-300 checked:bg-slate-800 checked:border-slate-800"
+									className="peer h-5 w-5 cursor-pointer transition-all appearance-none rounded shadow hover:shadow-md border border-slate-300 checked:bg-slate-800 checked:border-slate-800"
 									id="checkbox"
 								/>
 							</label>
 							<label
-								class="cursor-pointer ml-2 text-slate-600 text-sm"
-								for="checkbox"
+								className="cursor-pointer ml-2 text-slate-600 text-sm"
+								htmlFor="checkbox"
 							>
 								<p>Want to recieve emails with promotions?</p>
 							</label>
