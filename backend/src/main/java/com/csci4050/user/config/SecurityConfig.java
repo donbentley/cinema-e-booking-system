@@ -58,13 +58,15 @@ public class SecurityConfig {
             .cors(withDefaults())
             .authorizeHttpRequests((authorize) ->
                 authorize
+                    /*
                     .requestMatchers(HttpMethod.GET, "/movie/**").permitAll()
                     .requestMatchers(HttpMethod.POST, "/movie/**").hasRole("ADMIN")
                     .requestMatchers(HttpMethod.PUT, "/movie/**").hasRole("ADMIN")
                     .requestMatchers(HttpMethod.DELETE, "/movie/**").hasRole("ADMIN")
                     .requestMatchers("/customer/**").hasAnyRole("ADMIN", "CUSTOMER")
                     .requestMatchers("/address/**").hasAnyRole("ADMIN", "CUSTOMER")
-                    .requestMatchers("/card/**").hasAnyRole("ADMIN", "CUSTOMER")
+                    .requestMatchers("/payment-card/**").hasAnyRole("ADMIN", "CUSTOMER")
+                    */
                     .requestMatchers("/auth/**").permitAll()
                     .anyRequest().authenticated()
                     //.anyRequest().permitAll()

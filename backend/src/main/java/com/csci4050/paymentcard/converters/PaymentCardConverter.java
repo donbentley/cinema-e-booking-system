@@ -11,9 +11,12 @@ public class PaymentCardConverter {
     
     public static PaymentCard convert(PaymentCardRequest paymentCardRequest) {
         PaymentCard paymentCard = PaymentCard.builder()
+            .id(paymentCardRequest.getId())
+            .nickname(paymentCardRequest.getNickname())
             .cardNumber(paymentCardRequest.getCardNumber())
             .expDate(paymentCardRequest.getExpDate())
             .cvv(paymentCardRequest.getCvv())
+            .name(paymentCardRequest.getName())
             .customer(paymentCardRequest.getCustomer())
             .build();
         return paymentCard;

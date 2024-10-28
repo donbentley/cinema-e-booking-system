@@ -1,6 +1,6 @@
 import React from 'react'
 
-const CardItem = () => {
+const CardItem = (props) => {
   return (
     <div>CardItem</div>
   )

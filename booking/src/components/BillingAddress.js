@@ -1,14 +1,62 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
-const BillingAddress = () => {
+
+const BillingAddress = (props) => {
+
+	const navigate = useNavigate();
+
 	const [address, setAddress] = useState({
+		customer: null,
+		id: null,
 		line1: "",
 		line2: "",
 		city: "",
 		state: "",
-		zip: "",
+		zip: null
 	});
 	const [isEditing, setIsEditing] = useState(true);
+
+	const [isNewAddress, setNewAddress] = useState(true);
+
+	useEffect(() => {
+		if (localStorage.getItem("token") == null) {
+			navigate("/");
+		}
+		axios
+			.get("http://localhost:8080/customer/customer-info", {
+				headers: {
+					Authorization: `Bearer ${localStorage.getItem("token")}`,
+				},
+			})
+			.then((response) => {
+				if (response.status >= 400) {
+					throw new Error("Error fetching user data");
+				}
+				if (response.data.billingAddress != null) {
+					const existingAddress = response.data.billingAddress;
+					setNewAddress(false);
+					setAddress((prevAddress) => ({
+						customer: response.data,
+						id: existingAddress.id,
+						line1: existingAddress.line1,
+						line2: existingAddress.line2,
+						city: existingAddress.city,
+						state: existingAddress.state, 
+						zip: existingAddress.zip
+					}))
+				} else {
+					setAddress((prevAddress) => ({
+						...prevAddress,
+						customer: response.data
+					}))
+				}
+			})
+			.catch((err) => {
+				alert(err);
+			});
+	}, [navigate]);
 
 	const handleAddressChange = (e) => {
 		const { name, value } = e.target;
@@ -19,15 +67,68 @@ const BillingAddress = () => {
 		setIsEditing(true);
 	};
 
-	const handleSave = () => {
-		setIsEditing(false);
+	const handleSave = async () => {
 		// Add address save logic here, e.g., send to an API or save in local storage
+		try {
+			if (isNewAddress) {
+				const addAddressResponse = await fetch(
+					`http://localhost:8080/address/addNew`,
+					{
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: `Bearer ${localStorage.getItem("token")}`,
+						},
+						body: JSON.stringify({
+							customer: address.customer,
+							line1: address.line1,
+							line2: address.line2,
+							city: address.city,
+							state: address.state, 
+							zip: address.zip
+						}),
+					}
+				);
+				const responseJson = await addAddressResponse.json();
+				if (!addAddressResponse.ok) {
+					throw new Error(responseJson.error);
+				}
+			} else {
+				const addAddressResponse = await fetch(
+					`http://localhost:8080/address/update/${address.id}`,
+					{
+						method: "PUT",
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: `Bearer ${localStorage.getItem("token")}`,
+						},
+						body: JSON.stringify({
+							customer: address.customer,
+							id: address.id,
+							line1: address.line1,
+							line2: address.line2,
+							city: address.city,
+							state: address.state, 
+							zip: address.zip
+						}),
+					}
+				);
+				const responseJson = await addAddressResponse.json();
+				if (!addAddressResponse.ok) {
+					throw new Error(responseJson.error);
+				}
+			}
+		} catch (error) {
+			console.log(error);
+			alert(error);
+		}
+		setIsEditing(false);
 	};
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		alert("Billing address saved!");
 		handleSave();
+		alert("Billing address saved!");
 	};
 
 	return (

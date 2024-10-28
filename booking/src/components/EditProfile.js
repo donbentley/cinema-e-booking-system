@@ -2,11 +2,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-const EditProfile = () => {
+const EditProfile = (props) => {
 	const navigate = useNavigate();
 
+	const [user, setUser] = useState()
+
 	const [formData, setFormData] = useState({
-		id: "",
+		id: null,
 		first: "",
 		last: "",
 		username: "",
@@ -62,7 +64,7 @@ const EditProfile = () => {
 		event.preventDefault();
 
 		try {
-			const signupResponse = await fetch(
+			const editProfileResponse = await fetch(
 				`http://localhost:8080/customer/put/${formData.id}`,
 				{
 					method: "PUT",
@@ -79,8 +81,8 @@ const EditProfile = () => {
 				}
 			);
 
-			const responseJson = await signupResponse.json();
-			if (!signupResponse.ok) {
+			const responseJson = await editProfileResponse.json();
+			if (!editProfileResponse.ok) {
 				throw new Error(responseJson.error);
 			}
 			navigate(0);

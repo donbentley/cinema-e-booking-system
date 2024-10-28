@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 import com.csci4050.user.repositories.UserRepository;
-import com.csci4050.user.requests.PasswordChangeRequest;
 import com.csci4050.customer.entities.Customer;
 import com.csci4050.customer.repositories.CustomerRepository;
 import com.csci4050.customer.requests.CustomerRequest;
+import com.csci4050.customer.requests.PasswordChangeRequest;
 import com.csci4050.user.entities.User;
 
 import java.util.Collections;
@@ -72,22 +72,19 @@ public class CustomerService {
 
     public ResponseEntity<?> updatePassword(PasswordChangeRequest passwordChangeRequest) {
         
-        Optional<User> existingUser = 
-            userRepository.findByUsername(passwordChangeRequest.getUsernameOrEmail());
+        String email = (String)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Optional<User> user = userRepository.findByEmail(email);
         
-        if (!existingUser.isPresent()) {
-            existingUser = userRepository.findByEmail(passwordChangeRequest.getUsernameOrEmail());
-            if (!existingUser.isPresent()) {
-                return new ResponseEntity<>(Collections.singletonMap("msg", "User not found"), HttpStatus.NOT_FOUND);
-            }
+        if (!user.isPresent()) {
+            return new ResponseEntity<>(Collections.singletonMap("msg", "User not found"), HttpStatus.NOT_FOUND);
         }
-        User user = existingUser.get();
-        if (!passwordEncoder.matches(passwordChangeRequest.getOldPassword(), user.getPassword())) {
+        User existingUser = user.get();
+        if (!passwordEncoder.matches(passwordChangeRequest.getCurrentPassword(), existingUser.getPassword())) {
             return new ResponseEntity<>(Collections.singletonMap("msg", "Password is incorrect"), HttpStatus.BAD_REQUEST);
         }
 
-        user.setPassword(passwordEncoder.encode(passwordChangeRequest.getNewPassword()));
-        userRepository.save(user);
+        existingUser.setPassword(passwordEncoder.encode(passwordChangeRequest.getNewPassword()));
+        userRepository.save(existingUser);
         return new ResponseEntity<>(Collections.singletonMap("msg", "New password saved successfully"), HttpStatus.OK);
     }
 }

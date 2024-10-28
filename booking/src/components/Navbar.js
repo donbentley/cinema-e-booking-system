@@ -4,10 +4,11 @@ import {
 	DisclosureButton,
 	DisclosurePanel,
 } from "@headlessui/react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 
 const Navbar = () => {
+	const navigate = useNavigate();
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
 
 	// Check login status on component mount
@@ -20,6 +21,7 @@ const Navbar = () => {
 	const handleLogout = () => {
 		localStorage.removeItem("token");
 		setIsLoggedIn(false);
+		navigate(0);
 	};
 
 	const navigation = isLoggedIn
