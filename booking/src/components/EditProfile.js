@@ -1,9 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import axios from "axios";
 
 const EditProfile = () => {
-
 	const navigate = useNavigate();
 
 	const [formData, setFormData] = useState({
@@ -12,21 +11,19 @@ const EditProfile = () => {
 		last: "",
 		username: "",
 		email: "",
-		promotionsSubscriber: false
+		promotionsSubscriber: false,
 	});
 
 	useEffect(() => {
-		if (localStorage.getItem('token') == null) {
+		if (localStorage.getItem("token") == null) {
 			navigate("/");
 		}
-		axios.get('http://localhost:8080/customer/customer-info',
-			{
-				headers:
-				{
-					'Authorization': `Bearer ${localStorage.getItem('token')}`
-				}
-			}
-		)
+		axios
+			.get("http://localhost:8080/customer/customer-info", {
+				headers: {
+					Authorization: `Bearer ${localStorage.getItem("token")}`,
+				},
+			})
 			.then((response) => {
 				if (response.status >= 400) {
 					throw new Error("Error fetching user data");
@@ -37,13 +34,13 @@ const EditProfile = () => {
 					last: response.data.last,
 					username: response.data.user.username,
 					email: response.data.user.email,
-					promotionsSubscriber: response.data.promotionsSubscriber
-				})
+					promotionsSubscriber: response.data.promotionsSubscriber,
+				});
 			})
 			.catch((err) => {
 				alert(err);
-			})
-	}, [navigate])
+			});
+	}, [navigate]);
 
 	const changeHandler = (e) => {
 		const { name, value } = e.target;
@@ -54,30 +51,33 @@ const EditProfile = () => {
 	};
 
 	const checkboxChangeHandler = (e) => {
-		console.log("Checkbox before: " + formData.promotionsSubscriber)
+		console.log("Checkbox before: " + formData.promotionsSubscriber);
 		setFormData((prevState) => {
-			return {...prevState, promotionsSubscriber: e.target.checked}
-		})
-		console.log("Checkbox after: " + formData.promotionsSubscriber)
-	}
+			return { ...prevState, promotionsSubscriber: e.target.checked };
+		});
+		console.log("Checkbox after: " + formData.promotionsSubscriber);
+	};
 
 	const submitHandler = async (event) => {
 		event.preventDefault();
 
 		try {
-			const signupResponse = await fetch(`http://localhost:8080/customer/put/${formData.id}`, {
-				method: "PUT",
-				headers: {
-					"Content-Type": "application/json",
-					'Authorization': `Bearer ${localStorage.getItem('token')}`
-				},
-				body: JSON.stringify({
-					first: formData.first,
-					last: formData.last,
-					username: formData.username,
-					promotionsSubscriber: formData.promotionsSubscriber
-				}),
-			});
+			const signupResponse = await fetch(
+				`http://localhost:8080/customer/put/${formData.id}`,
+				{
+					method: "PUT",
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${localStorage.getItem("token")}`,
+					},
+					body: JSON.stringify({
+						first: formData.first,
+						last: formData.last,
+						username: formData.username,
+						promotionsSubscriber: formData.promotionsSubscriber,
+					}),
+				}
+			);
 
 			const responseJson = await signupResponse.json();
 			if (!signupResponse.ok) {
@@ -89,8 +89,6 @@ const EditProfile = () => {
 			alert(error);
 		}
 	};
-
-
 
 	return (
 		<div className=" mx-auto max-w-4xl p-6 md:p-10 bg-white rounded-lg">
@@ -207,20 +205,34 @@ const EditProfile = () => {
 					<button
 						type="button"
 						className="text-sm font-semibold leading-6 text-gray-900"
-						onClick={() => {navigate(0)}}
+						onClick={() => {
+							navigate(0);
+						}}
 					>
 						Cancel
 					</button>
 					<button
 						type="submit"
-						className="className="rounded-md bg-gray-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600
+						className="
+						rounded-md
+						bg-gray-600
+						px-3
+						py-2
+						text-sm
+						font-semibold
+						text-white
+						shadow-sm
+						hover:bg-gray-500
+						focus-visible:outline
+						focus-visible:outline-2
+						focus-visible:outline-offset-2
+						focus-visible:outline-gray-600"
 						onClick={submitHandler}
 					>
 						Save
 					</button>
 				</div>
 			</form>
-
 		</div>
 	);
 };
