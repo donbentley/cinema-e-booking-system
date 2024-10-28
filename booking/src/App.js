@@ -9,7 +9,7 @@ import ResetPassword from "./components/ResetPassword";
 import BillingAddress from "./components/BillingAddress";
 import PaymentCard from "./components/PaymentCard";
 import Verify from "./pages/Verify";
-import AdminPage from "./pages/Admin/AdminPage"
+import AdminPage from "./pages/Admin/AdminPage";
 
 function App() {
 	return (
