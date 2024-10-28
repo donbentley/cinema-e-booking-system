@@ -39,7 +39,7 @@ const PaymentCard = () => {
 	};
 
 	return (
-		<div className="mx-auto max-w-4xl p-8 bg-white rounded-lg shadow-md mt-8">
+		<div className="mx-auto max-w-4xl p-8 bg-white rounded-lg">
 			<h1 className="text-3xl font-semibold text-center text-gray-800 mb-8">
 				Manage Payment Cards
 			</h1>
@@ -149,7 +149,7 @@ const PaymentCard = () => {
 						type="button"
 						onClick={addCard}
 						disabled={cards.length >= 3}
-						className="px-6 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 disabled:opacity-50"
+						className="px-6 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 disabled:opacity-50"
 					>
 						Add Card
 					</button>

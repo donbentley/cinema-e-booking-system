@@ -6,7 +6,7 @@ const BillingAddress = () => {
 		line2: "",
 		city: "",
 		state: "",
-		zip: ""
+		zip: "",
 	});
 	const [isEditing, setIsEditing] = useState(true);
 
@@ -31,7 +31,7 @@ const BillingAddress = () => {
 	};
 
 	return (
-		<div className="mx-auto max-w-4xl p-8 bg-white rounded-lg shadow-md mt-8">
+		<div className="mx-auto max-w-4xl p-8 bg-white rounded-lg">
 			<h1 className="text-3xl font-semibold text-center text-gray-800 mb-8">
 				Edit Billing Address
 			</h1>
@@ -45,7 +45,7 @@ const BillingAddress = () => {
 								name="line1"
 								value={address.line1}
 								onChange={handleAddressChange}
-								className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:border-indigo-500"
+								className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:border-gray-500"
 								required
 							/>
 						</div>
@@ -56,7 +56,7 @@ const BillingAddress = () => {
 								name="line2"
 								value={address.line2}
 								onChange={handleAddressChange}
-								className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:border-indigo-500"
+								className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:border-gray-500"
 							/>
 						</div>
 						<div>
@@ -66,7 +66,7 @@ const BillingAddress = () => {
 								name="city"
 								value={address.city}
 								onChange={handleAddressChange}
-								className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:border-indigo-500"
+								className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:border-gray-500"
 								required
 							/>
 						</div>
@@ -78,7 +78,7 @@ const BillingAddress = () => {
 									name="state"
 									value={address.state}
 									onChange={handleAddressChange}
-									className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:border-indigo-500"
+									className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:border-gray-500"
 									required
 								/>
 							</div>
@@ -89,25 +89,35 @@ const BillingAddress = () => {
 									name="zip"
 									value={address.zip}
 									onChange={handleAddressChange}
-									className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:border-indigo-500"
+									className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:border-gray-500"
 									required
 								/>
 							</div>
 						</div>
 						<button
 							type="submit"
-							className="w-full mt-4 bg-indigo-600 px-4 py-2 text-white rounded-lg hover:bg-indigo-500"
+							className="w-full mt-4 bg-gray-600 px-4 py-2 text-white rounded-lg hover:bg-gray-500"
 						>
 							Save Address
 						</button>
 					</>
 				) : (
 					<div className="space-y-2">
-						<p><strong>Line 1:</strong> {address.line1}</p>
-						<p><strong>Line 2:</strong> {address.line2}</p>
-						<p><strong>City:</strong> {address.city}</p>
-						<p><strong>State:</strong> {address.state}</p>
-						<p><strong>ZIP:</strong> {address.zip}</p>
+						<p>
+							<strong>Line 1:</strong> {address.line1}
+						</p>
+						<p>
+							<strong>Line 2:</strong> {address.line2}
+						</p>
+						<p>
+							<strong>City:</strong> {address.city}
+						</p>
+						<p>
+							<strong>State:</strong> {address.state}
+						</p>
+						<p>
+							<strong>ZIP:</strong> {address.zip}
+						</p>
 						<div className="flex justify-end">
 							<button
 								type="button"

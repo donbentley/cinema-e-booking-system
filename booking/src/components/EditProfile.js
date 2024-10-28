@@ -21,7 +21,7 @@ const EditProfile = () => {
 										name="first-name"
 										type="text"
 										autoComplete="given-name"
-										className="block w-full rounded-md border py-2 px-3 text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+										className="block w-full rounded-md border py-2 px-3 text-gray-900 shadow-sm focus:border-gray-500 focus:ring-gray-500 sm:text-sm"
 									/>
 								</div>
 							</div>
@@ -39,7 +39,7 @@ const EditProfile = () => {
 										name="last-name"
 										type="text"
 										autoComplete="family-name"
-										className="block w-full rounded-md border py-2 px-3 text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+										className="block w-full rounded-md border py-2 px-3 text-gray-900 shadow-sm focus:border-gray-500 focus:ring-gray-500 sm:text-sm"
 									/>
 								</div>
 							</div>
@@ -57,7 +57,7 @@ const EditProfile = () => {
 										name="username"
 										type="text"
 										autoComplete="username"
-										className="block w-full rounded-md border py-2 px-3 text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+										className="block w-full rounded-md border py-2 px-3 text-gray-900 shadow-sm focus:border-gray-500 focus:ring-gray-500 sm:text-sm"
 									/>
 								</div>
 							</div>
@@ -75,7 +75,7 @@ const EditProfile = () => {
 										name="email"
 										type="email"
 										autoComplete="email"
-										className="block w-full rounded-md border py-2 px-3 text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+										className="block w-full rounded-md border py-2 px-3 text-gray-900 shadow-sm focus:border-gray-500 focus:ring-gray-500 sm:text-sm"
 										disabled="true"
 									/>
 								</div>
@@ -87,7 +87,7 @@ const EditProfile = () => {
 								id="promotions"
 								name="promotions"
 								type="checkbox"
-								className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+								className="h-4 w-4 rounded border-gray-300 text-gray-600 focus:ring-gray-600"
 							/>
 							<label
 								htmlFor="promotions"
@@ -108,7 +108,7 @@ const EditProfile = () => {
 					</button>
 					<button
 						type="submit"
-						className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+						className="rounded-md bg-gray-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600"
 					>
 						Save
 					</button>

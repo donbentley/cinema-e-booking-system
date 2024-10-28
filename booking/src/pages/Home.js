@@ -2,7 +2,7 @@ import React from "react";
 import { Navbar } from "../components/Navbar";
 import MovieGrid from "../components/MovieGrid";
 import { useState, useEffect } from "react";
-import axios from "axios"
+import axios from "axios";
 
 const moviesData = [
 	{
@@ -105,18 +105,19 @@ const moviesData = [
 		synopsis:
 			"After a family tragedy, three generations of the Deetz family return home to Winter River. Still haunted by Beetlejuice, Lydia's life is turned upside down when her teenage daughter, Astrid, accidentally opens the portal to the Afterlife.",
 		reviewLink: "https://www.rottentomatoes.com/m/beetlejuice_beetlejuice",
-		pictureLink: "https://static0.cbrimages.com/wordpress/wp-content/uploads/sharedimages/2024/08/beetlejuice-beetlejuice-film-poster.jpg",
+		pictureLink:
+			"https://static0.cbrimages.com/wordpress/wp-content/uploads/sharedimages/2024/08/beetlejuice-beetlejuice-film-poster.jpg",
 		trailerLink: "https://youtu.be/BqnAeUoqFAM?si=SAsHXwwM7dV_Epac",
 		mpaaRating: "PG-13",
 	},
 ];
 
 const Home = () => {
-
 	const [movies, setMovies] = useState(null);
 
 	useEffect(() => {
-		axios.get('http://localhost:8080/movie/getAll')
+		axios
+			.get("http://localhost:8080/movie/getAll")
 			.then((response) => {
 				setMovies(response.movies);
 				if (movies == null) {
@@ -124,9 +125,9 @@ const Home = () => {
 				}
 			})
 			.catch((err) => {
-				return (err);
-			})
-	}, [])
+				return err;
+			});
+	}, []);
 
 	return (
 		<div>

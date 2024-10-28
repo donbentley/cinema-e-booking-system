@@ -9,6 +9,7 @@ import ResetPassword from "./components/ResetPassword";
 import BillingAddress from "./components/BillingAddress";
 import PaymentCard from "./components/PaymentCard";
 import Verify from "./pages/Verify";
+import AdminPage from "./pages/Admin/AdminPage"
 
 function App() {
 	return (
@@ -24,6 +25,7 @@ function App() {
 					<Route path="profile/billing-address" element={<BillingAddress />} />
 					<Route path="profile/payment-card" element={<PaymentCard />} />
 					<Route path="auth/verify/:code" element={<Verify />} />
+					<Route path="/admin" element={<AdminPage />} />
 				</Routes>
 			</div>
 		</BrowserRouter>

@@ -25,7 +25,7 @@ const ProfilePage = () => {
 
 	const buttonClasses = (component) => {
 		return activeComponent === component
-			? "rounded-full bg-indigo-600 px-3 py-2 text-sm font-semibold text-white" // Active button styles
+			? "rounded-full bg-gray-600 px-3 py-2 text-sm font-semibold text-white" // Active button styles
 			: "rounded-full bg-gray-200 px-3 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-300"; // Inactive button styles
 	};
 
