@@ -2,13 +2,10 @@ import { Link } from "react-router-dom";
 
 const EditProfile = () => {
 	return (
-		<div className="mx-auto max-w-4xl p-6 md:p-10 bg-white rounded-lg shadow-lg">
+		<div className=" mx-auto max-w-4xl p-6 md:p-10 bg-white rounded-lg">
+			<h1 className="text-3xl font-semibold text-center mt-1 ">Edit profile</h1>
 			<form>
 				<div className="space-y-12">
-					<h2 className="text-base font-semibold leading-7 text-gray-900">
-						Edit Profile
-					</h2>
-
 					<div className="border-b border-gray-900/10 pb-8">
 						<div className="mt-8 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
 							<div className="sm:col-span-1">
@@ -118,26 +115,6 @@ const EditProfile = () => {
 				</div>
 			</form>
 
-			<div className="mt-6 flex gap-4 justify-center">
-				<Link
-					to="/ResetPassword"
-					className="rounded-md bg-gray-200 px-3 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-300"
-				>
-					Reset Password
-				</Link>
-				<Link
-					to="/add-payment-card"
-					className="rounded-md bg-gray-200 px-3 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-300"
-				>
-					Edit Payment Card
-				</Link>
-				<Link
-					to="/add-payment-card"
-					className="rounded-md bg-gray-200 px-3 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-300"
-				>
-					Edit Billing Address
-				</Link>
-			</div>
 		</div>
 	);
 };

@@ -5,10 +5,10 @@ const Signup = () => {
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		if (localStorage.getItem('token') !== null) {
+		if (localStorage.getItem("token") !== null) {
 			navigate("/");
 		}
-	}, [navigate])
+	}, [navigate]);
 
 	const [formData, setFormData] = useState({
 		first: "",
@@ -59,7 +59,7 @@ const Signup = () => {
 
 	return (
 		<>
-			<div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 ring-1">
+			<div className="flex mt-10 min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 ring-1">
 				<div className="sm:mx-auto sm:w-full sm:max-w-sm">
 					<img
 						alt="Your Company"
