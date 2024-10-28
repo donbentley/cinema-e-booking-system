@@ -57,6 +57,7 @@ const Signup = () => {
 				throw new Error(responseJson.error);
 			}
 			localStorage.setItem("token", responseJson.token);
+			localStorage.setItem("role", responseJson.roles[1]);
 			navigate("/");
 		} catch (error) {
 			console.log(error);
