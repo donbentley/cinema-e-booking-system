@@ -7,7 +7,6 @@ import lombok.Data;
 @Data
 public class CustomerRequest {
 
-    private Integer id;
     private String username;
     private String first;
     private String last;
