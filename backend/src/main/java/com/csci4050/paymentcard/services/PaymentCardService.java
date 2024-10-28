@@ -55,7 +55,7 @@ public class PaymentCardService {
             PaymentCard updatedPaymentCard = PaymentCardConverter.convert(paymentCardRequest);
             updatedPaymentCard.setId(cardToUpdate.getId());
             paymentCardRepository.save(updatedPaymentCard);
-            return ("Card updated successfully");
+            return ("Card saved successfully");
         } else {
             return ("Card not found");
         }

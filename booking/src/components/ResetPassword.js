@@ -1,13 +1,45 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const ResetPassword = () => {
+	const navigate = useNavigate();
 	const [currentPassword, setCurrentPassword] = useState("");
 	const [newPassword, setNewPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("");
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
 		// Add password reset logic here
+ 		if (!(newPassword === confirmPassword)) {
+			alert("New password and confirm new password fields do not match");
+			return;
+		}
+ 		if (newPassword === currentPassword) {
+			alert("New password and current password matches");
+			return;
+		}
+		try {
+			const resetPasswordResponse = await fetch("http://localhost:8080/customer/update-password", {
+				method: "PUT",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${localStorage.getItem("token")}`,
+				},
+				body: JSON.stringify({
+					currentPassword: currentPassword,
+					newPassword: newPassword,
+				}),
+			});
+
+			const responseJson = await resetPasswordResponse.json();
+			if (!resetPasswordResponse.ok) {
+				throw new Error(responseJson.error);
+			}
+			alert("Password changed successfully")
+			navigate(0);
+		} catch (error) {
+			alert("Login failed: Ensure that current password is correct");
+		}
 	};
 
 	return (

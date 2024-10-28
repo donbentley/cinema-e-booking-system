@@ -1,7 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
-const PaymentCard = () => {
-	const [cards, setCards] = useState([]);
+const PaymentCard = (props) => {
+
+	const navigate = useNavigate();
+
+	const [user, setUser] = useState(props.user);
+	const [cards, setCards] = useState(user.paymentCards.map((card) => ({
+		...card,
+		isNewCard: false
+	})));
 	const [editIndex, setEditIndex] = useState(null);
 
 	const handleCardChange = (index, e) => {
@@ -14,7 +23,7 @@ const PaymentCard = () => {
 		if (cards.length < 3) {
 			setCards([
 				...cards,
-				{ nickname: "", cardNumber: "", expirationDate: "", cvv: "", name: "" },
+				{isNewCard: true, nickname: "", cardNumber: "", expDate: "", cvv: "", name: "" },
 			]);
 			setEditIndex(cards.length);
 		}
@@ -25,11 +34,74 @@ const PaymentCard = () => {
 	};
 
 	const handleDelete = (index) => {
+		const paymentCard = cards[index];
+		axios.delete(`http://localhost:8080/payment-card/delete/${paymentCard.id}`, {
+			headers: {
+				Authorization: `Bearer ${localStorage.getItem("token")}`,
+			}
+		})
 		setCards(cards.filter((_, i) => i !== index));
 		setEditIndex(null);
 	};
 
-	const handleSave = () => {
+	const handleSave = async () => {
+		const paymentCard = cards[editIndex];
+		try {
+			if (paymentCard.isNewCard) {
+				const addCardResponse = await fetch(
+					`http://localhost:8080/payment-card/addNew`,
+					{
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: `Bearer ${localStorage.getItem("token")}`,
+						},
+						body: JSON.stringify({
+							nickname: paymentCard.nickname,
+							cardNumber: paymentCard.cardNumber,
+							expDate: paymentCard.expDate,
+							cvv: paymentCard.cvv,
+							name: paymentCard.name,
+							customer: user
+						}),
+					}
+				);
+				const responseJson = await addCardResponse.json();
+				if (!addCardResponse.ok) {
+					throw new Error(responseJson.error);
+				}
+				const newCards = [...cards];
+				newCards[editIndex].isNewCard = false;
+				setCards(newCards);
+			} else {
+				const addAddressResponse = await fetch(
+					`http://localhost:8080/payment-card/update/${paymentCard.id}`,
+					{
+						method: "PUT",
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: `Bearer ${localStorage.getItem("token")}`,
+						},
+						body: JSON.stringify({
+							id: paymentCard.id,
+							nickname: paymentCard.nickname,
+							cardNumber: paymentCard.cardNumber,
+							expDate: paymentCard.expDate,
+							cvv: paymentCard.cvv,
+							name: paymentCard.name,
+							customer: user
+						}),
+					}
+				);
+				const responseJson = await addAddressResponse.json();
+				if (!addAddressResponse.ok) {
+					throw new Error(responseJson.error);
+				}
+			}
+		} catch (error) {
+			console.log(error);
+			alert(error);
+		}
 		setEditIndex(null);
 	};
 
@@ -82,8 +154,8 @@ const PaymentCard = () => {
 									</label>
 									<input
 										type="text"
-										name="expirationDate"
-										value={card.expirationDate}
+										name="expDate"
+										value={card.expDate}
 										onChange={(e) => handleCardChange(index, e)}
 										placeholder="MM/YY"
 										className="w-full p-2 border border-blue-400 rounded-lg focus:outline-none focus:ring-2"

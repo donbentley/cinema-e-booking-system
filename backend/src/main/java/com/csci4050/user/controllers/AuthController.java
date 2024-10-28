@@ -222,7 +222,7 @@ public class AuthController {
         helper.setTo(toAddress);
         helper.setSubject(subject);
      
-        String verifyURL = siteURL + "/auth/resetPassword/" + customer.getVerificationCode();
+        String verifyURL = siteURL + "/resetPassword/" + customer.getVerificationCode();
      
         content = content.replace("[[URL]]", verifyURL);
      

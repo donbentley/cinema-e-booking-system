@@ -7,8 +7,9 @@ import org.springframework.web.bind.annotation.*;
 
 import com.csci4050.customer.entities.Customer;
 import com.csci4050.customer.requests.CustomerRequest;
+import com.csci4050.customer.requests.PasswordChangeRequest;
 import com.csci4050.customer.services.CustomerService;
-import com.csci4050.user.requests.PasswordChangeRequest;
+
 import java.util.Collections;
 
 @RestController

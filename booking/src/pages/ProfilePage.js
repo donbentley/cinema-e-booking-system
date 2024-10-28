@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { EditProfile } from "../components/EditProfile";
 import ResetPassword from "../components/ResetPassword"; // Correct import
 import BillingAddress from "../components/BillingAddress";
@@ -6,18 +8,44 @@ import PaymentCard from "../components/PaymentCard";
 import { Navbar } from "../components/Navbar";
 
 const ProfilePage = () => {
+
+	const navigate = useNavigate();
+
 	const [activeComponent, setActiveComponent] = useState("editProfile");
+
+	const [user, setUser] = useState(null);
+
+	useEffect(() => {
+		if (localStorage.getItem("token") == null) {
+			navigate("/");
+		}
+		axios
+			.get("http://localhost:8080/customer/customer-info", {
+				headers: {
+					Authorization: `Bearer ${localStorage.getItem("token")}`,
+				},
+			})
+			.then((response) => {
+				if (response.status >= 400) {
+					throw new Error("Error fetching user data");
+				}
+				setUser(response.data);
+			})
+			.catch((err) => {
+				alert(err);
+			});
+	}, [navigate]);
 
 	const renderComponent = () => {
 		switch (activeComponent) {
 			case "editProfile":
-				return <EditProfile />;
+				return <EditProfile user={user}/>;
 			case "resetPassword":
-				return <ResetPassword />;
+				return <ResetPassword user={user}/>;
 			case "billingAddress":
-				return <BillingAddress />;
+				return <BillingAddress user={user}/>;
 			case "paymentCard":
-				return <PaymentCard />;
+				return <PaymentCard user={user}/>;
 			default:
 				return <EditProfile />;
 		}
