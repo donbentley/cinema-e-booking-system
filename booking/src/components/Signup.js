@@ -16,6 +16,7 @@ const Signup = () => {
 		username: "",
 		email: "",
 		password: "",
+		promotionsSubscriber: false
 	});
 
 	const changeHandler = (e) => {
@@ -25,6 +26,12 @@ const Signup = () => {
 			[name]: value,
 		}));
 	};
+
+	const checkboxChangeHandler = (e) => {
+		setFormData((prevState) => {
+			return {...prevState, promotionsSubscriber: e.target.checked}
+		})
+	}
 
 	const submitHandler = async (event) => {
 		event.preventDefault();
@@ -41,6 +48,7 @@ const Signup = () => {
 					username: formData.username,
 					email: formData.email,
 					password: formData.password,
+					promotionsSubscriber: formData.promotionsSubscriber
 				}),
 			});
 
@@ -188,6 +196,8 @@ const Signup = () => {
 									type="checkbox"
 									className="peer h-5 w-5 cursor-pointer transition-all appearance-none rounded shadow hover:shadow-md border border-slate-300 checked:bg-slate-800 checked:border-slate-800"
 									id="checkbox"
+									checked={formData.promotionsSubscriber}
+									onChange={checkboxChangeHandler}
 								/>
 							</label>
 							<label
