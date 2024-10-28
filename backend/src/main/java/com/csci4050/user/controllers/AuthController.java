@@ -198,7 +198,7 @@ public class AuthController {
         Customer existingCustomer = customer.get();
         existingCustomer.setVerificationCode(RandomStringUtils.randomAlphanumeric(64));
         customerRepository.save(existingCustomer);
-        sendForgotPasswordEmail(existingCustomer, "http://localhost:8080");
+        sendForgotPasswordEmail(existingCustomer, "http://localhost:3000");
         return new ResponseEntity<>("Email sent", HttpStatus.OK);
     }
 
@@ -234,15 +234,18 @@ public class AuthController {
     @PutMapping("/resetPassword/{code}")
     public ResponseEntity<?> resetPassword(@PathVariable String code, @RequestBody ResetPasswordRequest resetPasswordRequest) {
         Optional<Customer> customer = customerRepository.findByVerificationCode(code);
-
+    
         if (!customer.isPresent()) {
             return new ResponseEntity<>(Collections.singletonMap("error", "User not found"), HttpStatus.BAD_REQUEST);
         }
         Customer existingCustomer = customer.get();
         existingCustomer.setVerificationCode(null);
         customerRepository.save(existingCustomer);
+    
         User user = existingCustomer.getUser();
         user.setPassword(passwordEncoder.encode(resetPasswordRequest.getPassword()));
+        userRepository.save(user);  // Save the updated user with the new password
+    
         return new ResponseEntity<>("Password successfully changed", HttpStatus.OK);
     }
 }

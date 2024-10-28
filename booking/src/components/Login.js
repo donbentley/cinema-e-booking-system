@@ -43,9 +43,16 @@ const Login = () => {
 				throw new Error(responseJson.error);
 			}
 			localStorage.setItem("token", responseJson.token);
-			localStorage.setItem("role", responseJson.roles[1])
-			if(localStorage.getItem("role") === "ROLE_ADMIN")
-			navigate("/admin");
+
+			const userRole = responseJson.roles[1] || responseJson.roles[0]; // Assuming at least one role exists
+			localStorage.setItem("role", userRole);
+
+			// Navigate based on role
+			if (userRole === "ROLE_ADMIN") {
+				navigate("/admin");
+			} else {
+				navigate("/"); // Redirect to home for non-admin users
+			}
 		} catch (error) {
 			console.error("Login Failed: ", error);
 			alert("Login failed: Ensure that Username and Password are Correct");
@@ -95,7 +102,7 @@ const Login = () => {
 								</label>
 								<div className="text-sm">
 									<a
-										href="/login"
+										href="/resetpassword"
 										className="font-semibold text-gray-500 hover:text-gray-800"
 									>
 										Forgot password?

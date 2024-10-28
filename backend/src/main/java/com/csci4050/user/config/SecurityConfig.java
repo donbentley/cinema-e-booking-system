@@ -53,30 +53,28 @@ public class SecurityConfig {
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-
+    
         http.csrf((csrf) -> csrf.disable())
             .cors(withDefaults())
             .authorizeHttpRequests((authorize) ->
                 authorize
-                    /*
-                    .requestMatchers(HttpMethod.GET, "/movie/**").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/movie/getAll").permitAll() // Allow access without authentication
                     .requestMatchers(HttpMethod.POST, "/movie/**").hasRole("ADMIN")
                     .requestMatchers(HttpMethod.PUT, "/movie/**").hasRole("ADMIN")
                     .requestMatchers(HttpMethod.DELETE, "/movie/**").hasRole("ADMIN")
                     .requestMatchers("/customer/**").hasAnyRole("ADMIN", "CUSTOMER")
                     .requestMatchers("/address/**").hasAnyRole("ADMIN", "CUSTOMER")
                     .requestMatchers("/payment-card/**").hasAnyRole("ADMIN", "CUSTOMER")
-                    */
                     .requestMatchers("/auth/**").permitAll()
                     .anyRequest().authenticated()
-                    //.anyRequest().permitAll()
             )
             .exceptionHandling((exceptionHandling) ->
-            exceptionHandling
-                .authenticationEntryPoint((request, response, authException) ->
-                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized"))
+                exceptionHandling
+                    .authenticationEntryPoint((request, response, authException) ->
+                        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized"))
             );
-            http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
+    
+        http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 

@@ -10,6 +10,8 @@ import BillingAddress from "./components/BillingAddress";
 import PaymentCard from "./components/PaymentCard";
 import Verify from "./pages/Verify";
 import AdminPage from "./pages/Admin/AdminPage";
+import HardResetPassword from "./pages/ForgotPasswordForm";
+import ResetPasswordPage from "./pages/ResetPasswordForm";
 
 function App() {
 	return (
@@ -26,6 +28,8 @@ function App() {
 					<Route path="profile/payment-card" element={<PaymentCard />} />
 					<Route path="auth/verify/:code" element={<Verify />} />
 					<Route path="/admin" element={<AdminPage />} />
+					<Route path="/resetpassword" element={<HardResetPassword />} />"
+					<Route path="resetpassword/:code" element={<ResetPasswordPage />} />
 				</Routes>
 			</div>
 		</BrowserRouter>
