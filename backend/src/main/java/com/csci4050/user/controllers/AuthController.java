@@ -112,7 +112,7 @@ public class AuthController {
         customer.setStatus(UserStatus.INACTIVE);
         customer.setVerificationCode(RandomStringUtils.randomAlphanumeric(64));
         customerRepository.save(customer);
-        sendVerificationEmail(customer, "http://localhost:8080");
+        sendVerificationEmail(customer, "http://localhost:3000");
 
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
             signupRequest.getEmail(), signupRequest.getPassword()));
