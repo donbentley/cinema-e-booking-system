@@ -9,4 +9,5 @@ public class SignupRequest {
     private String password;
     private String first;
     private String last;
+    private boolean promotionsSubscriber;
 }

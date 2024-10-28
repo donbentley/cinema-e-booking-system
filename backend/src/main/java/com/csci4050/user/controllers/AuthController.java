@@ -28,6 +28,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -74,7 +75,8 @@ public class AuthController {
             SecurityContextHolder.getContext().setAuthentication(authentication);
             UserResponse userResponse = new UserResponse();
             userResponse.setRoles(getUserRoles());
-            userResponse.setToken(jwtUtil.generateToken(loginRequest.getUsernameOrEmail()));
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            userResponse.setToken(jwtUtil.generateToken(userDetails.getUsername()));
             return new ResponseEntity<>(userResponse, HttpStatus.OK);
         } catch (AuthenticationException authExc){
             return new ResponseEntity<>(Collections.singletonMap("error", "Invalid Login Credentials"), HttpStatus.FORBIDDEN);
@@ -111,6 +113,7 @@ public class AuthController {
         customer.setLast(signupRequest.getLast());
         customer.setStatus(UserStatus.INACTIVE);
         customer.setVerificationCode(RandomStringUtils.randomAlphanumeric(64));
+        customer.setPromotionsSubscriber(signupRequest.isPromotionsSubscriber());
         customerRepository.save(customer);
         sendVerificationEmail(customer, "http://localhost:3000");
 
