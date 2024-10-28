@@ -43,7 +43,9 @@ const Login = () => {
 				throw new Error(responseJson.error);
 			}
 			localStorage.setItem("token", responseJson.token);
-			navigate("/");
+			localStorage.setItem("role", responseJson.roles[1])
+			if(localStorage.getItem("role") === "ROLE_ADMIN")
+			navigate("/admin");
 		} catch (error) {
 			console.error("Login Failed: ", error);
 			alert("Login failed: Ensure that Username and Password are Correct");
