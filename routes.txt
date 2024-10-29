@@ -17,7 +17,6 @@ User Login/Signup
 2. Verify Email: GET http://localhost:8080/verify/{code}
 - {code} comes from the link in the email (http://localhost:3000/verify/{code}), need to create a verify email page for that
 
-
 3. Login: POST http://localhost:8080/signin
 - Body:
 {
