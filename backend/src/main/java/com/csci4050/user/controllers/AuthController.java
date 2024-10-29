@@ -1,16 +1,19 @@
 package com.csci4050.user.controllers;
 
+import com.csci4050.customer.entities.Customer;
+import com.csci4050.customer.entities.Customer.UserStatus;
+import com.csci4050.customer.repositories.CustomerRepository;
 import com.csci4050.user.entities.Role;
 import com.csci4050.user.entities.User;
-import com.csci4050.user.entities.Customer.UserStatus;
-import com.csci4050.user.entities.Customer;
 import com.csci4050.user.requests.LoginRequest;
+import com.csci4050.user.requests.ResetPasswordRequest;
 import com.csci4050.user.requests.SignupRequest;
+import com.csci4050.user.responses.UserResponse;
+import com.csci4050.user.security.JWTUtil;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 
-import com.csci4050.user.repositories.CustomerRepository;
 import com.csci4050.user.repositories.RoleRepository;
 import com.csci4050.user.repositories.UserRepository;
 
@@ -23,18 +26,24 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 
 import java.io.UnsupportedEncodingException;
+import java.util.stream.Collectors;
 import java.util.Collections;
+import java.util.Optional;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/auth")
@@ -49,6 +58,8 @@ public class AuthController {
     private RoleRepository roleRepository;
     @Autowired
     private CustomerRepository customerRepository;
+    @Autowired 
+    private JWTUtil jwtUtil;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -57,12 +68,19 @@ public class AuthController {
     private JavaMailSender mailSender;
 
     @PostMapping("/login")
-    public ResponseEntity<String> authenticateUser(@RequestBody LoginRequest loginRequest){
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+    public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest){
+        try {
+            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 loginRequest.getUsernameOrEmail(), loginRequest.getPassword()));
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        return new ResponseEntity<>("User signed-in successfully", HttpStatus.OK);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            UserResponse userResponse = new UserResponse();
+            userResponse.setRoles(getUserRoles());
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            userResponse.setToken(jwtUtil.generateToken(userDetails.getUsername()));
+            return new ResponseEntity<>(userResponse, HttpStatus.OK);
+        } catch (AuthenticationException authExc){
+            return new ResponseEntity<>(Collections.singletonMap("error", "Invalid Login Credentials"), HttpStatus.FORBIDDEN);
+        }
     }
 
     @PostMapping("/signup")
@@ -70,12 +88,12 @@ public class AuthController {
 
         // add check for username exists in a DB
         if (userRepository.existsByUsername(signupRequest.getUsername())) {
-            return new ResponseEntity<>("Username is already taken", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(Collections.singletonMap("error", "Username is already taken"), HttpStatus.BAD_REQUEST);
         }
     
         // add check for email exists in DB
         if (userRepository.existsByEmail(signupRequest.getEmail())) {
-            return new ResponseEntity<>("Email is already taken", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(Collections.singletonMap("error", "Email is already taken"), HttpStatus.BAD_REQUEST);
         }
     
         // create user object
@@ -95,9 +113,25 @@ public class AuthController {
         customer.setLast(signupRequest.getLast());
         customer.setStatus(UserStatus.INACTIVE);
         customer.setVerificationCode(RandomStringUtils.randomAlphanumeric(64));
+        customer.setPromotionsSubscriber(signupRequest.isPromotionsSubscriber());
         customerRepository.save(customer);
         sendVerificationEmail(customer, "http://localhost:3000");
-        return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
+
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+            signupRequest.getEmail(), signupRequest.getPassword()));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        UserResponse userResponse = new UserResponse();
+        userResponse.setRoles(getUserRoles());
+        userResponse.setToken(jwtUtil.generateToken(user.getEmail()));
+        return new ResponseEntity<>(userResponse, HttpStatus.OK);
+
+    }
+
+    private Set<String> getUserRoles() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Set<String> roles = authentication.getAuthorities().stream()
+            .map(r -> r.getAuthority()).collect(Collectors.toSet());
+        return roles;
     }
 
     private void sendVerificationEmail(Customer customer, String siteURL)
@@ -121,31 +155,97 @@ public class AuthController {
         helper.setSubject(subject);
      
         content = content.replace("[[name]]", customer.getFirst() + " " + customer.getLast());
-        String verifyURL = siteURL + "/verify/" + customer.getVerificationCode();
+        String verifyURL = siteURL + "/auth/verify/" + customer.getVerificationCode();
      
         content = content.replace("[[URL]]", verifyURL);
      
         helper.setText(content, true);
      
         mailSender.send(message);
-     
     }
 
-    @GetMapping("/verify/{code}")
+    @PutMapping("/verify/{code}")
     public ResponseEntity<?> verify(@PathVariable String code) {
-        Customer customer = customerRepository.findByVerificationCode(code);
+        Optional<Customer> customer = customerRepository.findByVerificationCode(code);
 
-        if (customer == null) {
-            return new ResponseEntity<>("User not found", HttpStatus.BAD_REQUEST);
+        if (!customer.isPresent()) {
+            return new ResponseEntity<>(Collections.singletonMap("error", "User not found"), HttpStatus.BAD_REQUEST);
+        }
+        Customer existingCustomer = customer.get();
+
+        if (existingCustomer.getStatus() == UserStatus.ACTIVE) {
+            return new ResponseEntity<>(Collections.singletonMap("error", "Email already verified"), HttpStatus.BAD_REQUEST);
         }
 
-        if (customer.getStatus() == UserStatus.ACTIVE) {
-            return new ResponseEntity<>("Email already verified", HttpStatus.BAD_REQUEST);
-        }
-
-        customer.setVerificationCode(null);
-        customer.setStatus(UserStatus.ACTIVE);
-        customerRepository.save(customer);
+        existingCustomer.setVerificationCode(null);
+        existingCustomer.setStatus(UserStatus.ACTIVE);
+        customerRepository.save(existingCustomer);
         return new ResponseEntity<>("Verification successful", HttpStatus.OK);
+    }
+
+    @PutMapping("/forgot-password/{email}")
+    public ResponseEntity<?> resetPasswordRequest (@PathVariable String email) throws UnsupportedEncodingException, MessagingException {
+        Optional<User> user = userRepository.findByEmail(email);
+
+        if (!user.isPresent()) {
+            return new ResponseEntity<>(Collections.singletonMap("error", "User not found"), HttpStatus.BAD_REQUEST);
+        }
+        User existingUser = user.get();
+        Optional<Customer> customer = customerRepository.findByUserId(existingUser.getId());
+        if (!customer.isPresent()) {
+            return new ResponseEntity<>(Collections.singletonMap("error", "User not found"), HttpStatus.BAD_REQUEST);
+        }
+        Customer existingCustomer = customer.get();
+        existingCustomer.setVerificationCode(RandomStringUtils.randomAlphanumeric(64));
+        customerRepository.save(existingCustomer);
+        sendForgotPasswordEmail(existingCustomer, "http://localhost:3000");
+        return new ResponseEntity<>("Email sent", HttpStatus.OK);
+    }
+
+    private void sendForgotPasswordEmail(Customer customer, String siteURL)
+        throws MessagingException, UnsupportedEncodingException {
+        
+        String toAddress = customer.getUser().getEmail();
+        String fromAddress = "cinema.ebooking.b11@gmail.com";
+        String senderName = "Cinema E-Booking B-11";
+        String subject = "Forgot your password?";
+        String content = "Dear User,<br>"
+            + "Please click the link below to reset your password:<br>"
+            + "<h3><a href=\"[[URL]]\" target=\"_self\">VERIFY</a></h3>"
+            + "Thank you,<br>"
+            + "Cinema E-Booking B11.";
+     
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message);
+     
+        helper.setFrom(fromAddress, senderName);
+        helper.setTo(toAddress);
+        helper.setSubject(subject);
+     
+        String verifyURL = siteURL + "/resetPassword/" + customer.getVerificationCode();
+     
+        content = content.replace("[[URL]]", verifyURL);
+     
+        helper.setText(content, true);
+     
+        mailSender.send(message);
+    }
+
+    @PutMapping("/resetPassword/{code}")
+    public ResponseEntity<?> resetPassword(@PathVariable String code, @RequestBody ResetPasswordRequest resetPasswordRequest) {
+        Optional<Customer> customer = customerRepository.findByVerificationCode(code);
+    
+        if (!customer.isPresent()) {
+            return new ResponseEntity<>(Collections.singletonMap("error", "User not found"), HttpStatus.BAD_REQUEST);
+        }
+        Customer existingCustomer = customer.get();
+        existingCustomer.setVerificationCode(null);
+        customerRepository.save(existingCustomer);
+    
+        User user = existingCustomer.getUser();
+        user.setPassword(passwordEncoder.encode(resetPasswordRequest.getPassword()));
+        userRepository.save(user);  // Save the updated user with the new password
+    
+        return new ResponseEntity<>("Password successfully changed", HttpStatus.OK);
     }
 }

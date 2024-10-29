@@ -18,9 +18,9 @@ public class MovieService {
     private MovieRepository movieRepository;
 
     public String addMovie(MovieRequest movieRequest) {
-        Movie findByTitle = movieRepository.findByTitle(movieRequest.getTitle());
+        Optional<Movie> findByTitle = movieRepository.findByTitle(movieRequest.getTitle());
 
-        if (findByTitle != null)
+        if (findByTitle.isPresent())
             throw new MovieAlreadyExists();
 
         Movie movie = MovieConverter.convert(movieRequest);

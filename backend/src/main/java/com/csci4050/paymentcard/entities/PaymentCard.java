@@ -1,7 +1,7 @@
 package com.csci4050.paymentcard.entities;
 
 
-import com.csci4050.user.entities.Customer;
+import com.csci4050.customer.entities.Customer;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.*;
@@ -23,6 +23,8 @@ public class PaymentCard {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    private String nickname;
+
     @Column(name = "card_number")
     private String cardNumber;
 
@@ -30,6 +32,7 @@ public class PaymentCard {
     private String expDate;
 
     private String cvv;
+    private String name;
 
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="customer_id")
