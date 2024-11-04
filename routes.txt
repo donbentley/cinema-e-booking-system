@@ -1,0 +1,114 @@
+Route Maps:
+
+User Login/Signup
+
+1. Signup: POST http://localhost:8080/signup
+- Body:
+{
+	"email": "",
+	"username": "",
+	"password": "",
+	"first": "",
+	"last": "",
+}
+- Note: Assumes new signup is a customer, sends email to email for verification
+
+
+2. Verify Email: GET http://localhost:8080/verify/{code}
+- {code} comes from the link in the email (http://localhost:3000/verify/{code}), need to create a verify email page for that
+
+3. Login: POST http://localhost:8080/signin
+- Body:
+{
+	"usernameOrEmail": "",
+	"password": ""
+}
+
+--------------------------------------------------------------------------------------------------------------------
+
+Edit customer details: http://localhost:8080/customer
+
+1. Update details (except password): PUT http://localhost:8080/customer/{customerId}
+- Body:
+{
+	"id": "",
+	"username": "",
+	"first": "",
+	"last":"",	
+}
+
+2. Update password: PUT http://localhost:8080/customer/update-password
+- Body:
+{
+	"usernameOrEmail": "",
+	"oldPassword": "",
+	"newPassword": ""
+}
+
+3. Get customer: GET http://localhost:8080/customer/{customerId}
+
+--------------------------------------------------------------------------------------------------------------------
+
+Address: http://localhost:8080/address
+
+1. Add new address: POST http://localhost:8080/address/addNew
+- Body:
+{
+   	"line1": "",
+    	"line2": "",
+	"city": "",
+	"state": "",
+	"zip": "",
+	"customer": {
+    		customer object
+	}
+}
+
+2. Update address: PUT http://localhost:8080/address/{addressId}
+- Body:
+{
+	"id": "",
+   	"line1": "",
+    	"line2": "",
+	"city": "",
+	"state": "",
+	"zip": "",
+	"customer": {
+    		customer object
+	}
+}
+
+3. Get/delete address: GET/DELETE http://localhost:8080/address/{addressId}
+
+-------------------------------------------------------------------------------------------------------------------------
+
+Payment Card: http://localhost:8080/card
+
+1. Add new address: POST http://localhost:8080/card/addNew
+- Body:
+{
+   	"cardNumber": "",
+    	"expDate": "",
+	"cvv": "",
+	"customer": {
+    		customer object
+	}
+}
+
+
+2. Update address: PUT http://localhost:8080/card/{cardId}
+- Body:
+{
+	"id": "",
+   	"cardNumber": "",
+    	"expDate": "",
+	"cvv": "",
+	"customer": {
+    		customer object
+	}
+}
+
+3. Get/delete address: GET/DELETE http://localhost:8080/card/{cardId}
+
+----------------------------------------------------------------------------------------------------------------------------
+

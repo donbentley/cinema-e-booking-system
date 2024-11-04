@@ -40,3 +40,7 @@ application.properties
 
 ##
 /frontend/node_modules
+node_modules
+
+/booking/node_modules
+node_modules
