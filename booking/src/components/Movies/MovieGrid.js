@@ -1,12 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import Slider from "react-slick";
+import MovieInfo from "./MovieInfo";
 
 const MovieGrid = ({ movies }) => {
+	// State to keep track of the selected movie
+	const [selectedMovie, setSelectedMovie] = useState(null);
+
+	// Function to handle single and double-clicks on a movie
+	const handleMovieClick = (movie) => {
+		if (selectedMovie?.id === movie.id) {
+			setSelectedMovie(null); // Close if double-clicked on the same movie
+		} else {
+			setSelectedMovie(movie); // Open the clicked movie info
+		}
+	};
+
 	// Slider settings for react-slick
 	const settings = {
 		infinite: true,
 		speed: 500,
-		slidesToShow: 4, // Number of slides to show
+		slidesToShow: 4,
 		slidesToScroll: 1,
 		autoplay: true,
 		autoplaySpeed: 2000,
@@ -14,21 +27,21 @@ const MovieGrid = ({ movies }) => {
 		cssEase: "linear",
 		responsive: [
 			{
-				breakpoint: 1024, // Screens smaller than 1024px will show 3 slides
+				breakpoint: 1024,
 				settings: {
 					slidesToShow: 3,
 					slidesToScroll: 1,
 				},
 			},
 			{
-				breakpoint: 768, // Screens smaller than 768px will show 2 slides
+				breakpoint: 768,
 				settings: {
-					slidesToShow: 4,
+					slidesToShow: 3,
 					slidesToScroll: 1,
 				},
 			},
 			{
-				breakpoint: 640, // Screens smaller than 640px will show 1 slide
+				breakpoint: 640,
 				settings: {
 					slidesToShow: 1,
 					slidesToScroll: 1,
@@ -39,10 +52,17 @@ const MovieGrid = ({ movies }) => {
 
 	return (
 		<div className="container mx-auto p-4">
-			<h1 className="text-3xl font-bold text-center">now playing</h1>
+			<h1 className="text-3xl font-bold text-center mb-6">Now Playing</h1>
+
+			{/* Movie Carousel */}
 			<Slider {...settings}>
 				{movies.map((movie) => (
-					<div key={movie.id} className="px-2 py-4">
+					<div
+						key={movie.id}
+						className="px-2 py-4 cursor-pointer"
+						onClick={() => handleMovieClick(movie)}
+						onDoubleClick={() => setSelectedMovie(null)} // Double-click to close
+					>
 						<div className="bg-white rounded-md shadow-md overflow-hidden">
 							<div className="relative pb-[150%] w-full overflow-hidden">
 								<img
@@ -58,6 +78,9 @@ const MovieGrid = ({ movies }) => {
 					</div>
 				))}
 			</Slider>
+
+			{/* Movie Info Section */}
+			{selectedMovie && <MovieInfo movie={selectedMovie} />}
 		</div>
 	);
 };

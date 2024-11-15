@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { EditProfile } from "../components/EditProfile";
-import ResetPassword from "../components/ResetPassword"; // Correct import
-import BillingAddress from "../components/BillingAddress";
-import PaymentCard from "../components/PaymentCard";
-import { Navbar } from "../components/Navbar";
+import { EditProfile } from "../../components/Profile/EditProfile";
+import ResetPassword from "../../components/Profile/ResetPassword"; // Correct import
+import BillingAddress from "../../components/Profile/BillingAddress";
+import PaymentCard from "../../components/Profile/PaymentCard";
+import { Navbar } from "../../components/Global/Navbar";
 
 const ProfilePage = () => {
-
 	const navigate = useNavigate();
 
 	const [activeComponent, setActiveComponent] = useState("editProfile");
@@ -39,13 +38,13 @@ const ProfilePage = () => {
 	const renderComponent = () => {
 		switch (activeComponent) {
 			case "editProfile":
-				return <EditProfile user={user}/>;
+				return <EditProfile user={user} />;
 			case "resetPassword":
-				return <ResetPassword user={user}/>;
+				return <ResetPassword user={user} />;
 			case "billingAddress":
-				return <BillingAddress user={user}/>;
+				return <BillingAddress user={user} />;
 			case "paymentCard":
-				return <PaymentCard user={user}/>;
+				return <PaymentCard user={user} />;
 			default:
 				return <EditProfile />;
 		}

@@ -2,16 +2,17 @@
 import React from "react";
 import { BrowserRouter, Router, Routes, Route, Link } from "react-router-dom";
 import Home from "./pages/Home";
-import LoginPage from "./pages/LoginPage";
-import SignupPage from "./pages/SignupPage";
-import ProfilePage from "./pages/ProfilePage";
-import ResetPassword from "./components/ResetPassword";
-import BillingAddress from "./components/BillingAddress";
-import PaymentCard from "./components/PaymentCard";
-import Verify from "./pages/Verify";
+import LoginPage from "./pages/Auth/LoginPage";
+import SignupPage from "./pages/Auth/SignupPage";
+import ProfilePage from "./pages/Auth/ProfilePage";
+import ResetPassword from "./components/Profile/ResetPassword";
+import BillingAddress from "./components/Profile/BillingAddress";
+import PaymentCard from "./components/Profile/PaymentCard";
+import Verify from "./pages/Auth/Verify";
 import AdminPage from "./pages/Admin/AdminPage";
-import HardResetPassword from "./pages/ForgotPasswordForm";
-import ResetPasswordPage from "./pages/ResetPasswordForm";
+import HardResetPassword from "./pages/Auth/ForgotPasswordForm";
+import ResetPasswordPage from "./pages/Auth/ResetPasswordForm";
+import Showroom from "./components/Showtimes/ShowRoom";
 
 function App() {
 	return (
@@ -30,6 +31,7 @@ function App() {
 					<Route path="/admin" element={<AdminPage />} />
 					<Route path="/resetpassword" element={<HardResetPassword />} />"
 					<Route path="resetpassword/:code" element={<ResetPasswordPage />} />
+					<Route path="/booking" element={<Showroom />} />
 				</Routes>
 			</div>
 		</BrowserRouter>

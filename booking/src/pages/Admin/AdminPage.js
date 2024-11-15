@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import ManageMovies from "./ManageMovies";
 import ManagePromotions from "./ManagePromotions";
-import ManageUsers from "./ManageUsers";
+import ManageShowtimes from "./ManageShowtimes";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { Navbar } from "../../components/Navbar";
+import { Navbar } from "../../components/Global/Navbar";
 
 const AdminPage = () => {
 	const [activeTab, setActiveTab] = useState("movies"); // Default tab
@@ -38,9 +38,9 @@ const AdminPage = () => {
 				return <ManageMovies user={user} />;
 
 			case "promotions":
-				return <ManagePromotions user={user}/>;
+				return <ManagePromotions user={user} />;
 			case "users":
-				return <ManageUsers users={user}/>;
+				return <ManageShowtimes users={user} />;
 			default:
 				return <ManageMovies />;
 		}
@@ -83,7 +83,7 @@ const AdminPage = () => {
 						}`}
 						onClick={() => setActiveTab("users")}
 					>
-						Manage Users
+						Manage Showtimes
 					</button>
 				</div>
 				<div className="w-full max-w-2xl bg-white p-6 rounded-lg  ring-2">
