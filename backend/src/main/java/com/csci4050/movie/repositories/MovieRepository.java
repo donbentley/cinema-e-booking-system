@@ -5,8 +5,10 @@ import org.springframework.stereotype.Repository;
 import com.csci4050.movie.entities.Movie;
 
 import java.util.Optional;
+import java.util.List;
 
 @Repository
 public interface MovieRepository extends JpaRepository<Movie, Integer> {
-    Optional<Movie> findByTitle(String name);
+    Optional<Movie> findByTitle(String title);
+    List<Movie> findAllByTitleLike(String title);
 }

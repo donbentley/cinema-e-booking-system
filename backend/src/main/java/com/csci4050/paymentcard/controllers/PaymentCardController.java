@@ -23,7 +23,7 @@ public class PaymentCardController {
     public ResponseEntity<?> addPaymentCard(@RequestBody PaymentCardRequest paymentCardRequest) {
         try {
             String result = paymentCardService.addCard(paymentCardRequest);
-            return new ResponseEntity<>(Collections.singletonMap("msg", result), HttpStatus.CREATED);
+            return new ResponseEntity<>(Collections.singletonMap("msg", result), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(Collections.singletonMap("msg", e.getMessage()), HttpStatus.BAD_REQUEST);
         }
@@ -43,9 +43,9 @@ public class PaymentCardController {
     public ResponseEntity<?> deletePaymentCard(@PathVariable Integer id) {
         String result = paymentCardService.deletePaymentCard(id);
         if (result.equals("Card deleted successfully")) {
-            return new ResponseEntity<>(result, HttpStatus.OK);
+            return new ResponseEntity<>(Collections.singletonMap("msg", result), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(Collections.singletonMap("msg", result), HttpStatus.NOT_FOUND);
         }
     }
 

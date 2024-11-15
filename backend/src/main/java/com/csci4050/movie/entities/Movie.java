@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.csci4050.showing.entities.Showing;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -50,4 +53,8 @@ public class Movie {
     private String pictureLink;
     private String trailerLink;
     private String mpaaRating;
+
+    @OneToMany(mappedBy="movie")
+    @JsonIgnoreProperties("movie")
+    private List<Showing> showtimes;
 }
