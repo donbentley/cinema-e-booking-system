@@ -10,7 +10,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import com.csci4050.promotion.entities.Promotion;
+import com.csci4050.promotion.exceptions.ActivePromotionException;
+import com.csci4050.promotion.exceptions.InactivePromotionException;
 import com.csci4050.promotion.exceptions.PromotionNotFoundException;
+import com.csci4050.promotion.exceptions.SendEmailException;
 import com.csci4050.promotion.requests.PromotionRequest;
 import com.csci4050.promotion.services.PromotionService;
 
@@ -52,10 +55,22 @@ public class PromotionController {
         }
     }
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<?> updatePromotion(@PathVariable Integer id, @RequestBody PromotionRequest promotionRequest) {
+    @GetMapping("/redeem/{id}")
+    public ResponseEntity<?> redeemPromotionById(@PathVariable Integer id) {
         try {
-            Promotion result = promotionService.updatePromotion(id, promotionRequest);
+            Promotion result = promotionService.redeemPromotionById(id);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (PromotionNotFoundException e) {
+            return new ResponseEntity<>(Collections.singletonMap("msg", e.getMessage()), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(Collections.singletonMap("msg", e.getMessage()), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> updatePromotion(@PathVariable Integer id, @RequestBody Promotion promotion) {
+        try {
+            Promotion result = promotionService.updatePromotion(id, promotion);
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (PromotionNotFoundException e) {
             return new ResponseEntity<>(Collections.singletonMap("msg", e.getMessage()), HttpStatus.NOT_FOUND);
@@ -81,8 +96,24 @@ public class PromotionController {
             return new ResponseEntity<>(Collections.singletonMap("msg", result), HttpStatus.OK);
         } catch (PromotionNotFoundException e) {
             return new ResponseEntity<>(Collections.singletonMap("msg", e.getMessage()), HttpStatus.NOT_FOUND);
-        } catch (Exception e) {
+        } catch (ActivePromotionException e) {
             return new ResponseEntity<>(Collections.singletonMap("msg", e.getMessage()), HttpStatus.BAD_REQUEST);
+        } catch (SendEmailException e) {
+            return new ResponseEntity<>(Collections.singletonMap("msg", e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/send-promotion/{id}")
+    public ResponseEntity<?> sendPromotion(@PathVariable Integer id) {
+        try {
+            String result = promotionService.sendPromotionEmailById(id);
+            return new ResponseEntity<>(Collections.singletonMap("msg", result), HttpStatus.OK);
+        } catch (PromotionNotFoundException e) {
+            return new ResponseEntity<>(Collections.singletonMap("msg", e.getMessage()), HttpStatus.NOT_FOUND);
+        } catch (InactivePromotionException e) {
+            return new ResponseEntity<>(Collections.singletonMap("msg", e.getMessage()), HttpStatus.BAD_REQUEST);
+        } catch (SendEmailException e) {
+            return new ResponseEntity<>(Collections.singletonMap("msg", e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

@@ -146,21 +146,21 @@ public class AuthController {
             + "<h3><a href=\"[[URL]]\" target=\"_self\">VERIFY</a></h3>"
             + "Thank you,<br>"
             + "Cinema E-Booking B11.";
-     
+
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
-     
+
         helper.setFrom(fromAddress, senderName);
         helper.setTo(toAddress);
         helper.setSubject(subject);
-     
+
         content = content.replace("[[name]]", customer.getFirst() + " " + customer.getLast());
         String verifyURL = siteURL + "/auth/verify/" + customer.getVerificationCode();
-     
+
         content = content.replace("[[URL]]", verifyURL);
-     
+
         helper.setText(content, true);
-     
+
         mailSender.send(message);
     }
 
@@ -211,23 +211,23 @@ public class AuthController {
         String subject = "Forgot your password?";
         String content = "Dear User,<br>"
             + "Please click the link below to reset your password:<br>"
-            + "<h3><a href=\"[[URL]]\" target=\"_self\">VERIFY</a></h3>"
+            + "<h3><a href=\"[[URL]]\" target=\"_self\">RESET PASSWORD</a></h3>"
             + "Thank you,<br>"
             + "Cinema E-Booking B11.";
-     
+
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
-     
+
         helper.setFrom(fromAddress, senderName);
         helper.setTo(toAddress);
         helper.setSubject(subject);
-     
+
         String verifyURL = siteURL + "/resetPassword/" + customer.getVerificationCode();
-     
+
         content = content.replace("[[URL]]", verifyURL);
-     
+
         helper.setText(content, true);
-     
+
         mailSender.send(message);
     }
 
