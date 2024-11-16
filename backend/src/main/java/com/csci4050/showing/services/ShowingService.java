@@ -9,7 +9,9 @@ import com.csci4050.showing.entities.Showing;
 import com.csci4050.showing.repositories.ShowingRepository;
 import com.csci4050.showing.repositories.ShowroomRepository;
 import com.csci4050.showing.requests.ShowingRequest;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ShowingService {
     
     @Autowired
