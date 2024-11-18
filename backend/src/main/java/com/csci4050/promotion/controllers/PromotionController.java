@@ -103,7 +103,7 @@ public class PromotionController {
         }
     }
 
-    @PostMapping("/send-promotion/{id}")
+    @PostMapping("/send/{id}")
     public ResponseEntity<?> sendPromotion(@PathVariable Integer id) {
         try {
             String result = promotionService.sendPromotionEmailById(id);

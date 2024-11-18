@@ -9,11 +9,11 @@ import org.springframework.stereotype.Repository;
 
 import com.csci4050.movie.entities.Movie;
 import com.csci4050.showing.entities.Showing;
-import com.csci4050.showing.entities.Showroom;
+import com.csci4050.showroom.entities.Showroom;
 
 @Repository
 public interface ShowingRepository extends JpaRepository<Showing, Integer> {
     List<Showing> findAllByMovie(Movie movie);
     Optional<Showing> findByDateTimeAndShowroom(LocalDateTime dateTime, Showroom showroom);
-    Optional<Showing> findByDateTimeBetween(LocalDateTime from, LocalDateTime to);
+    Optional<Showing> findByDateTimeBetweenAndShowroom(LocalDateTime from, LocalDateTime to, Showroom showroom);
 }

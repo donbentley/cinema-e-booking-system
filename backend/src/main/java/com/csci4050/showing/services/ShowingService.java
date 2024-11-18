@@ -1,14 +1,21 @@
 package com.csci4050.showing.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.csci4050.paymentcard.entities.PaymentCard;
+import com.csci4050.movie.entities.Movie;
+import com.csci4050.movie.exceptions.MovieNotFoundException;
+import com.csci4050.movie.repositories.MovieRepository;
+import com.csci4050.showing.converter.ShowingConverter;
 import com.csci4050.showing.entities.Showing;
+import com.csci4050.showing.exceptions.ShowingNotFoundException;
+import com.csci4050.showing.exceptions.TimeConflictException;
 import com.csci4050.showing.repositories.ShowingRepository;
-import com.csci4050.showing.repositories.ShowroomRepository;
 import com.csci4050.showing.requests.ShowingRequest;
+import com.csci4050.showroom.repositories.ShowroomRepository;
+
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,34 +26,58 @@ public class ShowingService {
 
     @Autowired
     private ShowroomRepository showroomRepository;
+    
+    @Autowired
+    private MovieRepository movieRepository;
 
     public Showing getShowingById(Integer id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getShowingById'");
+        Optional<Showing> existingShowing = showingRepository.findById(id);
+        if (!existingShowing.isPresent()) { throw new ShowingNotFoundException(); }
+        Showing s = existingShowing.get();
+        return s;
     }
 
     public Showing addShowing(ShowingRequest showingRequest) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addShowing'");
+        Showing s = ShowingConverter.convert(showingRequest);
+        Optional<Showing> existingShowing = showingRepository.findByDateTimeBetweenAndShowroom(
+            s.getDateTime(), s.getDateTime().plusHours(3), s.getShowroom());
+        if (existingShowing.isPresent()) { throw new TimeConflictException(); }
+        s = showingRepository.save(s);
+        return s;
     }
 
     public String deleteShowing(Integer id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteShowing'");
+        if (showingRepository.existsById(id)) {
+            showingRepository.deleteById(id);
+            return "Showing deleted successfully";
+        } else {
+            throw new ShowingNotFoundException();
+        }
     }
 
     public Showing updateShowing(Integer id, ShowingRequest showingRequest) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateShowing'");
+        Optional<Showing> s = showingRepository.findById(id);
+        if (!s.isPresent()) { throw new ShowingNotFoundException(); }
+        Showing showingToUpdate = s.get();
+        Showing updatedShowing = ShowingConverter.convert(showingRequest);
+        Optional<Showing> existingShowing = showingRepository.findByDateTimeBetweenAndShowroom(
+            updatedShowing.getDateTime(), updatedShowing.getDateTime().plusHours(3), updatedShowing.getShowroom());
+        if (existingShowing.isPresent()) { throw new TimeConflictException(); }
+        updatedShowing.setId(showingToUpdate.getId());
+        updatedShowing = showingRepository.save(updatedShowing);
+        return updatedShowing;
     }
 
     public List<Showing> getAllShowings() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAllShowings'");
+        List<Showing> showings = showingRepository.findAll();
+        return showings;
     }
 
     public List<Showing> getAllShowingsByMovie(Integer movieId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAllShowingsByMovie'");
+        Optional<Movie> m = movieRepository.findById(movieId);
+        if (!m.isPresent()) { throw new MovieNotFoundException(); }
+        Movie existingMovie = m.get();
+        List<Showing> showings = showingRepository.findAllByMovie(existingMovie);
+        return showings;
     }
 }

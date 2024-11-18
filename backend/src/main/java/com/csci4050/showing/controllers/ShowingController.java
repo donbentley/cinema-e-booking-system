@@ -1,6 +1,5 @@
 package com.csci4050.showing.controllers;
 
-import com.csci4050.paymentcard.entities.PaymentCard;
 import com.csci4050.showing.entities.*;
 import com.csci4050.showing.exceptions.ShowingNotFoundException;
 import com.csci4050.showing.requests.ShowingRequest;
@@ -61,7 +60,6 @@ public class ShowingController {
         } catch (ShowingNotFoundException e) {
             return new ResponseEntity<>(Collections.singletonMap("msg", e.getMessage()), HttpStatus.NOT_FOUND);
         }
-       
     }
 
     @DeleteMapping("/delete/{id}")

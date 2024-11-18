@@ -8,10 +8,10 @@ import com.csci4050.showing.requests.ShowingRequest;
 public class ShowingConverter {
     
     public static Showing convert(ShowingRequest showingRequest) {
-        Showing showing = (Showing.builder()
+        Showing showing = Showing.builder()
             .movie(showingRequest.getMovie())
             .showroom(showingRequest.getShowroom())
-            .dateTime(LocalDateTime.parse(showingRequest.getDateTime())))
+            .dateTime(LocalDateTime.parse(showingRequest.getDateTime()))
             .build();
         return showing;
     }
