@@ -23,9 +23,6 @@ public class ShowingService {
     
     @Autowired
     private ShowingRepository showingRepository;
-
-    @Autowired
-    private ShowroomRepository showroomRepository;
     
     @Autowired
     private MovieRepository movieRepository;
