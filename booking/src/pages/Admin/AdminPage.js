@@ -5,6 +5,7 @@ import ManageShowtimes from "./ManageShowtimes";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Navbar } from "../../components/Global/Navbar";
+import ManageShowrooms from "./MangageShowrooms";
 
 const AdminPage = () => {
 	const [activeTab, setActiveTab] = useState("movies"); // Default tab
@@ -40,7 +41,9 @@ const AdminPage = () => {
 			case "promotions":
 				return <ManagePromotions user={user} />;
 			case "users":
-				return <ManageShowtimes users={user} />;
+				return <ManageShowtimes user={user} />;
+			case "showrooms":
+				return <ManageShowrooms user={user} />;
 			default:
 				return <ManageMovies />;
 		}
@@ -84,6 +87,17 @@ const AdminPage = () => {
 						onClick={() => setActiveTab("users")}
 					>
 						Manage Showtimes
+					</button>
+					<button
+						className={`px-4 py-2 rounded-full text-white transition-all duration-300 
+						${
+							activeTab === "showrooms"
+								? "bg-gray-600 ring-2 ring-slate-500 ring-inset"
+								: "bg-gray-600 hover:bg-gray-400"
+						}`}
+						onClick={() => setActiveTab("showrooms")}
+					>
+						Manage Showrooms
 					</button>
 				</div>
 				<div className="w-full max-w-2xl bg-white p-6 rounded-lg  ring-2">
