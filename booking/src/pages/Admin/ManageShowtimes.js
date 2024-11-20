@@ -12,173 +12,162 @@ const ManageShowtimes = () => {
 	const [showrooms, setShowrooms] = useState([]);
 	const [showings, setShowings] = useState([]);
 	const [newShowing, setNewShowing] = useState({
-		movieId: "",
-		showroomId: "",
+		movie: null,
+		showroom: null,
 		dateTime: "",
 	});
 	const [editingShowing, setEditingShowing] = useState(null);
+	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState(null);
 
 	const token = localStorage.getItem("token");
 
+	const api = axios.create({
+		baseURL: "http://localhost:8080",
+		headers: {
+			Authorization: `Bearer ${token}`,
+			"Content-Type": "application/json",
+		},
+	});
+
 	useEffect(() => {
-		fetchMovies();
-		fetchShowrooms();
-		fetchShowings();
+		if (!token) {
+			setError("No authentication token found. Please log in.");
+			setLoading(false);
+			return;
+		}
+		fetchInitialData();
 	}, []);
 
-	// Fetch the list of movies
-	const fetchMovies = () => {
-		axios
-			.get("http://localhost:8080/movie/getAll", {
-				headers: { Authorization: `Bearer ${token}` },
-			})
-			.then((response) => {
-				setMovies(response.data);
-			})
-			.catch((err) => console.error("Error fetching movies:", err));
+	const fetchInitialData = async () => {
+		try {
+			setLoading(true);
+			const [moviesRes, showroomsRes, showingsRes] = await Promise.all([
+				api.get("/movie/getAll"),
+				api.get("/showroom/getAll"),
+				api.get("/showing/getAll"),
+			]);
+
+			setMovies(moviesRes.data);
+			setShowrooms(showroomsRes.data);
+			setShowings(
+				showingsRes.data.filter((showing) => showing.movie && showing.showroom)
+			);
+			setError(null);
+		} catch (err) {
+			console.error("Error fetching initial data:", err);
+			setError(
+				"Failed to load data. Please check your connection and try again."
+			);
+		} finally {
+			setLoading(false);
+		}
 	};
 
-	// Fetch the list of showrooms
-	const fetchShowrooms = () => {
-		axios
-			.get("http://localhost:8080/showroom/getAll", {
-				headers: { Authorization: `Bearer ${token}` },
-			})
-			.then((response) => {
-				setShowrooms(response.data);
-				console.log("Fetched showrooms:", response.data); // Log the fetched showrooms
-			})
-			.catch((err) => console.error("Error fetching showrooms:", err));
+	const handleDelete = async (id) => {
+		try {
+			await api.delete(`/showing/delete/${id}`);
+			await fetchInitialData();
+		} catch (err) {
+			console.error("Error deleting showing:", err);
+			setError("Failed to delete showing. Please try again.");
+		}
 	};
 
-	// Fetch the list of showings
-	const fetchShowings = () => {
-		axios
-			.get("http://localhost:8080/showing/getAll", {
-				headers: { Authorization: `Bearer ${token}` },
-			})
-			.then((response) => setShowings(response.data))
-			.catch((err) => console.error("Error fetching showings:", err));
-	};
-
-	// Handle delete of a showing
-	const handleDelete = (id) => {
-		axios
-			.delete(`http://localhost:8080/showing/delete/${id}`, {
-				headers: { Authorization: `Bearer ${token}` },
-			})
-			.then(fetchShowings)
-			.catch((err) => console.error("Error deleting showing:", err));
-	};
-
-	// Handle edit click to modify a showing
 	const handleEditClick = (showing) => {
-		setEditingShowing({ ...showing });
+		if (!showing.movie || !showing.showroom) {
+			setError(
+				"Cannot edit showing with missing movie or showroom information"
+			);
+			return;
+		}
+
+		setEditingShowing({
+			...showing,
+			movie: showing.movie,
+			showroom: showing.showroom,
+		});
 	};
 
-	// Handle saving edited showing
-	const handleSaveEdit = (id) => {
-		axios
-			.put(`http://localhost:8080/showing/update/${id}`, editingShowing, {
-				headers: { Authorization: `Bearer ${token}` },
-			})
-			.then(() => {
-				fetchShowings();
-				setEditingShowing(null);
-			})
-			.catch((err) => console.error("Error updating showing:", err));
+	const handleSaveEdit = async (id) => {
+		if (
+			!editingShowing.movie ||
+			!editingShowing.showroom ||
+			!editingShowing.dateTime
+		) {
+			setError("Please fill in all fields");
+			return;
+		}
+
+		try {
+			const updateData = {
+				movie: { id: editingShowing.movie.id },
+				showroom: { id: editingShowing.showroom.id },
+				dateTime: editingShowing.dateTime,
+			};
+
+			await api.put(`/showing/update/${id}`, updateData);
+			await fetchInitialData();
+			setEditingShowing(null);
+			setError(null);
+		} catch (err) {
+			console.error("Error updating showing:", err);
+			setError("Failed to update showing. Please try again.");
+		}
 	};
 
-	// Handle adding new showing
-	const handleAddShowing = (e) => {
+	const handleAddShowing = async (e) => {
 		e.preventDefault();
 
-		// Log the new showing data to check if it's correct
-		console.log("Adding new showing:", newShowing);
+		if (!newShowing.movie || !newShowing.showroom || !newShowing.dateTime) {
+			setError("Please fill in all fields");
+			return;
+		}
 
-		axios
-			.post("http://localhost:8080/showing/addNew", newShowing, {
-				headers: { Authorization: `Bearer ${token}` },
-			})
-			.then(() => {
-				fetchShowings();
-				setNewShowing({ movieId: "", showroomId: "", dateTime: "" });
-			})
-			.catch((err) => console.error("Error adding showing:", err));
+		try {
+			const showingData = {
+				movie: { id: parseInt(newShowing.movie) },
+				showroom: { id: parseInt(newShowing.showroom) },
+				dateTime: newShowing.dateTime,
+			};
+
+			await api.post("/showing/addNew", showingData);
+			await fetchInitialData();
+			setNewShowing({ movie: null, showroom: null, dateTime: "" });
+			setError(null);
+		} catch (err) {
+			console.error("Error adding showing:", err);
+			setError(
+				"cannot add showing at the same time in the same showroom. try again"
+			);
+		}
 	};
 
-	return (
-		<div className="container">
-			<h2 className="text-2xl font-semibold mb-4">Manage Showings</h2>
-
-			{/* Displaying showings */}
-			<div>
-				{showings.map((showing) => (
-					<div
-						key={showing.id}
-						className="flex items-center justify-between bg-white rounded-md shadow-md p-4"
-					>
-						{editingShowing && editingShowing.id === showing.id ? (
-							<div>
-								<input
-									type="datetime-local"
-									value={editingShowing.dateTime}
-									onChange={(e) =>
-										setEditingShowing({
-											...editingShowing,
-											dateTime: e.target.value,
-										})
-									}
-									className="p-2 border rounded-md w-full mb-2"
-								/>
-								<button
-									onClick={() => handleSaveEdit(showing.id)}
-									className="bg-green-500 text-white px-4 py-2 rounded-md"
-								>
-									<ArrowDownTrayIcon className="h-5 w-5" />
-								</button>
-								<button
-									onClick={() => setEditingShowing(null)}
-									className="bg-gray-500 text-white px-4 py-2 rounded-md"
-								>
-									<XMarkIcon className="h-5 w-5" />
-								</button>
-							</div>
-						) : (
-							<div className="flex justify-between w-full">
-								<span>
-									Title:{showing.movie?.title} - Showroom: {showing.showroom?.showroomId.name} -
-									Time: {showing.dateTime}
-								</span>
-								<div>
-									<button
-										onClick={() => handleEditClick(showing)}
-										className="bg-blue-500 text-white px-2 py-1 rounded-md"
-									>
-										<PencilSquareIcon className="h-5 w-5" />
-									</button>
-									<button
-										onClick={() => handleDelete(showing.id)}
-										className="bg-red-500 text-white px-2 py-1 rounded-md"
-									>
-										<TrashIcon className="h-5 w-5" />
-									</button>
-								</div>
-							</div>
-						)}
-					</div>
-				))}
+	if (loading) {
+		return (
+			<div className="container mx-auto p-4">
+				<div className="text-center">Loading showings...</div>
 			</div>
+		);
+	}
 
-			{/* Add Showing Form */}
-			<form onSubmit={handleAddShowing} className="mt-4">
-				{/* Movie dropdown */}
+	return (
+		<div className="container mx-auto p-4">
+			<h2 className="text-2xl font-bold mb-6">Manage Showtimes</h2>
+
+			{error && (
+				<div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+					{error}
+				</div>
+			)}
+
+			<form onSubmit={handleAddShowing} className="grid grid-cols-3 gap-4 mb-6">
 				<select
-					value={newShowing.movieId}
+					value={newShowing.movie || ""}
 					onChange={(e) =>
-						setNewShowing({ ...newShowing, movieId: e.target.value })
+						setNewShowing({ ...newShowing, movie: e.target.value })
 					}
-					className="p-2 border rounded-md w-full mb-2"
+					className="p-2 border rounded"
 					required
 				>
 					<option value="">Select Movie</option>
@@ -189,18 +178,12 @@ const ManageShowtimes = () => {
 					))}
 				</select>
 
-				{/* Showroom dropdown */}
 				<select
-					value={newShowing.showroomId}
-					onChange={(e) => {
-						setNewShowing({ ...newShowing, showroomId: e.target.value });
-						// Log the showroom ID and its details when the user selects a showroom
-						const selectedShowroom = showrooms.find(
-							(showroom) => showroom.id === e.target.value
-						);
-						console.log("Selected showroom:", selectedShowroom); // Log selected showroom info
-					}}
-					className="p-2 border rounded-md w-full mb-2"
+					value={newShowing.showroom || ""}
+					onChange={(e) =>
+						setNewShowing({ ...newShowing, showroom: e.target.value })
+					}
+					className="p-2 border rounded"
 					required
 				>
 					<option value="">Select Showroom</option>
@@ -211,25 +194,59 @@ const ManageShowtimes = () => {
 					))}
 				</select>
 
-				{/* Date and time input */}
 				<input
 					type="datetime-local"
 					value={newShowing.dateTime}
 					onChange={(e) =>
 						setNewShowing({ ...newShowing, dateTime: e.target.value })
 					}
-					className="p-2 border rounded-md w-full mb-2"
+					className="p-2 border rounded"
 					required
 				/>
 
-				{/* Add Showing Button */}
 				<button
 					type="submit"
-					className="bg-green-500 text-white px-4 py-2 rounded-md"
+					className="bg-green-500 text-white px-4 py-2 rounded col-span-3"
 				>
 					Add Showing
 				</button>
 			</form>
+
+			<table className="table-auto w-full bg-white shadow-md rounded">
+				<thead>
+					<tr className="bg-gray-200">
+						<th className="p-4">Movie</th>
+						<th className="p-4">Showroom</th>
+						<th className="p-4">Time</th>
+						<th className="p-4">Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{showings.map((showing) => (
+						<tr key={showing.id} className="border-t">
+							<td className="p-4">{showing.movie?.title}</td>
+							<td className="p-4">{showing.showroom?.name}</td>
+							<td className="p-4">
+								{new Date(showing.dateTime).toLocaleString()}
+							</td>
+							<td className="p-4 flex space-x-2">
+								<button
+									onClick={() => handleEditClick(showing)}
+									className="bg-blue-500 text-white px-2 py-1 rounded"
+								>
+									<PencilSquareIcon className="h-5 w-5" />
+								</button>
+								<button
+									onClick={() => handleDelete(showing.id)}
+									className="bg-red-500 text-white px-2 py-1 rounded"
+								>
+									<TrashIcon className="h-5 w-5" />
+								</button>
+							</td>
+						</tr>
+					))}
+				</tbody>
+			</table>
 		</div>
 	);
 };

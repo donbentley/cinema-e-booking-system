@@ -24,14 +24,17 @@ public class Showing {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="movie_id")
-    @JsonIgnoreProperties("showings")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+  
     private Movie movie;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="showroom_id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "showroom_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Showroom showroom;
+    
 
     private LocalDateTime dateTime;
 }
