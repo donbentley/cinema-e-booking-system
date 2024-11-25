@@ -100,7 +100,7 @@ const AdminPage = () => {
 						Manage Showrooms
 					</button>
 				</div>
-				<div className="w-full max-w-2xl bg-white p-6 rounded-lg  ring-2">
+				<div className="w-full max-w-3xl bg-white p-6 rounded-lg  ring-2">
 					{renderContent()}
 				</div>
 			</div>

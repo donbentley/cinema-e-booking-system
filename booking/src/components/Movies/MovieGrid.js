@@ -6,7 +6,6 @@ const MovieGrid = ({ movies }) => {
 	// State to keep track of the selected movie
 	const [selectedMovie, setSelectedMovie] = useState(null);
 
-	// Function to handle single and double-clicks on a movie
 	const handleMovieClick = (movie) => {
 		if (selectedMovie?.id === movie.id) {
 			setSelectedMovie(null); // Close if double-clicked on the same movie
@@ -15,7 +14,6 @@ const MovieGrid = ({ movies }) => {
 		}
 	};
 
-	// Slider settings for react-slick
 	const settings = {
 		infinite: true,
 		speed: 500,
@@ -52,8 +50,6 @@ const MovieGrid = ({ movies }) => {
 
 	return (
 		<div className="container mx-auto p-4">
-			<h1 className="text-3xl font-bold text-center mb-6">Now Playing</h1>
-
 			{/* Movie Carousel */}
 			<Slider {...settings}>
 				{movies.map((movie) => (
@@ -63,7 +59,7 @@ const MovieGrid = ({ movies }) => {
 						onClick={() => handleMovieClick(movie)}
 						onDoubleClick={() => setSelectedMovie(null)} // Double-click to close
 					>
-						<div className="bg-white rounded-md shadow-md overflow-hidden">
+						<div className="bg-white rounded-lg shadow-md overflow-hidden">
 							<div className="relative pb-[150%] w-full overflow-hidden">
 								<img
 									src={movie.pictureLink}

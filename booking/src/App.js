@@ -12,7 +12,7 @@ import Verify from "./pages/Auth/Verify";
 import AdminPage from "./pages/Admin/AdminPage";
 import HardResetPassword from "./pages/Auth/ForgotPasswordForm";
 import ResetPasswordPage from "./pages/Auth/ResetPasswordForm";
-import Showroom from "./components/Showtimes/ShowRoom";
+import BookingPage from "./pages/BookingPage";
 
 function App() {
 	return (
@@ -31,7 +31,7 @@ function App() {
 					<Route path="/admin" element={<AdminPage />} />
 					<Route path="/resetpassword" element={<HardResetPassword />} />"
 					<Route path="resetpassword/:code" element={<ResetPasswordPage />} />
-					<Route path="/booking" element={<Showroom />} />
+					<Route path="/booking" element={<BookingPage />} />
 				</Routes>
 			</div>
 		</BrowserRouter>

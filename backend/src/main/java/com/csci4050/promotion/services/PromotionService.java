@@ -76,10 +76,17 @@ public class PromotionService {
 
     public String activatePromotion(Integer id) {
         Optional<Promotion> existingPromotion = promotionRepository.findById(id);
-        if (!existingPromotion.isPresent()) { throw new PromotionNotFoundException(); }
+        if (!existingPromotion.isPresent()) { 
+            throw new PromotionNotFoundException(); 
+        }
         Promotion p = existingPromotion.get();
         p.setActive(true);
-
+        
+        // Logging before saving
+        System.out.println("Activating promotion: " + p);
+    
+        promotionRepository.save(p); // Persist change
+    
         try {
             sendPromotionEmails(p);
         } catch (Exception e) {
@@ -87,6 +94,7 @@ public class PromotionService {
         }
         return "Promotion is active, emails sent to mailing list";
     }
+    
 
     public String sendPromotionEmailById(Integer id) {
         Optional<Promotion> existingPromotion = promotionRepository.findById(id);
@@ -130,7 +138,7 @@ public class PromotionService {
         
         content = content.replace("[[NAME]]", c.getFirst() + " " + c.getLast());
         content = content.replace("[[EVENT]]", p.getEvent());
-        content = content.replace("[[DISCOUNT]]", "" + (int)(p.getDiscount() * 100.0));
+        content = content.replace("[[DISCOUNT]]", "" + (int)(p.getDiscount()));
         helper.setText(content, true);
 
         mailSender.send(message);
