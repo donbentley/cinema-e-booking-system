@@ -1,6 +1,5 @@
 package com.csci4050.address.entities;
 
-
 import com.csci4050.customer.entities.Customer;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -17,7 +16,7 @@ import lombok.Data;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Address {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

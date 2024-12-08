@@ -6,6 +6,7 @@ import lombok.Data;
 
 @Data
 public class AddressRequest {
+
     private Integer id;
     private Customer customer;
     private String line1;
