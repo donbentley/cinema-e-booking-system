@@ -13,6 +13,8 @@ import AdminPage from "./pages/Admin/AdminPage";
 import HardResetPassword from "./pages/Auth/ForgotPasswordForm";
 import ResetPasswordPage from "./pages/Auth/ResetPasswordForm";
 import BookingPage from "./pages/BookingPage";
+import CartPage from "./pages/Checkout/CartPage";
+import CheckoutPage from "./pages/Checkout/CheckoutPage";
 
 function App() {
 	return (
@@ -32,6 +34,8 @@ function App() {
 					<Route path="/resetpassword" element={<HardResetPassword />} />"
 					<Route path="resetpassword/:code" element={<ResetPasswordPage />} />
 					<Route path="/booking" element={<BookingPage />} />
+					<Route path="/cart" element={<CartPage />} />
+					<Route path="/checkout" element={<CheckoutPage />} />
 				</Routes>
 			</div>
 		</BrowserRouter>
