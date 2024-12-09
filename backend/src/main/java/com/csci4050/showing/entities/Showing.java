@@ -27,7 +27,7 @@ public class Showing {
     @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="movie_id")
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-  
+
     private Movie movie;
 
     @ManyToOne(fetch = FetchType.EAGER)

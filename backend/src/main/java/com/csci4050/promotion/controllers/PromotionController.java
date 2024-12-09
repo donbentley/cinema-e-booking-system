@@ -55,10 +55,10 @@ public class PromotionController {
         }
     }
 
-    @GetMapping("/redeem/{id}")
-    public ResponseEntity<?> redeemPromotionById(@PathVariable Integer id) {
+    @GetMapping("/redeem/{event}")
+    public ResponseEntity<?> redeemPromotionById(@PathVariable String event) {
         try {
-            Promotion result = promotionService.redeemPromotionById(id);
+            Promotion result = promotionService.redeemPromotionByEvent(event);
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (PromotionNotFoundException e) {
             return new ResponseEntity<>(Collections.singletonMap("msg", e.getMessage()), HttpStatus.NOT_FOUND);

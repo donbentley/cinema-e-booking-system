@@ -23,7 +23,7 @@ import com.csci4050.showing.services.ShowingService;
 import com.csci4050.showroom.services.SeatService;
 
 @RestController
-@RequestMapping("/api/tickets")
+@RequestMapping("/tickets")
 public class TicketController {
 
     @Autowired

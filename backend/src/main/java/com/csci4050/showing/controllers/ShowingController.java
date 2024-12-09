@@ -83,4 +83,14 @@ public class ShowingController {
             return new ResponseEntity<>(Collections.singletonMap("msg", e.getMessage()), HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping("/getSeats/{id}")
+    public ResponseEntity<?> getAvailableSeats(@PathVariable Integer id) {
+        try {
+            List<Boolean> result = showingService.getAvailableSeats(id);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (ShowingNotFoundException e) {
+            return new ResponseEntity<>(Collections.singletonMap("msg", e.getMessage()), HttpStatus.NOT_FOUND);
+        }
+    }
 }

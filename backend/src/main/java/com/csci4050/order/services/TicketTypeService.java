@@ -42,7 +42,7 @@ public class TicketTypeService {
         existingTicketType.setName(ticketType.getName());
 
         // Check if price is valid before setting it
-        if (ticketType.getPrice() != 0.0) { // Ensure price is not 0.0 before updating
+        if (ticketType.getPrice() <= 0.0) { // Ensure price is not < 0.0 before updating
             existingTicketType.setPrice(ticketType.getPrice());
         }
 

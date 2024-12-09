@@ -23,6 +23,6 @@ public class Promotion {
     private Integer id;
 
     private String event;
-    private float discount;
+    private double discount;
     private boolean active;
 }

@@ -1,5 +1,6 @@
 package com.csci4050.showing.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.csci4050.movie.entities.Movie;
 import com.csci4050.movie.exceptions.MovieNotFoundException;
 import com.csci4050.movie.repositories.MovieRepository;
+import com.csci4050.order.entities.NewTicket;
+import com.csci4050.order.repositories.NewTicketRepository;
+import com.csci4050.order.repositories.TicketRepository;
 import com.csci4050.showing.converter.ShowingConverter;
 import com.csci4050.showing.entities.Showing;
 import com.csci4050.showing.exceptions.ShowingNotFoundException;
@@ -23,9 +27,10 @@ public class ShowingService {
     
     @Autowired
     private ShowingRepository showingRepository;
-    
     @Autowired
     private MovieRepository movieRepository;
+    @Autowired
+    private NewTicketRepository ticketRepository;
 
     public Showing getShowingById(Integer id) {
         Optional<Showing> existingShowing = showingRepository.findById(id);
@@ -76,5 +81,20 @@ public class ShowingService {
         Movie existingMovie = m.get();
         List<Showing> showings = showingRepository.findAllByMovie(existingMovie);
         return showings;
+    }
+
+    public List<Boolean> getAvailableSeats(Integer showingId) {
+        Optional<Showing> s = showingRepository.findById(showingId);
+        if (!s.isPresent()) { throw new ShowingNotFoundException(); }
+        Showing showing = s.get();
+        List<Boolean> seats = new ArrayList<>();
+        for (int i = 0; i < showing.getShowroom().getNumOfSeats(); i++) {
+            seats.add(true);
+        }
+        List<NewTicket> tickets = ticketRepository.findAllByShowing(showing);
+        for (NewTicket ticket : tickets) {
+            seats.set(ticket.getSeatNumber() - 1, false);
+        }
+        return seats;
     }
 }

@@ -145,8 +145,8 @@ public class PromotionService {
     }
 
 
-    public Promotion redeemPromotionById(Integer id) {
-        Optional<Promotion> existingPromotion = promotionRepository.findById(id);
+    public Promotion redeemPromotionByEvent(String event) {
+        Optional<Promotion> existingPromotion = promotionRepository.findByEvent(event);
         if (!existingPromotion.isPresent()) { throw new PromotionNotFoundException(); }
         Promotion p = existingPromotion.get();
         if (!p.isActive()) { throw new InactivePromotionException(); }
