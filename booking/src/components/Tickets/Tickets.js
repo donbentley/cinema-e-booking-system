@@ -1,7 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios"; // Import axios for making HTTP requests
 
 const Tickets = ({ selectedSeats, movieTitle, showtime }) => {
 	const [ticketDetails, setTicketDetails] = useState({});
+	const [ticketTypes, setTicketTypes] = useState([]); // State to hold ticket types
+	const token = localStorage.getItem("authToken"); // Assuming the token is stored in localStorage
+
+	// Fetch ticket types when the component mounts
+	useEffect(() => {
+		// Check if token exists
+		if (token) {
+			// Fetch ticket types from the backend with Authorization header
+			axios
+				.get("http://localhost:8080/ticket-type/get-all", {
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				})
+				.then((response) => {
+					setTicketTypes(response.data); // Set the fetched ticket types to state
+				})
+				.catch((error) => {
+					console.error("Error fetching ticket types:", error);
+					// You may handle the error more gracefully here, e.g., show a notification
+				});
+		} else {
+			console.error("No token found, user is not authenticated");
+		}
+	}, [token]); // Empty dependency array ensures it runs once when the component mounts
 
 	// Update ticket type and price for a seat
 	const updateTicketPrice = (seat, ticketType, price) => {
@@ -49,15 +75,16 @@ const Tickets = ({ selectedSeats, movieTitle, showtime }) => {
 									<option value="" disabled selected>
 										Select Age Group
 									</option>
-									<option value="Adult" data-price="12.00">
-										Adult - $12.00
-									</option>
-									<option value="Child" data-price="8.00">
-										Child - $8.00
-									</option>
-									<option value="Senior" data-price="8.00">
-										Senior - $8.00
-									</option>
+									{/* Dynamically render ticket types from the backend */}
+									{ticketTypes.map((ticket) => (
+										<option
+											key={ticket.id}
+											value={ticket.name}
+											data-price={ticket.price}
+										>
+											{ticket.name} - ${ticket.price.toFixed(2)}
+										</option>
+									))}
 								</select>
 							</div>
 						))}

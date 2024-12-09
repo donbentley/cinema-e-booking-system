@@ -1,8 +1,11 @@
 package com.csci4050.order.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +20,7 @@ import com.csci4050.order.services.TicketTypeService;
 
 @RestController
 @RequestMapping("/ticket-type")
+@CrossOrigin(origins = "http://localhost:3000") // Allow requests from React app
 public class TicketTypeController {
 
     @Autowired
@@ -48,5 +52,12 @@ public class TicketTypeController {
     public ResponseEntity<?> updateTicketType(@RequestBody TicketType ticketType) {
         TicketType updatedTicketType = ticketTypeService.updateTicketType(ticketType.getId(), ticketType);
         return new ResponseEntity<>(updatedTicketType, HttpStatus.OK);
+    }
+
+    // New endpoint to fetch all ticket types
+    @GetMapping("/get-all")
+    public ResponseEntity<List<TicketType>> getAllTicketTypes() {
+        List<TicketType> ticketTypes = ticketTypeService.getAllTicketTypes();
+        return new ResponseEntity<>(ticketTypes, HttpStatus.OK);
     }
 }

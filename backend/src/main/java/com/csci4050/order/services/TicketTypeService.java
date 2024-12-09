@@ -1,12 +1,15 @@
 package com.csci4050.order.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.csci4050.order.entities.TicketType;
 import com.csci4050.order.repositories.TicketTypeRepository;
+
+import com.csci4050.order.entities.TicketType;
 
 @Service
 public class TicketTypeService {
@@ -53,4 +56,10 @@ public class TicketTypeService {
         }
         ticketTypeRepository.deleteById(id);
     }
+
+    public TicketType getDefaultTicketType() {
+        return ticketTypeRepository.findByName("Default")
+                .orElseThrow(() -> new IllegalStateException("Default ticket type not found"));
+    }
+
 }

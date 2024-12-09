@@ -1,6 +1,7 @@
 package com.csci4050.order.entities;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.csci4050.customer.entities.Customer;
 import com.csci4050.promotion.entities.Promotion;
@@ -13,6 +14,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import com.csci4050.showroom.entities.Seat;
 
 @Entity
 @Table(name = "orders")
@@ -73,5 +75,11 @@ public class Order {
 
     public void setPaymentCard(String paymentCard) {
         this.paymentCard = paymentCard;
+    }
+
+    public List<Seat> getAllSeats() {
+        return tickets.stream()
+                .flatMap(ticket -> ticket.getSeats().stream())
+                .collect(Collectors.toList());
     }
 }
