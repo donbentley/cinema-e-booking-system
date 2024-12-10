@@ -1,5 +1,4 @@
 package com.csci4050.order.entities;
-
 import com.csci4050.showing.entities.Showing;
 
 import jakarta.persistence.*;
@@ -11,7 +10,7 @@ import lombok.Data;
 @Data
 @Builder
 public class NewTicket {
-
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -22,6 +21,6 @@ public class NewTicket {
     private TicketType ticketType;
     @ManyToOne
     private NewOrder order;
-
+    
     private Integer seatNumber;
 }

@@ -1,31 +1,23 @@
 package com.csci4050.showing.controllers;
 
+import com.csci4050.showing.entities.*;
+import com.csci4050.showing.exceptions.ShowingNotFoundException;
+import com.csci4050.showing.requests.ShowingRequest;
+import com.csci4050.showing.services.ShowingService;
+
 import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.csci4050.showing.entities.Showing;
-import com.csci4050.showing.exceptions.ShowingNotFoundException;
-import com.csci4050.showing.requests.ShowingRequest;
-import com.csci4050.showing.services.ShowingService;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/showing")
 public class ShowingController {
-
     @Autowired
     private ShowingService showingService;
 
@@ -62,7 +54,7 @@ public class ShowingController {
 
     @GetMapping("/get/{id}")
     public ResponseEntity<?> getShowing(@PathVariable Integer id) {
-        try {
+        try { 
             Showing showing = showingService.getShowingById(id);
             return new ResponseEntity<>(showing, HttpStatus.OK);
         } catch (ShowingNotFoundException e) {

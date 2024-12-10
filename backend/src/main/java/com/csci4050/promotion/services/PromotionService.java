@@ -35,6 +35,7 @@ public class PromotionService {
     @Autowired
     private JavaMailSender mailSender;
 
+
     public List<Promotion> getAllPromotions() {
         List<Promotion> promotions = promotionRepository.findAll();
         return promotions;
@@ -48,13 +49,9 @@ public class PromotionService {
 
     public Promotion updatePromotion(Integer id, Promotion promotionUpdate) {
         Optional<Promotion> existingPromotion = promotionRepository.findById(id);
-        if (!existingPromotion.isPresent()) {
-            throw new PromotionNotFoundException();
-        }
+        if (!existingPromotion.isPresent()) { throw new PromotionNotFoundException(); }
         Promotion p = existingPromotion.get();
-        if (p.isActive()) {
-            throw new ModifyActivePromotionException();
-        }
+        if (p.isActive()) { throw new ModifyActivePromotionException(); }
         p.setEvent(promotionUpdate.getEvent());
         p.setDiscount(promotionUpdate.getDiscount());
         p = promotionRepository.save(p);
@@ -63,9 +60,7 @@ public class PromotionService {
 
     public Promotion getPromotionById(Integer id) {
         Optional<Promotion> existingPromotion = promotionRepository.findById(id);
-        if (!existingPromotion.isPresent()) {
-            throw new PromotionNotFoundException();
-        }
+        if (!existingPromotion.isPresent()) { throw new PromotionNotFoundException(); }
         Promotion p = existingPromotion.get();
         return p;
     }
@@ -81,17 +76,17 @@ public class PromotionService {
 
     public String activatePromotion(Integer id) {
         Optional<Promotion> existingPromotion = promotionRepository.findById(id);
-        if (!existingPromotion.isPresent()) {
-            throw new PromotionNotFoundException();
+        if (!existingPromotion.isPresent()) { 
+            throw new PromotionNotFoundException(); 
         }
         Promotion p = existingPromotion.get();
         p.setActive(true);
-
+        
         // Logging before saving
         System.out.println("Activating promotion: " + p);
-
+    
         promotionRepository.save(p); // Persist change
-
+    
         try {
             sendPromotionEmails(p);
         } catch (Exception e) {
@@ -99,16 +94,13 @@ public class PromotionService {
         }
         return "Promotion is active, emails sent to mailing list";
     }
+    
 
     public String sendPromotionEmailById(Integer id) {
         Optional<Promotion> existingPromotion = promotionRepository.findById(id);
-        if (!existingPromotion.isPresent()) {
-            throw new PromotionNotFoundException();
-        }
+        if (!existingPromotion.isPresent()) { throw new PromotionNotFoundException(); }
         Promotion p = existingPromotion.get();
-        if (!p.isActive()) {
-            throw new InactivePromotionException();
-        }
+        if (!p.isActive()) { throw new InactivePromotionException(); }
 
         try {
             sendPromotionEmails(p);
@@ -131,37 +123,34 @@ public class PromotionService {
         String senderName = "Cinema E-Booking B-11";
         String subject = "A new promotion is active!";
         String content = "Dear [[NAME]],<br>"
-                + "A new promotion is active!:<br>"
-                + "<h3>[[EVENT]]</h3>"
-                + "<h4>[[DISCOUNT]]% off your order.</h4>"
-                + "We hope you'll take advantage of this deal. <br>"
-                + "Thank you,<br>"
-                + "Cinema E-Booking B11.";
+            + "A new promotion is active!:<br>"
+            + "<h3>[[EVENT]]</h3>"
+            + "<h4>[[DISCOUNT]]% off your order.</h4>"
+            + "We hope you'll take advantage of this deal. <br>"
+            + "Thank you,<br>"
+            + "Cinema E-Booking B11.";
 
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
         helper.setFrom(fromAddress, senderName);
         helper.setTo(toAddress);
         helper.setSubject(subject);
-
+        
         content = content.replace("[[NAME]]", c.getFirst() + " " + c.getLast());
         content = content.replace("[[EVENT]]", p.getEvent());
-        content = content.replace("[[DISCOUNT]]", "" + (int) (p.getDiscount()));
+        content = content.replace("[[DISCOUNT]]", "" + (int)(p.getDiscount()));
         helper.setText(content, true);
 
         mailSender.send(message);
     }
 
+
     public Promotion redeemPromotionByEvent(String event) {
         Optional<Promotion> existingPromotion = promotionRepository.findByEvent(event);
-        if (!existingPromotion.isPresent()) {
-            throw new PromotionNotFoundException();
-        }
+        if (!existingPromotion.isPresent()) { throw new PromotionNotFoundException(); }
         Promotion p = existingPromotion.get();
-        if (!p.isActive()) {
-            throw new InactivePromotionException();
-        }
+        if (!p.isActive()) { throw new InactivePromotionException(); }
         return p;
     }
-
+    
 }

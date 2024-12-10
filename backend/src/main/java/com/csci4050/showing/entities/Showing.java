@@ -19,20 +19,22 @@ import lombok.Data;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Showing {
-
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "movie_id")
+    @ManyToOne(fetch=FetchType.EAGER)
+    @JoinColumn(name="movie_id")
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+
     private Movie movie;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "showroom_id")
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Showroom showroom;
+    
 
     private LocalDateTime dateTime;
 }

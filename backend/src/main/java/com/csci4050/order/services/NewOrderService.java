@@ -47,13 +47,9 @@ public class NewOrderService {
         o.setCustomer(customerService.getCustomerDetails());
         if (!priceRequest.getPromotionString().equals("")) {
             Optional<Promotion> p = promotionRepository.findByEvent(priceRequest.getPromotionString());
-            if (!p.isPresent()) {
-                throw new PromotionNotFoundException();
-            }
+            if (!p.isPresent()) {throw new PromotionNotFoundException();}
             Promotion promotion = p.get();
-            if (!promotion.isActive()) {
-                throw new InactivePromotionException();
-            }
+            if (!promotion.isActive()) {throw new InactivePromotionException();}
             o.setPromotion(promotion);
         }
         o.setTickets(priceRequest.getTickets());
@@ -64,9 +60,7 @@ public class NewOrderService {
     public NewOrder addOrder(NewOrder orderRequest) {
         List<NewTicket> savedTickets = ticketService.addTickets(orderRequest.getTickets());
         Optional<PaymentCard> p = paymentCardRepository.findById(orderRequest.getPaymentCard().getId());
-        if (!p.isPresent()) {
-            throw new CardNotFound();
-        }
+        if (!p.isPresent()) { throw new CardNotFound(); }
         orderRequest.setTickets(savedTickets);
         NewOrder newOrder = orderRepository.save(orderRequest);
         return newOrder;
@@ -92,5 +86,5 @@ public class NewOrderService {
         }
         return price;
     }
-
+    
 }

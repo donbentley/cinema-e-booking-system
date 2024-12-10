@@ -9,7 +9,6 @@ import com.csci4050.order.entities.Order;
 import com.csci4050.paymentcard.entities.PaymentCard;
 import com.csci4050.user.entities.User;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.csci4050.order.entities.*;
 
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
@@ -22,9 +21,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class Customer {
 
-    public enum UserStatus {
-        ACTIVE, INACTIVE, SUSPENDED
-    }
+    public enum UserStatus { ACTIVE, INACTIVE, SUSPENDED }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

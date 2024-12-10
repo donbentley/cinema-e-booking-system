@@ -1,12 +1,15 @@
 package com.csci4050.order.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.csci4050.order.entities.TicketType;
 import com.csci4050.order.repositories.TicketTypeRepository;
+
+import com.csci4050.order.entities.TicketType;
 
 @Service
 public class TicketTypeService {
@@ -39,7 +42,7 @@ public class TicketTypeService {
         existingTicketType.setName(ticketType.getName());
 
         // Check if price is valid before setting it
-        if (ticketType.getPrice() <= 0.0) { // Ensure price is not 0.0 before updating
+        if (ticketType.getPrice() <= 0.0) { // Ensure price is not < 0.0 before updating
             existingTicketType.setPrice(ticketType.getPrice());
         }
 
