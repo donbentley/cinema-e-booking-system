@@ -8,6 +8,7 @@ import com.csci4050.address.entities.Address;
 import com.csci4050.paymentcard.entities.PaymentCard;
 import com.csci4050.user.entities.User;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.csci4050.order.entities.*;
 
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
@@ -20,7 +21,9 @@ import lombok.Data;
 @AllArgsConstructor
 public class Customer {
 
-    public enum UserStatus { ACTIVE, INACTIVE, SUSPENDED }
+    public enum UserStatus {
+        ACTIVE, INACTIVE, SUSPENDED
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,4 +51,8 @@ public class Customer {
 
     @Column(name = "verification_code", length = 64)
     private String verificationCode;
+
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
+    @JsonIgnoreProperties("customer")
+    private List<Order> orders = new ArrayList<>();
 }

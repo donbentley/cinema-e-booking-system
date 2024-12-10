@@ -59,9 +59,9 @@ const Navbar = () => {
 
 	return (
 		<div className="bg-gray-800 p-4">
-			<div className="flex justify-between items-center">
-				{/* Left side - Navigation Options */}
-				<div className="flex space-x-6">
+			<div className="relative flex justify-between items-center">
+				{/* Left Side - Navigation Options */}
+				<div className="flex space-x-6 z-10">
 					{/* Profile Button (if logged in) */}
 					{isLoggedIn && (
 						<button
@@ -100,23 +100,23 @@ const Navbar = () => {
 					)}
 				</div>
 
-				{/* Centered Logo */}
-				<div
-					className="text-white text-2xl font-bold cursor-pointer"
-					onClick={goToHome}
-				>
-					Cinema App
+				{/* Centered Title */}
+				<div className="absolute inset-0 flex justify-center items-center">
+					<div
+						className="text-white text-2xl font-bold cursor-pointer"
+						onClick={goToHome}
+					>
+						e-cinema
+					</div>
 				</div>
 
-				{/* Right side - Cart Button with Counter */}
+				{/* Right Side - Cart Button with Counter */}
 				{isLoggedIn && (
 					<div
-						className="relative cursor-pointer text-white hover:text-gray-400 transition-colors ml-6"
+						className="relative cursor-pointer text-white hover:text-gray-400 transition-colors ml-6 z-10"
 						onClick={goToCart}
 					>
-						{/* Shopping cart icon or text */}
 						<ShoppingCartIcon className="w-6 h-6" />
-						{/* Cart count */}
 						{cartCount > 0 && (
 							<span className="absolute top-0 right-0 bg-red-500 text-white text-xs px-2 rounded-full">
 								{cartCount}

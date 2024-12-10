@@ -15,21 +15,30 @@ import com.csci4050.showing.exceptions.TimeConflictException;
 import com.csci4050.showing.repositories.ShowingRepository;
 import com.csci4050.showing.requests.ShowingRequest;
 import com.csci4050.showroom.repositories.ShowroomRepository;
+import java.util.ArrayList;
+import com.csci4050.order.entities.NewTicket;
+import com.csci4050.order.repositories.NewTicketRepository;
+import com.csci4050.order.repositories.TicketRepository;
 
 import org.springframework.stereotype.Service;
 
 @Service
 public class ShowingService {
-    
+
     @Autowired
     private ShowingRepository showingRepository;
-    
+
     @Autowired
     private MovieRepository movieRepository;
 
+    @Autowired
+    private NewTicketRepository ticketRepository;
+
     public Showing getShowingById(Integer id) {
         Optional<Showing> existingShowing = showingRepository.findById(id);
-        if (!existingShowing.isPresent()) { throw new ShowingNotFoundException(); }
+        if (!existingShowing.isPresent()) {
+            throw new ShowingNotFoundException();
+        }
         Showing s = existingShowing.get();
         return s;
     }
@@ -37,8 +46,10 @@ public class ShowingService {
     public Showing addShowing(ShowingRequest showingRequest) {
         Showing s = ShowingConverter.convert(showingRequest);
         Optional<Showing> existingShowing = showingRepository.findByDateTimeBetweenAndShowroom(
-            s.getDateTime(), s.getDateTime().plusHours(3), s.getShowroom());
-        if (existingShowing.isPresent()) { throw new TimeConflictException(); }
+                s.getDateTime(), s.getDateTime().plusHours(3), s.getShowroom());
+        if (existingShowing.isPresent()) {
+            throw new TimeConflictException();
+        }
         s = showingRepository.save(s);
         return s;
     }
@@ -54,12 +65,16 @@ public class ShowingService {
 
     public Showing updateShowing(Integer id, ShowingRequest showingRequest) {
         Optional<Showing> s = showingRepository.findById(id);
-        if (!s.isPresent()) { throw new ShowingNotFoundException(); }
+        if (!s.isPresent()) {
+            throw new ShowingNotFoundException();
+        }
         Showing showingToUpdate = s.get();
         Showing updatedShowing = ShowingConverter.convert(showingRequest);
         Optional<Showing> existingShowing = showingRepository.findByDateTimeBetweenAndShowroom(
-            updatedShowing.getDateTime(), updatedShowing.getDateTime().plusHours(3), updatedShowing.getShowroom());
-        if (existingShowing.isPresent()) { throw new TimeConflictException(); }
+                updatedShowing.getDateTime(), updatedShowing.getDateTime().plusHours(3), updatedShowing.getShowroom());
+        if (existingShowing.isPresent()) {
+            throw new TimeConflictException();
+        }
         updatedShowing.setId(showingToUpdate.getId());
         updatedShowing = showingRepository.save(updatedShowing);
         return updatedShowing;
@@ -72,9 +87,28 @@ public class ShowingService {
 
     public List<Showing> getAllShowingsByMovie(Integer movieId) {
         Optional<Movie> m = movieRepository.findById(movieId);
-        if (!m.isPresent()) { throw new MovieNotFoundException(); }
+        if (!m.isPresent()) {
+            throw new MovieNotFoundException();
+        }
         Movie existingMovie = m.get();
         List<Showing> showings = showingRepository.findAllByMovie(existingMovie);
         return showings;
+    }
+
+    public List<Boolean> getAvailableSeats(Integer showingId) {
+        Optional<Showing> s = showingRepository.findById(showingId);
+        if (!s.isPresent()) {
+            throw new ShowingNotFoundException();
+        }
+        Showing showing = s.get();
+        List<Boolean> seats = new ArrayList<>();
+        for (int i = 0; i < showing.getShowroom().getNumOfSeats(); i++) {
+            seats.add(true);
+        }
+        List<NewTicket> tickets = ticketRepository.findAllByShowing(showing);
+        for (NewTicket ticket : tickets) {
+            seats.set(ticket.getSeatNumber() - 1, false);
+        }
+        return seats;
     }
 }

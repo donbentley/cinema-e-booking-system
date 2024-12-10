@@ -13,11 +13,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/showing")
 public class ShowingController {
+
     @Autowired
     private ShowingService showingService;
 
@@ -54,7 +54,7 @@ public class ShowingController {
 
     @GetMapping("/get/{id}")
     public ResponseEntity<?> getShowing(@PathVariable Integer id) {
-        try { 
+        try {
             Showing showing = showingService.getShowingById(id);
             return new ResponseEntity<>(showing, HttpStatus.OK);
         } catch (ShowingNotFoundException e) {
@@ -83,4 +83,15 @@ public class ShowingController {
             return new ResponseEntity<>(Collections.singletonMap("msg", e.getMessage()), HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping("/getSeats/{id}")
+    public ResponseEntity<?> getAvailableSeats(@PathVariable Integer id) {
+        try {
+            List<Boolean> result = showingService.getAvailableSeats(id);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (ShowingNotFoundException e) {
+            return new ResponseEntity<>(Collections.singletonMap("msg", e.getMessage()), HttpStatus.NOT_FOUND);
+        }
+    }
+
 }

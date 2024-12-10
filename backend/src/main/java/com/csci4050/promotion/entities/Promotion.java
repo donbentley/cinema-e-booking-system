@@ -18,11 +18,12 @@ import lombok.Data;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Promotion {
+
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String event;
-    private float discount;
+    private double discount;
     private boolean active;
 }
