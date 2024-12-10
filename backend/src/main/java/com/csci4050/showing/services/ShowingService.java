@@ -1,5 +1,6 @@
 package com.csci4050.showing.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.csci4050.movie.entities.Movie;
 import com.csci4050.movie.exceptions.MovieNotFoundException;
 import com.csci4050.movie.repositories.MovieRepository;
+import com.csci4050.order.entities.NewTicket;
+import com.csci4050.order.repositories.NewTicketRepository;
+import com.csci4050.order.repositories.TicketRepository;
 import com.csci4050.showing.converter.ShowingConverter;
 import com.csci4050.showing.entities.Showing;
 import com.csci4050.showing.exceptions.ShowingNotFoundException;
@@ -27,9 +31,10 @@ public class ShowingService {
 
     @Autowired
     private ShowingRepository showingRepository;
-
     @Autowired
     private MovieRepository movieRepository;
+    @Autowired
+    private NewTicketRepository ticketRepository;
 
     @Autowired
     private NewTicketRepository ticketRepository;

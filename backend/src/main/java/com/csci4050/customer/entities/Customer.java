@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.csci4050.address.entities.Address;
+import com.csci4050.order.entities.Order;
 import com.csci4050.paymentcard.entities.PaymentCard;
 import com.csci4050.user.entities.User;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

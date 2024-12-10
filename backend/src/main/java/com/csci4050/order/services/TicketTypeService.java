@@ -1,15 +1,12 @@
 package com.csci4050.order.services;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.csci4050.order.entities.TicketType;
 import com.csci4050.order.repositories.TicketTypeRepository;
-
-import com.csci4050.order.entities.TicketType;
 
 @Service
 public class TicketTypeService {

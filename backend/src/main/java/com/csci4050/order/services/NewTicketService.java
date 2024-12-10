@@ -2,7 +2,10 @@ package com.csci4050.order.services;
 
 import java.util.List;
 import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.csci4050.order.entities.NewTicket;
 import com.csci4050.order.entities.TicketType;
 import com.csci4050.order.exceptions.InvalidSeatException;
@@ -10,12 +13,29 @@ import com.csci4050.order.exceptions.SeatBookedException;
 import com.csci4050.order.exceptions.TicketTypeNotFoundException;
 import com.csci4050.order.repositories.NewTicketRepository;
 import com.csci4050.order.repositories.TicketTypeRepository;
-import com.csci4050.promotion.entities.Promotion;
-import com.csci4050.promotion.repositories.PromotionRepository;
 import com.csci4050.showing.entities.Showing;
 import com.csci4050.showing.exceptions.ShowingNotFoundException;
 import com.csci4050.showing.repositories.ShowingRepository;
+import com.csci4050.customer.services.CustomerService;
+import com.csci4050.order.converters.OrderPriceConverter;
+import com.csci4050.order.entities.NewOrder;
+import com.csci4050.order.entities.NewTicket;
+import com.csci4050.order.entities.Ticket;
+import com.csci4050.order.entities.TicketType;
+import com.csci4050.order.exceptions.OrderNotFoundException;
+import com.csci4050.order.exceptions.TicketTypeNotFoundException;
+import com.csci4050.order.repositories.NewOrderRepository;
+import com.csci4050.order.repositories.TicketTypeRepository;
+import com.csci4050.order.requests.PriceRequest;
+import com.csci4050.paymentcard.entities.PaymentCard;
+import com.csci4050.paymentcard.exceptions.CardNotFound;
+import com.csci4050.paymentcard.repositories.PaymentCardRepository;
+import com.csci4050.promotion.entities.Promotion;
+import com.csci4050.promotion.exceptions.InactivePromotionException;
+import com.csci4050.promotion.exceptions.PromotionNotFoundException;
+import com.csci4050.promotion.repositories.PromotionRepository;
 
+@Service
 public class NewTicketService {
 
     @Autowired
