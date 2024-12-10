@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.csci4050.customer.services.CustomerService;
 import com.csci4050.order.converters.OrderPriceConverter;
@@ -24,6 +25,7 @@ import com.csci4050.promotion.exceptions.InactivePromotionException;
 import com.csci4050.promotion.exceptions.PromotionNotFoundException;
 import com.csci4050.promotion.repositories.PromotionRepository;
 
+@Service
 public class NewOrderService {
 
     @Autowired

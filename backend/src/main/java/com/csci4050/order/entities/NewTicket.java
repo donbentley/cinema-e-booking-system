@@ -15,7 +15,12 @@ public class NewTicket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @ManyToOne
     private Showing showing;
+    @ManyToOne
     private TicketType ticketType;
+    @ManyToOne
+    private NewOrder order;
+    
     private Integer seatNumber;
 }

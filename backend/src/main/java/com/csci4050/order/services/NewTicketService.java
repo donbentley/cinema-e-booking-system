@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.csci4050.order.entities.NewTicket;
 import com.csci4050.order.entities.TicketType;
@@ -18,6 +19,7 @@ import com.csci4050.showing.entities.Showing;
 import com.csci4050.showing.exceptions.ShowingNotFoundException;
 import com.csci4050.showing.repositories.ShowingRepository;
 
+@Service
 public class NewTicketService {
     @Autowired
     private TicketTypeRepository ticketTypeRepository;
