@@ -6,6 +6,7 @@ import Showtimes from "../Show/Showtimes"; // Import the Showtimes component
 // MovieInfo Component
 const MovieInfo = ({ movie }) => {
 	const [selectedShowtime, setSelectedShowtime] = useState(null);
+
 	if (!movie) return null;
 
 	const handleReviewClick = () => {
@@ -57,12 +58,24 @@ const MovieInfo = ({ movie }) => {
 			</div>
 
 			{/* Showtimes component to display showtimes for this movie */}
-			<Showtimes movieId={movie.id} onSelectShowtime={setSelectedShowtime} />
+			<Showtimes
+				movieId={movie.id}
+				onSelectShowtime={(showtime) => setSelectedShowtime(showtime)}
+			/>
+
 			{selectedShowtime && (
-				<GetTicketsButton
-					movieTitle={movie.title}
-					showtime={selectedShowtime}
-				/>
+				<>
+					{console.log(
+						"MovieInfo - showingId passed to GetTicketsButton:",
+						selectedShowtime.showingId
+					)}{" "}
+					{/* Debugging */}
+					<GetTicketsButton
+						movieTitle={movie.title}
+						showtime={selectedShowtime.dateTime}
+						showingId={selectedShowtime.showingId} // Correctly pass showingId
+					/>
+				</>
 			)}
 		</div>
 	);

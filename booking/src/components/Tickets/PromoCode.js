@@ -6,27 +6,75 @@ const PromoCode = ({ tickets, onPromoApplied }) => {
 	const [promoMessage, setPromoMessage] = useState("");
 
 	// Retrieve the token from localStorage or wherever you store it
-	const token = localStorage.getItem("token"); // Or use another method to get the token
+	const token = localStorage.getItem("token");
 
 	const applyPromo = async () => {
 		try {
-			const response = await axios.get("http://localhost:8080/order/getPrice", {
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${token}`, // Pass the token in the Authorization header
-				},
-				data: {
-					tickets: tickets,
-					promotionString: promoCode,
-				},
+			// Validate tickets before transformation
+			tickets.forEach((ticket, index) => {
+				if (!ticket.showingId) {
+					throw new Error(
+						`Missing showingId for ticket at index ${index}: ${JSON.stringify(
+							ticket
+						)}`
+					);
+				}
+				if (!ticket.seatNumber) {
+					throw new Error(
+						`Missing seatNumber for ticket at index ${index}: ${JSON.stringify(
+							ticket
+						)}`
+					);
+				}
 			});
+
+			// Fetch the full showing object for each ticket
+			const updatedTickets = await Promise.all(
+				tickets.map(async (ticket) => {
+					const response = await axios.get(
+						`http://localhost:8080/showing/get/${ticket.showingId}`,
+						{
+							headers: {
+								Authorization: `Bearer ${token}`,
+							},
+						}
+					);
+
+					return {
+						showing: response.data, // Replace showingId with full Showing object
+						ticketType: ticket.ticketType,
+						seatNumber: ticket.seatNumber, // Ensure seatNumber is included
+					};
+				})
+			);
+
+			console.log("Updated Tickets:", updatedTickets);
+
+			// Send data to the backend
+			const response = await axios.get(
+				"http://localhost:8080/order/getPrice",
+				{ tickets: updatedTickets, promotionString: promoCode },
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			);
+
 			if (response.status === 200) {
-				const updatedOrder = response.data;
-				onPromoApplied(updatedOrder.price); // Call parent function to update total
-				setPromoMessage("Promotion applied successfully!");
+				onPromoApplied(response.data.price);
+				const successMessage = "Promotion applied successfully!";
+				setPromoMessage(successMessage);
+				console.log(successMessage); // Log success message
+				setPromoMessage(successMessage);
+				console.log("Promo message updated:", successMessage);
 			}
 		} catch (error) {
-			setPromoMessage(error.response?.data?.msg || "Invalid promotion code.");
+			console.error("Error applying promo code:", error);
+			const errorMessage =
+				error.response?.data?.msg || "Invalid promotion code.";
+			setPromoMessage(errorMessage);
+			console.log("Promo application error:", errorMessage); // Log error message
 		}
 	};
 

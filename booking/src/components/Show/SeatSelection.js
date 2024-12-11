@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import SeatGrid from "./SeatGrid";
 
-const SeatSelection = ({ selectedSeats, setSelectedSeats }) => {
-	const initialSeats = Array(3)
+const SeatSelection = ({ selectedSeats, setSelectedSeats, showingId }) => {
+	const rows = 3; // Number of rows
+	const cols = 4; // Number of columns
+	const totalSeats = rows * cols;
+	const initialSeats = Array(rows)
 		.fill(null)
-		.map(() => Array(4).fill(false));
+		.map(() => Array(cols).fill(false));
+
 	const [seats, setSeats] = useState(initialSeats);
-	const rowLetters = ["A", "B", "C"];
 
 	const toggleSeat = (row, col) => {
 		const updatedSeats = seats.map((seatRow, rowIndex) =>
@@ -17,17 +20,22 @@ const SeatSelection = ({ selectedSeats, setSelectedSeats }) => {
 		setSeats(updatedSeats);
 
 		// Update selectedSeats array
-		const seatLabel = `${rowLetters[row]}-${col + 1}`;
+		const seatNumber = row * cols + col + 1; // Sequential seat numbering
 		if (updatedSeats[row][col]) {
-			setSelectedSeats((prev) => [...prev, seatLabel]);
+			setSelectedSeats((prev) => [...prev, `${seatNumber}`]);
 		} else {
-			setSelectedSeats((prev) => prev.filter((seat) => seat !== seatLabel));
+			setSelectedSeats((prev) =>
+				prev.filter((seat) => seat !== `${seatNumber}`)
+			);
 		}
 	};
 
+	// Example: If showingId is needed for external operations
+	console.log(`Managing seat selection for showing ID: ${showingId}`);
+
 	return (
 		<div>
-			<SeatGrid seats={seats} toggleSeat={toggleSeat} rowLetters={rowLetters} />
+			<SeatGrid seats={seats} toggleSeat={toggleSeat} />
 		</div>
 	);
 };

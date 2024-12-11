@@ -1,3 +1,5 @@
+// CartPage.js
+
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -5,6 +7,7 @@ import { Navbar } from "../../components/Global/Navbar";
 import TicketItem from "../../components/Tickets/TicketItem";
 import CartPaymentCard from "../../components/Tickets/CartPaymentCard";
 import PromoCode from "../../components/Tickets/PromoCode";
+
 const CartPage = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
@@ -16,12 +19,34 @@ const CartPage = () => {
 		totalCost,
 		movieTitle,
 		showtime,
+		showingId,
 	} = location.state || {};
 
-	// State for user data
+	// Log ticketDetails to see what we are working with
+	console.log("Ticket Details:", ticketDetails);
+
+	// Ensure that ticketDetails contains ticketTypeId for each seat
+	const validatedTicketDetails = selectedSeats.map((seat) => {
+		const ticket = ticketDetails[seat];
+		console.log(`Ticket for seat ${seat}:`, ticket);
+	
+		if (!ticket.ticketTypeId || !showingId) {
+			console.error(
+				`Missing required data for seat ${seat}: ticketTypeId=${ticket.ticketTypeId}, showingId=${showingId}`
+			);
+		}
+	
+		return {
+			...ticket,
+			showingId: showingId || null, // Ensure showingId is included
+			ticketTypeId: ticket.ticketTypeId || null, // Ensure ticketTypeId is included
+			seatNumber: seat, // Add the seat number here
+		};
+	});
+	
+
 	const [user, setUser] = useState(null);
 
-	// Fetch user data on component mount
 	useEffect(() => {
 		if (!localStorage.getItem("token")) {
 			navigate("/"); // Redirect to login if not authenticated
@@ -45,11 +70,50 @@ const CartPage = () => {
 				alert("Unable to fetch user data. Please try again.");
 			});
 	}, [navigate]);
+
 	const [updatedTotalCost, setUpdatedTotalCost] = useState(totalCost);
+
 	const handlePromoApplied = (newPrice) => {
 		setUpdatedTotalCost(newPrice);
 	};
-	// Recalculate total cost dynamically
+
+	// Final checkout request to the backend
+	const bookTickets = async () => {
+		const token = localStorage.getItem("token");
+
+		const orderRequest = {
+			tickets: selectedSeats.map((seat) => ({
+				showing: { id: showingId },
+				ticketType: {
+					id: ticketDetails[seat]?.ticketTypeId, // Ensure ticketTypeId is passed
+					name: ticketDetails[seat]?.ticketType,
+				},
+				seatNumber: parseInt(seat, 10),
+			})),
+			paymentCard: { id: 1 }, // Replace with selected payment card ID
+			totalCost: updatedTotalCost, // Include the updated total cost after promo
+		};
+		console.log("Tickets passed to PromoCode:", validatedTicketDetails);
+
+		try {
+			const response = await axios.post(
+				"http://localhost:8080/order/book",
+				orderRequest,
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			);
+
+			console.log("Order successfully created:", response.data);
+			navigate("/order-confirmation", {
+				state: { orderId: response.data.id },
+			});
+		} catch (error) {
+			console.error("Error during order booking:", error.response || error);
+		}
+	};
 
 	return (
 		<div>
@@ -79,7 +143,7 @@ const CartPage = () => {
 						onCardSelect={(card) => console.log("Selected Card:", card)}
 					/>
 					<PromoCode
-						tickets={Object.values(ticketDetails)}
+						tickets={validatedTicketDetails} // Pass the validated tickets to PromoCode
 						onPromoApplied={handlePromoApplied}
 					/>
 
@@ -92,7 +156,10 @@ const CartPage = () => {
 							<label className="text-xl font-black text-gray-900">
 								Total: ${updatedTotalCost.toFixed(2)}
 							</label>
-							<button className="flex items-center justify-center w-36 h-9 bg-red-700 text-white font-semibold text-sm rounded-lg shadow">
+							<button
+								className="flex items-center justify-center w-36 h-9 bg-red-700 text-white font-semibold text-sm rounded-lg shadow"
+								onClick={bookTickets}
+							>
 								Book Tickets
 							</button>
 						</div>
