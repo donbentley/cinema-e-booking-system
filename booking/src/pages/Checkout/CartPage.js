@@ -1,78 +1,104 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import CartItem from "../../components/Tickets/CartItem"; // Child component for rendering individual cart items
-
+import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { Navbar } from "../../components/Global/Navbar";
+import TicketItem from "../../components/Tickets/TicketItem";
+import CartPaymentCard from "../../components/Tickets/CartPaymentCard";
+import PromoCode from "../../components/Tickets/PromoCode";
 const CartPage = () => {
+	const location = useLocation();
 	const navigate = useNavigate();
 
-	// Fetch cart items from localStorage or initialize with an empty array
-	const [cartItems, setCartItems] = useState(() => {
-		const savedCart = localStorage.getItem("cart");
-		return savedCart ? JSON.parse(savedCart) : [];
-	});
+	// Extract cart data from location state
+	const {
+		selectedSeats,
+		ticketDetails = {},
+		totalCost,
+		movieTitle,
+		showtime,
+	} = location.state || {};
 
-	// Calculate the total cost
-	const calculateTotal = () => {
-		return cartItems
-			.reduce((total, item) => total + item.price * item.quantity, 0)
-			.toFixed(2);
-	};
+	// State for user data
+	const [user, setUser] = useState(null);
 
-	// Handle removing an item from the cart
-	const removeItem = (id) => {
-		const updatedCart = cartItems.filter((item) => item.id !== id);
-		setCartItems(updatedCart);
-		localStorage.setItem("cart", JSON.stringify(updatedCart));
-	};
-
-	// Handle updating item quantity
-	const updateQuantity = (id, quantity) => {
-		const updatedCart = cartItems.map((item) =>
-			item.id === id ? { ...item, quantity: parseInt(quantity) } : item
-		);
-		setCartItems(updatedCart);
-		localStorage.setItem("cart", JSON.stringify(updatedCart));
-	};
-
-	// Handle checkout
-	const handleCheckout = () => {
-		if (cartItems.length === 0) {
-			alert("Your cart is empty!");
-		} else {
-			navigate("/checkout");
+	// Fetch user data on component mount
+	useEffect(() => {
+		if (!localStorage.getItem("token")) {
+			navigate("/"); // Redirect to login if not authenticated
+			return;
 		}
+
+		axios
+			.get("http://localhost:8080/customer/customer-info", {
+				headers: {
+					Authorization: `Bearer ${localStorage.getItem("token")}`,
+				},
+			})
+			.then((response) => {
+				if (response.status >= 400) {
+					throw new Error("Error fetching user data");
+				}
+				setUser(response.data);
+			})
+			.catch((error) => {
+				console.error("Failed to fetch user data:", error);
+				alert("Unable to fetch user data. Please try again.");
+			});
+	}, [navigate]);
+	const [updatedTotalCost, setUpdatedTotalCost] = useState(totalCost);
+	const handlePromoApplied = (newPrice) => {
+		setUpdatedTotalCost(newPrice);
 	};
+	// Recalculate total cost dynamically
 
 	return (
-		<div className="p-6">
-			<h1 className="text-3xl font-bold text-center mb-6">Your Cart</h1>
+		<div>
+			<Navbar />
+			<div className="flex flex-col items-center p-6 bg-white min-h-screen">
+				<h1 className="text-3xl font-bold text-center mb-6">
+					Your Cart - {movieTitle} @ ({showtime})
+				</h1>
 
-			{cartItems.length === 0 ? (
-				<p className="text-center">Your cart is empty.</p>
-			) : (
-				<div>
-					<div className="space-y-4">
-						{cartItems.map((item) => (
-							<CartItem
-								key={item.id}
-								item={item}
-								updateQuantity={updateQuantity}
-								removeItem={removeItem}
-							/>
-						))}
+				<div className="grid gap-5 mt-6 w-full max-w-xl">
+					{/* Cart Items Section */}
+					<div className="bg-white shadow-md rounded-lg">
+						<label className="flex items-center px-5 h-10 border-b text-xs font-bold text-gray-600">
+							Your Cart
+						</label>
+						<div className="flex flex-col p-3">
+							{/* Pass the seat and its details to TicketItem */}
+							{Object.entries(ticketDetails).map(([seat, ticket], index) => (
+								<TicketItem key={index} seat={seat} details={ticket} />
+							))}
+						</div>
 					</div>
 
-					<div className="mt-6 flex justify-between text-xl font-semibold">
-						<span>Total: ${calculateTotal()}</span>
-						<button
-							onClick={handleCheckout}
-							className="bg-blue-600 text-white py-2 px-6 rounded hover:bg-blue-700 transition-colors"
-						>
+					{/* Payment Section */}
+					<CartPaymentCard
+						user={user}
+						onCardSelect={(card) => console.log("Selected Card:", card)}
+					/>
+					<PromoCode
+						tickets={Object.values(ticketDetails)}
+						onPromoApplied={handlePromoApplied}
+					/>
+
+					{/* Checkout Section */}
+					<div className="bg-white shadow-md rounded-lg">
+						<label className="flex items-center px-5 h-10 border-b text-xs font-bold text-gray-600">
 							Checkout
-						</button>
+						</label>
+						<div className="flex items-center justify-between p-3 bg-gray-100">
+							<label className="text-xl font-black text-gray-900">
+								Total: ${updatedTotalCost.toFixed(2)}
+							</label>
+							<button className="flex items-center justify-center w-36 h-9 bg-red-700 text-white font-semibold text-sm rounded-lg shadow">
+								Book Tickets
+							</button>
+						</div>
 					</div>
 				</div>
-			)}
+			</div>
 		</div>
 	);
 };

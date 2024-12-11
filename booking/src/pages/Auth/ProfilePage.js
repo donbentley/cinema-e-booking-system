@@ -6,6 +6,7 @@ import ResetPassword from "../../components/Profile/ResetPassword"; // Correct i
 import BillingAddress from "../../components/Profile/BillingAddress";
 import PaymentCard from "../../components/Profile/PaymentCard";
 import { Navbar } from "../../components/Global/Navbar";
+import UserOrders from "../../components/Profile/UserOrders";
 
 const ProfilePage = () => {
 	const navigate = useNavigate();
@@ -45,6 +46,8 @@ const ProfilePage = () => {
 				return <BillingAddress user={user} />;
 			case "paymentCard":
 				return <PaymentCard user={user} />;
+			case "userOrders":
+				return <UserOrders user={user} />;
 			default:
 				return <EditProfile />;
 		}
@@ -84,6 +87,12 @@ const ProfilePage = () => {
 						className={buttonClasses("billingAddress")}
 					>
 						Edit Billing Address
+					</button>
+					<button
+						onClick={() => setActiveComponent("userOrders")}
+						className={buttonClasses("userOrders")}
+					>
+						View Orders
 					</button>
 				</div>
 				{renderComponent()}

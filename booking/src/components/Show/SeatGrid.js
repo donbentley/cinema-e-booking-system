@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { FilmIcon } from "@heroicons/react/24/outline";
 
 // SeatGrid Component
+
+const token = localStorage.getItem("token");
+
 const SeatGrid = ({ seats, toggleSeat, rowLetters }) => {
 	return (
 		<div className="flex flex-col items-center">

@@ -2,12 +2,12 @@ import React from "react";
 import { TicketIcon } from "@heroicons/react/24/outline";
 import { useNavigate } from "react-router-dom";
 
-const GetTicketsButton = ({ movieTitle, showtime }) => {
+const GetTicketsButton = ({ movieTitle, showtime, showingId}) => {
 	const navigate = useNavigate();
 
 	const handleGetTicketsClick = () => {
 		// Redirect to booking page with query parameters for movieTitle and showtime
-		navigate(`/booking`, { state: { movieTitle, showtime } });
+		navigate(`/booking`, { state: { movieTitle, showtime, showingId } });
 	};
 
 	return (

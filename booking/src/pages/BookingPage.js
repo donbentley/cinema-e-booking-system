@@ -5,8 +5,10 @@ import Tickets from "../components/Tickets/Tickets";
 import { Navbar } from "../components/Global/Navbar";
 
 const BookingPage = () => {
+	const token = localStorage.getItem("token");
+
 	const location = useLocation();
-	const { movieTitle, showtime } = location.state || {}; // Retrieve data passed from MovieInfo
+	const { movieTitle, showtime, showingId } = location.state || {}; // Retrieve data passed from MovieInfo
 
 	// State to manage selected seats
 	const [selectedSeats, setSelectedSeats] = useState([]);
@@ -31,6 +33,7 @@ const BookingPage = () => {
 					<SeatSelection
 						selectedSeats={selectedSeats}
 						setSelectedSeats={setSelectedSeats}
+						showingId={location.state?.showingId} // Ensure showingId is passed
 					/>
 				</div>
 

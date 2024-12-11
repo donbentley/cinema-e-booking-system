@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios"; // Import axios for making HTTP requests
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 const Tickets = ({ selectedSeats, movieTitle, showtime }) => {
 	const [ticketDetails, setTicketDetails] = useState({});
 	const [ticketTypes, setTicketTypes] = useState([]); // State to hold ticket types
-	const token = localStorage.getItem("authToken"); // Assuming the token is stored in localStorage
+	const token = localStorage.getItem("token"); // Assuming the token is stored in localStorage
+	const navigate = useNavigate(); // Initialize navigate hook
 
 	// Fetch ticket types when the component mounts
 	useEffect(() => {
@@ -12,7 +14,7 @@ const Tickets = ({ selectedSeats, movieTitle, showtime }) => {
 		if (token) {
 			// Fetch ticket types from the backend with Authorization header
 			axios
-				.get("http://localhost:8080/ticket-type/get-all", {
+				.get("http://localhost:8080/order/getTicketPrices", {
 					headers: {
 						Authorization: `Bearer ${token}`,
 					},
@@ -43,6 +45,20 @@ const Tickets = ({ selectedSeats, movieTitle, showtime }) => {
 		0
 	);
 
+	// Handle checkout button click
+	const handleCheckout = () => {
+		// Pass the ticket details and total cost to the cart page
+		navigate("/cart", {
+			state: {
+				selectedSeats,
+				ticketDetails,
+				totalCost,
+				movieTitle,
+				showtime,
+			},
+		});
+	};
+
 	return (
 		<div className="flex flex-col items-center px-6 py-4">
 			<h2 className="text-lg text-center mb-4">
@@ -70,9 +86,10 @@ const Tickets = ({ selectedSeats, movieTitle, showtime }) => {
 										const price = selectedOption.dataset.price;
 										updateTicketPrice(seat, ticketType, price);
 									}}
+									value={ticketDetails[seat]?.ticketType || ""} // Set the value here
 									required
 								>
-									<option value="" disabled selected>
+									<option value="" disabled>
 										Select Age Group
 									</option>
 									{/* Dynamically render ticket types from the backend */}
@@ -98,10 +115,10 @@ const Tickets = ({ selectedSeats, movieTitle, showtime }) => {
 			</div>
 
 			<button
-				className="mt-4 bg-red-800 text-white px-4 py-2 rounded hover:bg-red-900 transition-colors"
-				onClick={() => alert("Tickets booked!")}
+				className="mt-4 bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-500 transition-colors"
+				onClick={handleCheckout} // Call handleCheckout to navigate to the cart
 			>
-				Confirm Tickets
+				Continue to Checkout
 			</button>
 		</div>
 	);
