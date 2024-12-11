@@ -13,12 +13,15 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import com.csci4050.customer.services.CustomerService;
+import com.csci4050.order.converters.NewOrderConverter;
 import com.csci4050.order.entities.NewOrder;
 import com.csci4050.order.entities.NewTicket;
 import com.csci4050.order.exceptions.InvalidPriceException;
 import com.csci4050.order.exceptions.OrderNotFoundException;
 import com.csci4050.order.repositories.NewOrderRepository;
+import com.csci4050.order.requests.NewOrderRequest;
 import com.csci4050.order.requests.PriceRequest;
+import com.csci4050.order.requests.TicketRequest;
 import com.csci4050.paymentcard.entities.PaymentCard;
 import com.csci4050.paymentcard.exceptions.CardNotFound;
 import com.csci4050.paymentcard.repositories.PaymentCardRepository;
@@ -48,8 +51,8 @@ public class NewOrderService {
     @Autowired
     private PaymentCardRepository paymentCardRepository;
 
-    public NewOrder getPrice(PriceRequest priceRequest) {
-        NewOrder o = new NewOrder();
+    public NewOrderRequest getPrice(PriceRequest priceRequest) {
+        NewOrderRequest o = new NewOrderRequest();
         o.setCustomer(customerService.getCustomerDetails());
         if (!priceRequest.getPromotionString().equals("")) {
             Optional<Promotion> p = promotionRepository.findByEvent(priceRequest.getPromotionString());
@@ -63,19 +66,21 @@ public class NewOrderService {
         return o;
     }
 
-    public NewOrder addOrder(NewOrder orderRequest) {
-        List<NewTicket> savedTickets = ticketService.addTickets(orderRequest.getTickets());
+    public NewOrder addOrder(NewOrderRequest orderRequest) {
         Optional<PaymentCard> p = paymentCardRepository.findById(orderRequest.getPaymentCard().getId());
         if (!p.isPresent()) { throw new CardNotFound(); }
-        orderRequest.setTickets(savedTickets);
         if (orderRequest.getPrice() != calculatePrice(orderRequest)) { throw new InvalidPriceException(); }
-        NewOrder newOrder = orderRepository.save(orderRequest);
+        NewOrder o = NewOrderConverter.convert(orderRequest);
+        o = orderRepository.save(o);
+        List<NewTicket> savedTickets = ticketService.addTickets(orderRequest.getTickets(), o);
+        o.setTickets(savedTickets);
+        o = orderRepository.save(o);
         try {
-            sendOrderConfirmationEmail(newOrder);
+            sendOrderConfirmationEmail(o);
         } catch (Exception e) {
             throw new SendEmailException();
         }
-        return newOrder;
+        return o;
     }
 
     private void sendOrderConfirmationEmail(NewOrder newOrder) throws MessagingException, UnsupportedEncodingException {
@@ -123,9 +128,9 @@ public class NewOrderService {
         }
     }
 
-    private double calculatePrice(NewOrder order) {
+    private double calculatePrice(NewOrderRequest order) {
         Double price = 0.0;
-        for (NewTicket ticket : order.getTickets()) {
+        for (TicketRequest ticket : order.getTickets()) {
             ticketService.checkValidTicket(ticket);
             price += ticket.getTicketType().getPrice();
         }

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.csci4050.order.entities.NewOrder;
 import com.csci4050.order.entities.TicketType;
+import com.csci4050.order.requests.NewOrderRequest;
 import com.csci4050.order.requests.PriceRequest;
 import com.csci4050.order.services.NewOrderService;
 import com.csci4050.order.services.NewTicketService;
@@ -29,7 +30,7 @@ public class NewOrderController {
     @GetMapping("/getPrice")
     public ResponseEntity<?> getPrice(@RequestBody PriceRequest priceRequest) {
         try {
-            NewOrder result = orderService.getPrice(priceRequest); 
+            NewOrderRequest result = orderService.getPrice(priceRequest); 
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(Collections.singletonMap("msg", e.getMessage()), HttpStatus.BAD_REQUEST);
@@ -37,7 +38,7 @@ public class NewOrderController {
     }
 
     @PostMapping("/book")
-    public ResponseEntity<?> addOrder(@RequestBody NewOrder orderRequest) {
+    public ResponseEntity<?> addOrder(@RequestBody NewOrderRequest orderRequest) {
         try {
             NewOrder result = orderService.addOrder(orderRequest);
             return new ResponseEntity<>(result, HttpStatus.OK);
